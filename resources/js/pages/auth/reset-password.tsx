@@ -1,4 +1,5 @@
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, Link } from '@inertiajs/react';
+import { ArrowLeft, KeyRound } from 'lucide-react';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import { Button } from '@/components/ui/button';
@@ -6,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { update } from '@/routes/password';
+import { login, home } from '@/routes';
 
 type Props = {
     token: string;
@@ -16,7 +18,7 @@ type Props = {
 export default function ResetPassword({ token, email, passwordRules }: Props) {
     return (
         <>
-            <Head title="Reset password" />
+            <Head title="Reset Password - Triple9" />
 
             <Form
                 {...update.form()}
@@ -24,65 +26,81 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
                 resetOnSuccess={['password', 'password_confirmation']}
             >
                 {({ processing, errors }) => (
-                    <div className="grid gap-6">
-                        <div className="grid gap-2">
-                            <Label htmlFor="email">Email</Label>
+                    <div className="grid gap-4">
+                        <div className="grid gap-1.5">
+                            <Label htmlFor="email" className="text-xs font-bold text-neutral-700">
+                                Alamat Email
+                            </Label>
                             <Input
                                 id="email"
                                 type="email"
                                 name="email"
                                 autoComplete="email"
                                 value={email}
-                                className="mt-1 block w-full"
+                                className="rounded-xl border-neutral-200 bg-neutral-50 text-xs py-2.5 text-neutral-500"
                                 readOnly
                             />
                             <InputError
                                 message={errors.email}
-                                className="mt-2"
+                                className="mt-1"
                             />
                         </div>
 
-                        <div className="grid gap-2">
-                            <Label htmlFor="password">Password</Label>
+                        <div className="grid gap-1.5">
+                            <Label htmlFor="password" className="text-xs font-bold text-neutral-700">
+                                Password Baru
+                            </Label>
                             <PasswordInput
                                 id="password"
                                 name="password"
                                 autoComplete="new-password"
-                                className="mt-1 block w-full"
+                                className="rounded-xl border-neutral-200 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
                                 autoFocus
-                                placeholder="Password"
+                                placeholder="Minimal 8 karakter"
                                 passwordrules={passwordRules}
                             />
                             <InputError message={errors.password} />
                         </div>
 
-                        <div className="grid gap-2">
-                            <Label htmlFor="password_confirmation">
-                                Confirm password
+                        <div className="grid gap-1.5">
+                            <Label htmlFor="password_confirmation" className="text-xs font-bold text-neutral-700">
+                                Konfirmasi Password Baru
                             </Label>
                             <PasswordInput
                                 id="password_confirmation"
                                 name="password_confirmation"
                                 autoComplete="new-password"
-                                className="mt-1 block w-full"
-                                placeholder="Confirm password"
+                                className="rounded-xl border-neutral-200 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
+                                placeholder="Ulangi password baru"
                                 passwordrules={passwordRules}
                             />
                             <InputError
                                 message={errors.password_confirmation}
-                                className="mt-2"
+                                className="mt-1"
                             />
                         </div>
 
                         <Button
                             type="submit"
-                            className="mt-4 w-full"
+                            className="mt-2 w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 text-xs shadow-md shadow-blue-600/25 transition-all hover:scale-[1.01] active:scale-95 cursor-pointer"
                             disabled={processing}
                             data-test="reset-password-button"
                         >
-                            {processing && <Spinner />}
-                            Reset password
+                            {processing ? <Spinner /> : <KeyRound className="h-4 w-4 mr-1.5" />}
+                            Simpan Password Baru
                         </Button>
+
+                        <div className="flex flex-col gap-2.5 text-center text-xs text-neutral-600 pt-2">
+                            <div>
+                                Sudah ingat password?{' '}
+                                <Link
+                                    href={login()}
+                                    className="font-bold text-blue-600 hover:text-blue-700 hover:underline"
+                                >
+                                    Masuk di sini
+                                </Link>
+                            </div>
+                        </div>
                     </div>
                 )}
             </Form>
@@ -91,6 +109,6 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
 }
 
 ResetPassword.layout = {
-    title: 'Reset password',
-    description: 'Please enter your new password below',
+    title: 'Reset Password',
+    description: 'Masukkan password baru Anda untuk mengamankan akun',
 };

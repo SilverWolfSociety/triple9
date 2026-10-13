@@ -1,5 +1,4 @@
 import { Link } from '@inertiajs/react';
-import AppLogoIcon from '@/components/app-logo-icon';
 import { home } from '@/routes';
 import type { AuthLayoutProps } from '@/types';
 
@@ -9,28 +8,36 @@ export default function AuthSimpleLayout({
     description,
 }: AuthLayoutProps) {
     return (
-        <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
-            <div className="w-full max-w-sm">
-                <div className="flex flex-col gap-8">
-                    <div className="flex flex-col items-center gap-4">
-                        <Link
-                            href={home()}
-                            className="flex flex-col items-center gap-2 font-medium"
-                        >
-                            <div className="mb-1 flex h-9 w-9 items-center justify-center rounded-md">
-                                <AppLogoIcon className="size-9 fill-current text-[var(--foreground)] dark:text-white" />
-                            </div>
-                            <span className="sr-only">{title}</span>
-                        </Link>
+        <div className="relative min-h-svh flex flex-col items-center justify-center bg-gradient-to-br from-neutral-50 via-white to-neutral-100 p-4 sm:p-6 lg:p-8 font-sans antialiased text-neutral-900 selection:bg-blue-100 overflow-hidden">
+            {/* Ambient Background Glows */}
+            <div className="absolute top-1/4 -left-24 h-80 w-80 rounded-full bg-blue-500/10 blur-3xl pointer-events-none" />
+            <div className="absolute bottom-1/4 -right-24 h-80 w-80 rounded-full bg-sky-400/10 blur-3xl pointer-events-none" />
 
-                        <div className="space-y-2 text-center">
-                            <h1 className="text-xl font-medium">{title}</h1>
-                            <p className="text-center text-sm text-muted-foreground">
-                                {description}
-                            </p>
+            <div className="w-full max-w-md relative z-10">
+                <div className="rounded-[28px] border border-neutral-200/90 bg-white p-7 sm:p-9 shadow-xl shadow-neutral-900/5">
+                    {/* Header Title */}
+                    {(title || description) && (
+                        <div className="space-y-1.5 mb-6 text-center">
+                            {title && (
+                                <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-neutral-900">
+                                    {title}
+                                </h1>
+                            )}
+                            {description && (
+                                <p className="text-xs text-neutral-500 max-w-xs mx-auto">
+                                    {description}
+                                </p>
+                            )}
                         </div>
-                    </div>
+                    )}
+
+                    {/* Children Form */}
                     {children}
+                </div>
+
+                {/* Footer Note */}
+                <div className="mt-6 text-center text-xs text-neutral-400">
+                    &copy; {new Date().getFullYear()} Triple9 Finance. All rights reserved.
                 </div>
             </div>
         </div>
