@@ -26,7 +26,7 @@ export default function AdminLogin({ status }: Props) {
                     <>
                         <div className="grid gap-4">
                             <div className="grid gap-1.5">
-                                <Label htmlFor="email" className="text-xs font-bold text-neutral-700">
+                                <Label htmlFor="email" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
                                     Email address
                                 </Label>
                                 <Input
@@ -38,13 +38,13 @@ export default function AdminLogin({ status }: Props) {
                                     tabIndex={1}
                                     autoComplete="email"
                                     placeholder="admin@example.com"
-                                    className="rounded-xl border-neutral-200 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
+                                    className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
                                 />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div className="grid gap-1.5">
-                                <Label htmlFor="password" className="text-xs font-bold text-neutral-700">
+                                <Label htmlFor="password" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
                                     Password
                                 </Label>
                                 <PasswordInput
@@ -54,7 +54,7 @@ export default function AdminLogin({ status }: Props) {
                                     tabIndex={2}
                                     autoComplete="current-password"
                                     placeholder="••••••••"
-                                    className="rounded-xl border-neutral-200 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
+                                    className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
                                 />
                                 <InputError message={errors.password} />
                             </div>
@@ -64,9 +64,9 @@ export default function AdminLogin({ status }: Props) {
                                     id="remember"
                                     name="remember"
                                     tabIndex={3}
-                                    className="rounded-md border-neutral-300 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
+                                    className="rounded-md border-neutral-300 dark:border-neutral-700 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
                                 />
-                                <Label htmlFor="remember" className="text-xs font-medium text-neutral-600 cursor-pointer">
+                                <Label htmlFor="remember" className="text-xs font-medium text-neutral-600 dark:text-neutral-400 cursor-pointer">
                                     Ingat saya di perangkat ini
                                 </Label>
                             </div>
@@ -82,12 +82,12 @@ export default function AdminLogin({ status }: Props) {
                             </Button>
                         </div>
 
-                        <div className="flex flex-col gap-2 text-center text-xs text-neutral-500 pt-1">
+                        <div className="flex flex-col gap-2 text-center text-xs text-neutral-500 dark:text-neutral-400 pt-1">
                             <div>
                                 Belum memiliki akun admin?{' '}
                                 <Link
                                     href="/admin/register"
-                                    className="font-bold text-blue-600 hover:text-blue-700 hover:underline"
+                                    className="font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline"
                                 >
                                     Daftar Admin
                                 </Link>
@@ -96,7 +96,7 @@ export default function AdminLogin({ status }: Props) {
                                 Bukan administrator?{' '}
                                 <Link
                                     href="/login"
-                                    className="font-bold text-blue-600 hover:text-blue-700 hover:underline"
+                                    className="font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline"
                                 >
                                     Masuk ke Portal Member
                                 </Link>
@@ -107,7 +107,7 @@ export default function AdminLogin({ status }: Props) {
             </Form>
 
             {status && (
-                <div className="mt-4 text-center text-xs font-semibold text-emerald-600 bg-emerald-50 border border-emerald-200/60 rounded-xl p-2.5">
+                <div className="mt-4 text-center text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/40 rounded-xl p-2.5">
                     {status}
                 </div>
             )}

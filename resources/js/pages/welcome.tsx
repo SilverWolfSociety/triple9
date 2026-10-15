@@ -9,6 +9,9 @@ import {
     FileText,
     Receipt,
     Trophy,
+    Crown,
+    Medal,
+    Flame,
     Users,
     Gift,
     Headphones,
@@ -32,8 +35,8 @@ import {
     Moon,
     Check,
     Copy,
+    Link2,
     ArrowUpRight,
-    MessageCircle,
     AlertCircle,
     Info,
     Menu,
@@ -139,6 +142,9 @@ export default function Welcome() {
     const [isSalinDropdownOpen, setIsSalinDropdownOpen] = useState(false);
     const [checkerResults, setCheckerResults] = useState<{ email: string; status: 'valid' | 'invalid' }[] | null>(null);
     const [referralCopied, setReferralCopied] = useState(false);
+    const [referralCodeCopied, setReferralCodeCopied] = useState(false);
+    const [referralLinkCopied, setReferralLinkCopied] = useState(false);
+    const [referralTab, setReferralTab] = useState<'referral' | 'bonus'>('referral');
     const [withdrawAmount, setWithdrawAmount] = useState('');
     const [withdrawMethod, setWithdrawMethod] = useState('DANA');
     const [withdrawAccount, setWithdrawAccount] = useState('');
@@ -220,6 +226,60 @@ export default function Welcome() {
         amount: number;
         balance: number;
     }>>([]);
+
+    // Leaderboard Filter State & Datasets (Matching zero99gmail format with Triple9 sleek aesthetic)
+    const [leaderboardPeriod, setLeaderboardPeriod] = useState<'today' | '7days' | '30days' | 'all'>('all');
+
+    const leaderboardData = {
+        all: [
+            { rank: 1, name: 'Enriko Ganz', initials: 'EG', avatarBg: 'from-amber-500 to-yellow-600', gmails: 1549, earnings: 6970500 },
+            { rank: 2, name: 'popipu papepo', initials: 'PP', avatarBg: 'from-slate-400 to-slate-600', gmails: 1469, earnings: 6610500 },
+            { rank: 3, name: 'Ricanwardana', initials: 'RW', avatarBg: 'from-amber-700 to-amber-900', gmails: 1467, earnings: 6601500 },
+            { rank: 4, name: 'diskominfo berau', initials: 'DB', avatarBg: 'from-blue-500 to-indigo-600', gmails: 1256, earnings: 5652000 },
+            { rank: 5, name: 'Neng ceca', initials: 'NC', avatarBg: 'from-rose-500 to-pink-600', gmails: 1138, earnings: 5121000 },
+            { rank: 6, name: 'Geoffrey Hunter', initials: 'GH', avatarBg: 'from-cyan-500 to-blue-600', gmails: 1076, earnings: 4842000 },
+            { rank: 7, name: 'Risfina', initials: 'RF', avatarBg: 'from-violet-500 to-purple-600', gmails: 1071, earnings: 4819500 },
+            { rank: 8, name: 'Dimas Aditya', initials: 'DA', avatarBg: 'from-emerald-500 to-teal-600', gmails: 942, earnings: 4239000 },
+            { rank: 9, name: 'Kurniawan99', initials: 'K9', avatarBg: 'from-amber-600 to-orange-600', gmails: 890, earnings: 4005000 },
+            { rank: 10, name: 'Bayu Pratama', initials: 'BP', avatarBg: 'from-indigo-500 to-purple-600', gmails: 815, earnings: 3667500 },
+        ],
+        '30days': [
+            { rank: 1, name: 'Enriko Ganz', initials: 'EG', avatarBg: 'from-amber-500 to-yellow-600', gmails: 620, earnings: 2790000 },
+            { rank: 2, name: 'popipu papepo', initials: 'PP', avatarBg: 'from-slate-400 to-slate-600', gmails: 584, earnings: 2628000 },
+            { rank: 3, name: 'Ricanwardana', initials: 'RW', avatarBg: 'from-amber-700 to-amber-900', gmails: 540, earnings: 2430000 },
+            { rank: 4, name: 'Geoffrey Hunter', initials: 'GH', avatarBg: 'from-cyan-500 to-blue-600', gmails: 490, earnings: 2205000 },
+            { rank: 5, name: 'diskominfo berau', initials: 'DB', avatarBg: 'from-blue-500 to-indigo-600', gmails: 462, earnings: 2079000 },
+            { rank: 6, name: 'Risfina', initials: 'RF', avatarBg: 'from-violet-500 to-purple-600', gmails: 410, earnings: 1845000 },
+            { rank: 7, name: 'Neng ceca', initials: 'NC', avatarBg: 'from-rose-500 to-pink-600', gmails: 395, earnings: 1777500 },
+            { rank: 8, name: 'Dimas Aditya', initials: 'DA', avatarBg: 'from-emerald-500 to-teal-600', gmails: 340, earnings: 1530000 },
+            { rank: 9, name: 'Kurniawan99', initials: 'K9', avatarBg: 'from-amber-600 to-orange-600', gmails: 315, earnings: 1417500 },
+            { rank: 10, name: 'Bayu Pratama', initials: 'BP', avatarBg: 'from-indigo-500 to-purple-600', gmails: 280, earnings: 1260000 },
+        ],
+        '7days': [
+            { rank: 1, name: 'popipu papepo', initials: 'PP', avatarBg: 'from-amber-500 to-yellow-600', gmails: 198, earnings: 891000 },
+            { rank: 2, name: 'Enriko Ganz', initials: 'EG', avatarBg: 'from-slate-400 to-slate-600', gmails: 185, earnings: 832500 },
+            { rank: 3, name: 'Ricanwardana', initials: 'RW', avatarBg: 'from-amber-700 to-amber-900', gmails: 164, earnings: 738000 },
+            { rank: 4, name: 'Risfina', initials: 'RF', avatarBg: 'from-violet-500 to-purple-600', gmails: 142, earnings: 639000 },
+            { rank: 5, name: 'diskominfo berau', initials: 'DB', avatarBg: 'from-blue-500 to-indigo-600', gmails: 130, earnings: 585000 },
+            { rank: 6, name: 'Geoffrey Hunter', initials: 'GH', avatarBg: 'from-cyan-500 to-blue-600', gmails: 121, earnings: 544500 },
+            { rank: 7, name: 'Neng ceca', initials: 'NC', avatarBg: 'from-rose-500 to-pink-600', gmails: 115, earnings: 517500 },
+            { rank: 8, name: 'Dimas Aditya', initials: 'DA', avatarBg: 'from-emerald-500 to-teal-600', gmails: 98, earnings: 441000 },
+            { rank: 9, name: 'Kurniawan99', initials: 'K9', avatarBg: 'from-amber-600 to-orange-600', gmails: 88, earnings: 396000 },
+            { rank: 10, name: 'Bayu Pratama', initials: 'BP', avatarBg: 'from-indigo-500 to-purple-600', gmails: 74, earnings: 333000 },
+        ],
+        today: [
+            { rank: 1, name: 'Ricanwardana', initials: 'RW', avatarBg: 'from-amber-500 to-yellow-600', gmails: 45, earnings: 202500 },
+            { rank: 2, name: 'Enriko Ganz', initials: 'EG', avatarBg: 'from-slate-400 to-slate-600', gmails: 38, earnings: 171000 },
+            { rank: 3, name: 'popipu papepo', initials: 'PP', avatarBg: 'from-amber-700 to-amber-900', gmails: 32, earnings: 144000 },
+            { rank: 4, name: 'Geoffrey Hunter', initials: 'GH', avatarBg: 'from-cyan-500 to-blue-600', gmails: 26, earnings: 117000 },
+            { rank: 5, name: 'diskominfo berau', initials: 'DB', avatarBg: 'from-blue-500 to-indigo-600', gmails: 22, earnings: 99000 },
+            { rank: 6, name: 'Risfina', initials: 'RF', avatarBg: 'from-violet-500 to-purple-600', gmails: 19, earnings: 85500 },
+            { rank: 7, name: 'Neng ceca', initials: 'NC', avatarBg: 'from-rose-500 to-pink-600', gmails: 15, earnings: 67500 },
+            { rank: 8, name: 'Dimas Aditya', initials: 'DA', avatarBg: 'from-emerald-500 to-teal-600', gmails: 12, earnings: 54000 },
+            { rank: 9, name: 'Kurniawan99', initials: 'K9', avatarBg: 'from-amber-600 to-orange-600', gmails: 10, earnings: 45000 },
+            { rank: 10, name: 'Bayu Pratama', initials: 'BP', avatarBg: 'from-indigo-500 to-purple-600', gmails: 8, earnings: 36000 },
+        ],
+    };
 
     // Stor Akun (Gmail) Workflow States
     const [selectedRoom, setSelectedRoom] = useState<'zero1122' | 'hehe1122'>('zero1122');
@@ -317,7 +377,7 @@ export default function Welcome() {
             <Head title={`${activeItemLabel} — Triple9`} />
 
             {/* Main Application Shell */}
-            <div className="flex h-screen w-full bg-slate-50 dark:bg-[#0B1120] font-sans antialiased text-slate-900 dark:text-slate-100 overflow-hidden">
+            <div className="flex h-screen w-full bg-slate-50 dark:bg-[#000000] font-sans antialiased text-slate-900 dark:text-slate-100 overflow-hidden">
                 {/* Mobile Backdrop */}
                 {isMobileMenuOpen && (
                     <div
@@ -328,7 +388,7 @@ export default function Welcome() {
 
                 {/* SIDEBAR */}
                 <aside
-                    className={`fixed inset-y-0 left-0 z-50 flex flex-col justify-between shrink-0 bg-white dark:bg-[#111827] border-r border-slate-200 dark:border-[#273449] select-none h-full transition-all duration-200 ease-in-out lg:static ${isMobileMenuOpen
+                    className={`fixed inset-y-0 left-0 z-50 flex flex-col justify-between shrink-0 bg-white dark:bg-[#09090b] border-r border-slate-200 dark:border-[#27272a] select-none h-full transition-all duration-200 ease-in-out lg:static ${isMobileMenuOpen
                         ? 'translate-x-0 w-64'
                         : '-translate-x-full lg:translate-x-0 ' + (isSidebarOpen ? 'w-64' : 'w-18')
                         }`}
@@ -336,7 +396,7 @@ export default function Welcome() {
                     {/* Top Brand & Workspace Header */}
                     <div className="flex flex-col flex-1 min-h-0">
                         <div
-                            className={`flex items-center h-14 border-b border-slate-200 dark:border-[#273449] px-4 shrink-0 ${isSidebarOpen ? 'justify-between' : 'justify-center'
+                            className={`flex items-center h-14 border-b border-slate-200 dark:border-[#27272a] px-4 shrink-0 ${isSidebarOpen ? 'justify-between' : 'justify-center'
                                 }`}
                         >
                             {isSidebarOpen ? (
@@ -355,7 +415,7 @@ export default function Welcome() {
                                     {/* Collapse Button (Desktop Only) */}
                                     <button
                                         onClick={() => setIsSidebarOpen(false)}
-                                        className="hidden lg:flex h-7 w-7 items-center justify-center rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                                        className="hidden lg:flex h-7 w-7 items-center justify-center rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition"
                                         title="Ciutkan Sidebar"
                                         aria-label="Ciutkan Sidebar"
                                     >
@@ -365,7 +425,7 @@ export default function Welcome() {
                             ) : (
                                 <button
                                     onClick={() => setIsSidebarOpen(true)}
-                                    className="hidden lg:flex h-7 w-7 items-center justify-center rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                                    className="hidden lg:flex h-7 w-7 items-center justify-center rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition"
                                     title="Buka Sidebar"
                                     aria-label="Buka Sidebar"
                                 >
@@ -376,7 +436,7 @@ export default function Welcome() {
                             {/* Mobile Close Button */}
                             <button
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className="flex lg:hidden h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                                className="flex lg:hidden h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition"
                                 aria-label="Tutup menu"
                             >
                                 <X className="h-4 w-4" />
@@ -384,7 +444,7 @@ export default function Welcome() {
                         </div>
 
                         {/* Navigation Groups */}
-                        <div className="flex-1 overflow-y-auto px-3 py-3 space-y-4">
+                        <div className="flex-1 overflow-y-auto no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden px-3 py-3 space-y-4">
                             {navGroups.map((group) => (
                                 <div key={group.title} className="space-y-1">
                                     {isSidebarOpen ? (
@@ -392,7 +452,7 @@ export default function Welcome() {
                                             {group.title}
                                         </h4>
                                     ) : (
-                                        <div className="my-1 border-t border-slate-100 dark:border-slate-800/80" />
+                                        <div className="my-1 border-t border-slate-100 dark:border-zinc-800/80" />
                                     )}
 
                                     <div className="space-y-0.5">
@@ -409,7 +469,7 @@ export default function Welcome() {
                                                         : 'justify-center h-9 w-9 mx-auto'
                                                         } ${isActive
                                                             ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 font-semibold'
-                                                            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/60'
+                                                            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800/60'
                                                         }`}
                                                 >
                                                     <Icon
@@ -433,12 +493,12 @@ export default function Welcome() {
                     </div>
 
                     {/* Bottom Sidebar: User & System Status */}
-                    <div className="border-t border-slate-200 dark:border-[#273449] p-3 shrink-0">
+                    <div className="border-t border-slate-200 dark:border-[#27272a] p-3 shrink-0">
                         {user ? (
                             isSidebarOpen ? (
-                                <div className="flex items-center justify-between gap-2.5 p-1.5 rounded-lg bg-slate-50 dark:bg-[#1F2937]/50 border border-slate-200/80 dark:border-slate-800">
+                                <div className="flex items-center justify-between gap-2.5 p-1.5 rounded-lg bg-slate-50 dark:bg-[#121215]/50 border border-slate-200/80 dark:border-zinc-800">
                                     <div className="flex items-center gap-2 min-w-0">
-                                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold">
+                                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-200 dark:bg-zinc-800 text-slate-700 dark:text-slate-200 text-xs font-semibold">
                                             {user.name.charAt(0).toUpperCase()}
                                         </div>
                                         <div className="min-w-0">
@@ -478,7 +538,7 @@ export default function Welcome() {
                                 <div className="flex flex-col gap-1.5">
                                     <Link
                                         href={login()}
-                                        className="flex items-center justify-center gap-1.5 w-full rounded-lg bg-white dark:bg-[#1F2937] border border-slate-200 dark:border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition"
+                                        className="flex items-center justify-center gap-1.5 w-full rounded-lg bg-white dark:bg-[#121215] border border-slate-200 dark:border-zinc-800 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-zinc-800 transition"
                                     >
                                         <LogIn className="h-3.5 w-3.5" />
                                         <span>Masuk</span>
@@ -494,7 +554,7 @@ export default function Welcome() {
                                 <div className="flex flex-col items-center">
                                     <Link
                                         href={login()}
-                                        className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                                        className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-800 transition"
                                         title="Masuk"
                                     >
                                         <LogIn className="h-4 w-4" />
@@ -506,14 +566,14 @@ export default function Welcome() {
                 </aside>
 
                 {/* MAIN CONTENT AREA */}
-                <main className="flex-1 min-w-0 flex flex-col h-full overflow-y-auto">
+                <main className="flex-1 min-w-0 flex flex-col h-full overflow-y-auto no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                     {/* TOP HEADER */}
-                    <header className="sticky top-0 z-30 shrink-0 flex items-center justify-between h-14 bg-white/80 dark:bg-[#111827]/80 backdrop-blur-md px-4 sm:px-6 lg:px-8 border-b border-slate-200 dark:border-[#273449]">
+                    <header className="sticky top-0 z-30 shrink-0 flex items-center justify-between h-14 bg-white/80 dark:bg-[#09090b]/80 backdrop-blur-md px-4 sm:px-6 lg:px-8 border-b border-slate-200 dark:border-[#27272a]">
                         <div className="flex items-center gap-3 min-w-0">
                             {/* Mobile Hamburger Button */}
                             <button
                                 onClick={() => setIsMobileMenuOpen(true)}
-                                className="flex lg:hidden h-8 w-8 items-center justify-center rounded-md text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                                className="flex lg:hidden h-8 w-8 items-center justify-center rounded-md text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-zinc-800 transition"
                                 aria-label="Buka navigasi"
                             >
                                 <Menu className="h-4 w-4" />
@@ -536,7 +596,7 @@ export default function Welcome() {
                             {/* Theme Switcher Toggle */}
                             <button
                                 onClick={toggleTheme}
-                                className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition border border-slate-200 dark:border-slate-800"
+                                className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-zinc-800 transition border border-slate-200 dark:border-zinc-800"
                                 title={`Ganti tema (${resolvedAppearance === 'dark' ? 'Mode Terang' : 'Mode Gelap'})`}
                                 aria-label="Ganti tema aplikasi"
                             >
@@ -549,12 +609,12 @@ export default function Welcome() {
 
                             {/* Notification Control */}
                             <button
-                                className="relative flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition border border-slate-200 dark:border-slate-800"
+                                className="relative flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-zinc-800 transition border border-slate-200 dark:border-zinc-800"
                                 title="Notifikasi"
                                 aria-label="Notifikasi sistem"
                             >
                                 <Bell className="h-4 w-4" />
-                                <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-red-500 ring-2 ring-white dark:ring-[#111827]" />
+                                <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-red-500 ring-2 ring-white dark:ring-[#09090b]" />
                             </button>
 
                             {/* User Profile Pill & Dropdown */}
@@ -562,7 +622,7 @@ export default function Welcome() {
                                 <div className="relative">
                                     <button
                                         onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                                        className="flex items-center gap-2 rounded-lg py-1 px-2 text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition border border-slate-200 dark:border-slate-800"
+                                        className="flex items-center gap-2 rounded-lg py-1 px-2 text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition border border-slate-200 dark:border-zinc-800"
                                     >
                                         <div className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 text-[10px] font-bold">
                                             {user.name.charAt(0).toUpperCase()}
@@ -580,8 +640,8 @@ export default function Welcome() {
 
                                     {/* Dropdown Menu */}
                                     {isUserMenuOpen && (
-                                        <div className="absolute right-0 top-10 z-50 w-52 rounded-xl bg-white dark:bg-[#1F2937] p-1.5 shadow-lg border border-slate-200 dark:border-slate-700 animate-in fade-in zoom-in-95">
-                                            <div className="px-2.5 py-2 border-b border-slate-100 dark:border-slate-700/60 mb-1">
+                                        <div className="absolute right-0 top-10 z-50 w-52 rounded-xl bg-white dark:bg-[#121215] p-1.5 shadow-lg border border-slate-200 dark:border-zinc-800 animate-in fade-in zoom-in-95">
+                                            <div className="px-2.5 py-2 border-b border-slate-100 dark:border-zinc-800/60 mb-1">
                                                 <p className="text-xs font-semibold text-slate-900 dark:text-slate-100 truncate">
                                                     {user.name}
                                                 </p>
@@ -593,7 +653,7 @@ export default function Welcome() {
                                             {user.role === 'admin' && (
                                                 <Link
                                                     href={dashboard()}
-                                                    className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition"
+                                                    className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition"
                                                 >
                                                     <Shield className="h-3.5 w-3.5 text-slate-500" />
                                                     <span>Admin Console</span>
@@ -602,7 +662,7 @@ export default function Welcome() {
 
                                             <Link
                                                 href="/settings/profile"
-                                                className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition"
+                                                className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition"
                                             >
                                                 <UserIcon className="h-3.5 w-3.5 text-slate-500" />
                                                 <span>Pengaturan Profil</span>
@@ -624,7 +684,7 @@ export default function Welcome() {
                                 <div className="flex items-center gap-1.5">
                                     <Link
                                         href={login()}
-                                        className="rounded-lg px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                                        className="rounded-lg px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition"
                                     >
                                         Masuk
                                     </Link>
@@ -648,7 +708,7 @@ export default function Welcome() {
                                 <div
                                     onMouseEnter={() => setIsSlidePaused(true)}
                                     onMouseLeave={() => setIsSlidePaused(false)}
-                                    className="rounded-xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#273449] p-4 sm:p-5 shadow-xs flex flex-col justify-between relative overflow-hidden group"
+                                    className="rounded-xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] p-4 sm:p-5 shadow-xs flex flex-col justify-between relative overflow-hidden group"
                                 >
                                     {/* Top row: Badge, Counter, Prev/Next controls */}
                                     <div className="flex items-center justify-between gap-2 mb-2">
@@ -670,7 +730,7 @@ export default function Welcome() {
                                             <button
                                                 type="button"
                                                 onClick={() => setActiveSlideIndex((prev) => (prev - 1 + announcements.length) % announcements.length)}
-                                                className="h-6 w-6 rounded-md flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+                                                className="h-6 w-6 rounded-md flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition cursor-pointer"
                                                 title="Sebelumnya"
                                                 aria-label="Pengumuman sebelumnya"
                                             >
@@ -679,7 +739,7 @@ export default function Welcome() {
                                             <button
                                                 type="button"
                                                 onClick={() => setActiveSlideIndex((prev) => (prev + 1) % announcements.length)}
-                                                className="h-6 w-6 rounded-md flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+                                                className="h-6 w-6 rounded-md flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition cursor-pointer"
                                                 title="Selanjutnya"
                                                 aria-label="Pengumuman selanjutnya"
                                             >
@@ -717,7 +777,7 @@ export default function Welcome() {
                                                 onClick={() => setActiveSlideIndex(idx)}
                                                 className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${idx === activeSlideIndex
                                                     ? 'w-5 bg-blue-600 dark:bg-blue-400'
-                                                    : 'w-1.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300'
+                                                    : 'w-1.5 bg-slate-200 dark:bg-zinc-800 hover:bg-slate-300'
                                                     }`}
                                                 aria-label={`Ke slide ${idx + 1}`}
                                             />
@@ -726,7 +786,7 @@ export default function Welcome() {
                                 </div>
 
                                 {/* SECTION 1: BALANCE CARD (Full Width Di Bawah Pengumuman) */}
-                                <div className="rounded-xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#273449] p-6 shadow-xs">
+                                <div className="rounded-xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] p-6 shadow-xs">
                                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                                         <div className="space-y-1.5">
                                             <div>
@@ -742,7 +802,7 @@ export default function Welcome() {
                                                 <button
                                                     type="button"
                                                     onClick={() => setIsSaldoVisible(!isSaldoVisible)}
-                                                    className="flex h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+                                                    className="flex h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition cursor-pointer"
                                                     title={isSaldoVisible ? 'Sembunyikan saldo' : 'Tampilkan saldo'}
                                                     aria-label={isSaldoVisible ? 'Sembunyikan saldo' : 'Tampilkan saldo'}
                                                 >
@@ -784,7 +844,7 @@ export default function Welcome() {
                                                         document.getElementById('riwayat-transaksi-table')?.scrollIntoView({ behavior: 'smooth' });
                                                     }, 100);
                                                 }}
-                                                className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-white dark:bg-[#1F2937] hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 px-4 py-2 text-xs font-medium transition cursor-pointer"
+                                                className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-white dark:bg-[#121215] hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-zinc-800 px-4 py-2 text-xs font-medium transition cursor-pointer"
                                             >
                                                 <History className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
                                                 <span>Riwayat Penarikan</span>
@@ -808,7 +868,7 @@ export default function Welcome() {
                                                 setActiveNav('riwayat');
                                                 setRiwayatFilter('diterima');
                                             }}
-                                            className="group flex flex-col justify-between rounded-xl bg-white dark:bg-[#111827] p-4.5 border border-slate-200 dark:border-[#273449] shadow-xs hover:border-slate-300 dark:hover:border-slate-700 transition cursor-pointer"
+                                            className="group flex flex-col justify-between rounded-xl bg-white dark:bg-[#09090b] p-4.5 border border-slate-200 dark:border-[#27272a] shadow-xs hover:border-slate-300 dark:hover:border-slate-700 transition cursor-pointer"
                                         >
                                             <div className="flex items-center justify-between mb-2">
                                                 <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
@@ -832,7 +892,7 @@ export default function Welcome() {
                                                 setActiveNav('riwayat');
                                                 setRiwayatFilter('pending');
                                             }}
-                                            className="group flex flex-col justify-between rounded-xl bg-white dark:bg-[#111827] p-4.5 border border-slate-200 dark:border-[#273449] shadow-xs hover:border-slate-300 dark:hover:border-slate-700 transition cursor-pointer"
+                                            className="group flex flex-col justify-between rounded-xl bg-white dark:bg-[#09090b] p-4.5 border border-slate-200 dark:border-[#27272a] shadow-xs hover:border-slate-300 dark:hover:border-slate-700 transition cursor-pointer"
                                         >
                                             <div className="flex items-center justify-between mb-2">
                                                 <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
@@ -856,7 +916,7 @@ export default function Welcome() {
                                                 setActiveNav('riwayat');
                                                 setRiwayatFilter('ditolak');
                                             }}
-                                            className="group flex flex-col justify-between rounded-xl bg-white dark:bg-[#111827] p-4.5 border border-slate-200 dark:border-[#273449] shadow-xs hover:border-slate-300 dark:hover:border-slate-700 transition cursor-pointer"
+                                            className="group flex flex-col justify-between rounded-xl bg-white dark:bg-[#09090b] p-4.5 border border-slate-200 dark:border-[#27272a] shadow-xs hover:border-slate-300 dark:hover:border-slate-700 transition cursor-pointer"
                                         >
                                             <div className="flex items-center justify-between mb-2">
                                                 <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
@@ -880,7 +940,7 @@ export default function Welcome() {
                                                 setActiveNav('riwayat');
                                                 setRiwayatFilter('dicek');
                                             }}
-                                            className="group flex flex-col justify-between rounded-xl bg-white dark:bg-[#111827] p-4.5 border border-slate-200 dark:border-[#273449] shadow-xs hover:border-slate-300 dark:hover:border-slate-700 transition cursor-pointer"
+                                            className="group flex flex-col justify-between rounded-xl bg-white dark:bg-[#09090b] p-4.5 border border-slate-200 dark:border-[#27272a] shadow-xs hover:border-slate-300 dark:hover:border-slate-700 transition cursor-pointer"
                                         >
                                             <div className="flex items-center justify-between mb-2">
                                                 <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
@@ -901,8 +961,8 @@ export default function Welcome() {
                                 </div>
 
                                 {/* SECTION 3: REFACTORED RECENT ACTIVITY (Deliberate Table Structure, Clean Empty State) */}
-                                <div className="rounded-xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#273449] shadow-xs overflow-hidden">
-                                    <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-[#273449]">
+                                <div className="rounded-xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] shadow-xs overflow-hidden">
+                                    <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-[#27272a]">
                                         <div>
                                             <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                                                 Aktivitas Stor Terakhir
@@ -923,7 +983,7 @@ export default function Welcome() {
 
                                     {/* Deliberate Clean Empty State */}
                                     <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-                                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 dark:bg-[#1F2937] text-slate-400 dark:text-slate-500 mb-3">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 dark:bg-[#121215] text-slate-400 dark:text-slate-500 mb-3">
                                             <History className="h-5 w-5" />
                                         </div>
                                         <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-1">
@@ -948,7 +1008,7 @@ export default function Welcome() {
                         {activeNav === 'stor' && (
                             <div className="w-full space-y-4">
                                 {/* Banner Rules: Cek Rules dulu sebelum stor */}
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-slate-200 dark:border-[#273449] bg-white dark:bg-[#111827] px-4 py-3 shadow-2xs">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-slate-200 dark:border-[#27272a] bg-white dark:bg-[#09090b] px-4 py-3 shadow-2xs">
                                     <div className="flex items-center gap-3">
                                         <FileText className="h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400" />
                                         <div>
@@ -970,7 +1030,7 @@ export default function Welcome() {
                                 </div>
 
                                 {/* Main Card: Formulir Setor Gmail */}
-                                <div className="rounded-2xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#273449] p-5 sm:p-7 lg:p-8 shadow-xs space-y-5">
+                                <div className="rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] p-5 sm:p-7 lg:p-8 shadow-xs space-y-5">
                                     {/* Header Section */}
                                     <div>
                                         <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100">
@@ -982,7 +1042,7 @@ export default function Welcome() {
                                     </div>
 
                                     {/* Alert 1: Password Wajib */}
-                                    <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-[#1F2937]/50 p-4 text-xs space-y-1.5">
+                                    <div className="rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50/80 dark:bg-[#121215]/50 p-4 text-xs space-y-1.5">
                                         <div className="flex items-center gap-2 font-semibold text-slate-900 dark:text-slate-100">
                                             <KeyRound className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
                                             <span>Password wajib untuk Gmail yang disetor:</span>
@@ -1001,7 +1061,7 @@ export default function Welcome() {
                                     </div>
 
                                     {/* Section 2: Generate Gmail Guide & Action */}
-                                    <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-[#1F2937]/50 p-4 sm:p-5 space-y-3">
+                                    <div className="rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50/80 dark:bg-[#121215]/50 p-4 sm:p-5 space-y-3">
                                         <div className="flex items-center gap-2 text-slate-900 dark:text-slate-100 font-bold text-sm">
                                             <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                                             <span>Generate Gmail</span>
@@ -1041,9 +1101,9 @@ export default function Welcome() {
                                         {/* Room 1 */}
                                         <div
                                             onClick={() => setSelectedRoom('zero1122')}
-                                            className={`rounded-xl border p-4 cursor-pointer transition flex items-start gap-3.5 bg-white dark:bg-[#111827] ${selectedRoom === 'zero1122'
+                                            className={`rounded-xl border p-4 cursor-pointer transition flex items-start gap-3.5 bg-white dark:bg-[#09090b] ${selectedRoom === 'zero1122'
                                                 ? 'border-blue-600 dark:border-blue-500 ring-1 ring-blue-600 dark:ring-blue-500 shadow-xs'
-                                                : 'border-slate-200 dark:border-[#273449] hover:border-slate-300 dark:hover:border-slate-700'
+                                                : 'border-slate-200 dark:border-[#27272a] hover:border-slate-300 dark:hover:border-slate-700'
                                                 }`}
                                         >
                                             <Send className="h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400 mt-0.5" />
@@ -1068,9 +1128,9 @@ export default function Welcome() {
                                         {/* Room 2 */}
                                         <div
                                             onClick={() => setSelectedRoom('hehe1122')}
-                                            className={`rounded-xl border p-4 cursor-pointer transition flex items-start gap-3.5 bg-white dark:bg-[#111827] ${selectedRoom === 'hehe1122'
+                                            className={`rounded-xl border p-4 cursor-pointer transition flex items-start gap-3.5 bg-white dark:bg-[#09090b] ${selectedRoom === 'hehe1122'
                                                 ? 'border-blue-600 dark:border-blue-500 ring-1 ring-blue-600 dark:ring-blue-500 shadow-xs'
-                                                : 'border-slate-200 dark:border-[#273449] hover:border-slate-300 dark:hover:border-slate-700'
+                                                : 'border-slate-200 dark:border-[#27272a] hover:border-slate-300 dark:hover:border-slate-700'
                                                 }`}
                                         >
                                             <CheckCircle2 className="h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400 mt-0.5" />
@@ -1100,7 +1160,7 @@ export default function Welcome() {
                                             value={storInput}
                                             onChange={(e) => setStorInput(e.target.value)}
                                             placeholder={`zerogtg1@gmail.com\nzerogtg2@gmail.com`}
-                                            className="w-full min-h-[240px] rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1F2937] p-4 font-mono text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition leading-relaxed shadow-2xs"
+                                            className="w-full min-h-[240px] rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] p-4 font-mono text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition leading-relaxed shadow-2xs"
                                         />
                                     </div>
 
@@ -1166,8 +1226,8 @@ export default function Welcome() {
                                 {/* Modal Popup: Generate Gmail */}
                                 {isGenerateModalOpen && (
                                     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs">
-                                        <div className="relative w-full max-w-lg rounded-2xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#273449] p-6 shadow-xl space-y-4">
-                                            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                                        <div className="relative w-full max-w-lg rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] p-6 shadow-xl space-y-4">
+                                            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-zinc-800">
                                                 <div className="flex items-center gap-2.5">
                                                     <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400 shrink-0" />
                                                     <div>
@@ -1182,7 +1242,7 @@ export default function Welcome() {
                                                 <button
                                                     type="button"
                                                     onClick={() => setIsGenerateModalOpen(false)}
-                                                    className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                                                    className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition"
                                                 >
                                                     <X className="h-4 w-4" />
                                                 </button>
@@ -1204,7 +1264,7 @@ export default function Welcome() {
                                                             }}
                                                             className={`px-2.5 py-1 rounded-md text-xs font-semibold transition ${generateCount === num
                                                                 ? 'bg-blue-600 text-white'
-                                                                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                                                                : 'bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-zinc-800'
                                                                 }`}
                                                         >
                                                             {num}
@@ -1214,19 +1274,19 @@ export default function Welcome() {
                                             </div>
 
                                             {/* List of generated Gmails */}
-                                            <div className="max-h-60 overflow-y-auto space-y-1.5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-[#1F2937]/40 p-3 font-mono text-xs">
+                                            <div className="max-h-60 overflow-y-auto no-scrollbar space-y-1.5 rounded-xl border border-slate-100 dark:border-zinc-800 bg-slate-50/60 dark:bg-[#121215]/40 p-3 text-xs">
                                                 {generatedGmails.map((email, idx) => (
                                                     <div
                                                         key={idx}
-                                                        className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-700/60"
+                                                        className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-[#09090b] border border-slate-200/80 dark:border-zinc-800/60"
                                                     >
-                                                        <span className="text-slate-800 dark:text-slate-200 select-all">
+                                                        <span className="text-slate-800 dark:text-slate-200 select-all font-medium">
                                                             {email}
                                                         </span>
                                                         <button
                                                             type="button"
                                                             onClick={() => copyToClipboard(email, idx)}
-                                                            className="flex items-center gap-1 px-2 py-1 rounded text-[11px] font-sans font-medium text-slate-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition"
+                                                            className="flex items-center gap-1 px-2 py-1 rounded text-[11px] font-medium text-slate-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition"
                                                         >
                                                             {copiedIndex === idx ? (
                                                                 <>
@@ -1236,7 +1296,6 @@ export default function Welcome() {
                                                             ) : (
                                                                 <>
                                                                     <Copy className="h-3 w-3" />
-                                                                    <span>Salin</span>
                                                                 </>
                                                             )}
                                                         </button>
@@ -1249,7 +1308,7 @@ export default function Welcome() {
                                                 <button
                                                     type="button"
                                                     onClick={() => copyToClipboard(generatedGmails.join('\n'))}
-                                                    className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-medium border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition"
+                                                    className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-medium border border-slate-200 dark:border-zinc-800 hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-300 transition"
                                                 >
                                                     {copiedAll ? (
                                                         <>
@@ -1259,7 +1318,6 @@ export default function Welcome() {
                                                     ) : (
                                                         <>
                                                             <Copy className="h-3.5 w-3.5" />
-                                                            <span>Salin Semua ({generatedGmails.length})</span>
                                                         </>
                                                     )}
                                                 </button>
@@ -1284,7 +1342,7 @@ export default function Welcome() {
                         {activeNav === 'saldo' && (
                             <div className="w-full space-y-5">
                                 {/* Card 1: Saldo Tersedia (Sama persis seperti Dashboard) */}
-                                <div id="card-saldo-penarikan" className="rounded-xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#273449] p-6 shadow-xs">
+                                <div id="card-saldo-penarikan" className="rounded-xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] p-6 shadow-xs">
                                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                                         <div className="space-y-1.5">
                                             <div>
@@ -1300,7 +1358,7 @@ export default function Welcome() {
                                                 <button
                                                     type="button"
                                                     onClick={() => setIsSaldoVisible(!isSaldoVisible)}
-                                                    className="flex h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+                                                    className="flex h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition cursor-pointer"
                                                     title={isSaldoVisible ? 'Sembunyikan saldo' : 'Tampilkan saldo'}
                                                     aria-label={isSaldoVisible ? 'Sembunyikan saldo' : 'Tampilkan saldo'}
                                                 >
@@ -1333,9 +1391,9 @@ export default function Welcome() {
 
 
                                 {/* Card 3: Nomor E-Wallet Tersimpan */}
-                                <div className="rounded-2xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#273449] p-5 sm:p-6 shadow-xs space-y-4">
-                                    <div className="flex items-center gap-2.5 pb-3 border-b border-slate-100 dark:border-slate-800">
-                                        <span className="flex h-6.5 w-11 items-center justify-center rounded-lg bg-white p-1 shrink-0 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                                <div className="rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] p-5 sm:p-6 shadow-xs space-y-4">
+                                    <div className="flex items-center gap-2.5 pb-3 border-b border-slate-100 dark:border-zinc-800">
+                                        <span className="flex h-6.5 w-11 items-center justify-center rounded-lg bg-white p-1 shrink-0 border border-slate-200 dark:border-zinc-800 shadow-2xs">
                                             <img
                                                 src={`/images/${selectedEwallet.toLowerCase()}.png`}
                                                 alt={selectedEwallet}
@@ -1364,7 +1422,7 @@ export default function Welcome() {
                                                 }}
                                                 className={`inline-flex items-center justify-center p-2 rounded-xl transition cursor-pointer border ${selectedEwallet === wallet.id
                                                     ? 'bg-blue-600 border-blue-600 shadow-xs'
-                                                    : 'bg-white dark:bg-[#1F2937] border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
+                                                    : 'bg-white dark:bg-[#121215] border-slate-200 dark:border-zinc-800 hover:bg-slate-50 dark:hover:bg-zinc-800'
                                                     }`}
                                             >
                                                 <span className="flex h-7 w-14 items-center justify-center rounded-lg bg-white p-1 shrink-0 shadow-2xs">
@@ -1389,7 +1447,7 @@ export default function Welcome() {
                                             onChange={(e) => setEwalletInput(e.target.value.replace(/\D/g, ''))}
                                             placeholder="081234567890"
                                             maxLength={15}
-                                            className="flex-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1F2937] px-4 py-2.5 font-mono text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition shadow-2xs"
+                                            className="flex-1 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] px-4 py-2.5 font-mono text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition shadow-2xs"
                                         />
                                         <button
                                             type="button"
@@ -1419,13 +1477,13 @@ export default function Welcome() {
                                 </div>
 
                                 {/* Card 4: Tabel Riwayat Penarikan */}
-                                <div id="riwayat-transaksi-table" className="rounded-2xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#273449] p-5 sm:p-6 shadow-xs space-y-3">
+                                <div id="riwayat-transaksi-table" className="rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] p-5 sm:p-6 shadow-xs space-y-3">
                                     <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100">
                                         Riwayat Penarikan
                                     </h3>
-                                    <div className="overflow-x-auto rounded-xl border border-slate-100 dark:border-slate-800">
+                                    <div className="overflow-x-auto rounded-xl border border-slate-100 dark:border-zinc-800">
                                         <table className="w-full text-left text-xs">
-                                            <thead className="bg-slate-50 dark:bg-[#1F2937]/50 border-b border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                            <thead className="bg-slate-50 dark:bg-[#121215]/50 border-b border-slate-100 dark:border-zinc-800 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                                 <tr>
                                                     <th className="px-4 py-3">Tanggal</th>
                                                     <th className="px-4 py-3">Keterangan</th>
@@ -1447,7 +1505,7 @@ export default function Welcome() {
                                                     transactionHistory.map((item, idx) => (
                                                         <tr
                                                             key={idx}
-                                                            className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition"
+                                                            className="hover:bg-slate-50 dark:hover:bg-zinc-800/40 transition"
                                                         >
                                                             <td className="px-4 py-3 font-sans text-slate-600 dark:text-slate-300">
                                                                 {item.date}
@@ -1477,8 +1535,8 @@ export default function Welcome() {
                                             if (e.target === e.currentTarget) setIsWithdrawModalOpen(false);
                                         }}
                                     >
-                                        <div className="relative w-full max-w-md rounded-2xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#273449] p-6 shadow-xl space-y-4 animate-in zoom-in-95 duration-150">
-                                            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                                        <div className="relative w-full max-w-md rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] p-6 shadow-xl space-y-4 animate-in zoom-in-95 duration-150">
+                                            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-zinc-800">
                                                 <div className="flex items-center gap-2.5">
                                                     <Wallet className="h-5 w-5 text-blue-600 dark:text-blue-400 shrink-0" />
                                                     <div>
@@ -1493,14 +1551,14 @@ export default function Welcome() {
                                                 <button
                                                     type="button"
                                                     onClick={() => setIsWithdrawModalOpen(false)}
-                                                    className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                                                    className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition"
                                                 >
                                                     <X className="h-4 w-4" />
                                                 </button>
                                             </div>
 
                                             <div className="space-y-3.5 text-xs">
-                                                <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#1F2937]/50 border border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                                                <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#121215]/50 border border-slate-100 dark:border-zinc-800 flex justify-between items-center">
                                                     <span className="text-slate-500 dark:text-slate-400">Saldo Tersedia:</span>
                                                     <span className="font-bold text-slate-900 dark:text-slate-100 text-sm font-tabular-nums">
                                                         Rp{currentBalance.toLocaleString('id-ID')}
@@ -1511,7 +1569,7 @@ export default function Welcome() {
                                                     <label className="flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
                                                         <span>Tujuan Penarikan</span>
                                                         <span className="inline-flex items-center gap-1.5 font-semibold text-slate-900 dark:text-slate-100">
-                                                            <span className="flex h-4.5 w-7 items-center justify-center rounded bg-white p-0.5 shrink-0 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                                                            <span className="flex h-4.5 w-7 items-center justify-center rounded bg-white p-0.5 shrink-0 border border-slate-200 dark:border-zinc-800 shadow-2xs">
                                                                 <img
                                                                     src={`/images/${selectedEwallet.toLowerCase()}.png`}
                                                                     alt={selectedEwallet}
@@ -1526,7 +1584,7 @@ export default function Welcome() {
                                                         value={savedEwalletNumbers[selectedEwallet] || ewalletInput}
                                                         onChange={(e) => setEwalletInput(e.target.value.replace(/\D/g, ''))}
                                                         placeholder="Masukkan nomor e-wallet tujuan"
-                                                        className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1F2937] p-2.5 font-mono text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition"
+                                                        className="w-full rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] p-2.5 font-mono text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition"
                                                     />
                                                 </div>
 
@@ -1539,7 +1597,7 @@ export default function Welcome() {
                                                         placeholder="Minimal 10000"
                                                         value={withdrawAmount}
                                                         onChange={(e) => setWithdrawAmount(e.target.value)}
-                                                        className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1F2937] p-2.5 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition"
+                                                        className="w-full rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] p-2.5 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition"
                                                     />
                                                     <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">
                                                         Minimal penarikan adalah Rp10.000.
@@ -1547,11 +1605,11 @@ export default function Welcome() {
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                                            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100 dark:border-zinc-800">
                                                 <button
                                                     type="button"
                                                     onClick={() => setIsWithdrawModalOpen(false)}
-                                                    className="px-4 py-2 rounded-xl text-xs font-medium border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition"
+                                                    className="px-4 py-2 rounded-xl text-xs font-medium border border-slate-200 dark:border-zinc-800 hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-300 transition"
                                                 >
                                                     Batal
                                                 </button>
@@ -1609,8 +1667,8 @@ export default function Welcome() {
                         {/* 4. CHECKER VIEW */}
                         {activeNav === 'checker' && (
                             <div className="w-full space-y-4">
-                                <div className="rounded-2xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#273449] p-5 sm:p-7 lg:p-8 shadow-xs space-y-5">
-                                    <div className="pb-3 border-b border-slate-100 dark:border-slate-800">
+                                <div className="rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] p-5 sm:p-7 lg:p-8 shadow-xs space-y-5">
+                                    <div className="pb-3 border-b border-slate-100 dark:border-zinc-800">
                                         <div className="flex items-center gap-2">
                                             <SearchCheck className="h-5 w-5 text-blue-600 dark:text-blue-400 shrink-0" />
                                             <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100">
@@ -1635,7 +1693,7 @@ export default function Welcome() {
                                                 if (checkerResults) setCheckerResults(null);
                                             }}
                                             placeholder="Masukkan daftar email di sini..."
-                                            className="w-full min-h-[260px] rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1F2937] p-4 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition leading-relaxed shadow-2xs"
+                                            className="w-full min-h-[260px] rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] p-4 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition leading-relaxed shadow-2xs"
                                         />
 
                                         <p className="text-[11px] text-slate-500 dark:text-slate-400">
@@ -1685,13 +1743,13 @@ export default function Welcome() {
                                             <button
                                                 type="button"
                                                 onClick={() => setIsSalinDropdownOpen(!isSalinDropdownOpen)}
-                                                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1F2937] hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 px-3.5 py-2 text-xs font-medium transition cursor-pointer shadow-2xs"
+                                                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-300 px-3.5 py-2 text-xs font-medium transition cursor-pointer shadow-2xs"
                                             >
                                                 <Copy className="h-3.5 w-3.5" />
                                                 <ChevronDown className="h-3 w-3 text-slate-400" />
                                             </button>
                                             {isSalinDropdownOpen && (
-                                                <div className="absolute left-0 mt-1.5 w-40 rounded-xl bg-white dark:bg-[#1F2937] border border-slate-200 dark:border-slate-700 p-1 shadow-lg z-20 text-xs">
+                                                <div className="absolute left-0 mt-1.5 w-40 rounded-xl bg-white dark:bg-[#121215] border border-slate-200 dark:border-zinc-800 p-1 shadow-lg z-20 text-xs">
                                                     <button
                                                         type="button"
                                                         onClick={() => {
@@ -1703,7 +1761,7 @@ export default function Welcome() {
                                                             }
                                                             setIsSalinDropdownOpen(false);
                                                         }}
-                                                        className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium cursor-pointer"
+                                                        className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-200 font-medium cursor-pointer"
                                                     >
                                                         Salin Semua
                                                     </button>
@@ -1722,7 +1780,7 @@ export default function Welcome() {
                                                             }
                                                             setIsSalinDropdownOpen(false);
                                                         }}
-                                                        className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium cursor-pointer"
+                                                        className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-200 font-medium cursor-pointer"
                                                     >
                                                         Salin Valid Saja
                                                     </button>
@@ -1737,7 +1795,7 @@ export default function Welcome() {
                                                 setCheckerInput('');
                                                 setCheckerResults(null);
                                             }}
-                                            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1F2937] hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 dark:hover:bg-rose-950/30 text-slate-700 dark:text-slate-300 px-3.5 py-2 text-xs font-medium transition cursor-pointer shadow-2xs"
+                                            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 dark:hover:bg-rose-950/30 text-slate-700 dark:text-slate-300 px-3.5 py-2 text-xs font-medium transition cursor-pointer shadow-2xs"
                                         >
                                             <Trash2 className="h-3.5 w-3.5" />
                                         </button>
@@ -1745,7 +1803,7 @@ export default function Welcome() {
 
                                     {/* Checker Results Table if checked */}
                                     {checkerResults && (
-                                        <div className="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-3">
+                                        <div className="pt-3 border-t border-slate-100 dark:border-zinc-800 space-y-3">
                                             <div className="flex items-center justify-between">
                                                 <h4 className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
                                                     Hasil Pengecekan ({checkerResults.length} akun)
@@ -1760,13 +1818,13 @@ export default function Welcome() {
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div className="max-h-60 overflow-y-auto space-y-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-[#1F2937]/40 p-2 font-mono text-xs">
+                                            <div className="max-h-60 overflow-y-auto no-scrollbar space-y-1.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50/50 dark:bg-[#121215]/40 p-2 text-xs">
                                                 {checkerResults.map((item, idx) => (
                                                     <div
                                                         key={idx}
-                                                        className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-700"
+                                                        className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-[#09090b] border border-slate-200/80 dark:border-zinc-800"
                                                     >
-                                                        <span className="text-slate-800 dark:text-slate-200 truncate mr-2">
+                                                        <span className="text-slate-800 dark:text-slate-200 truncate mr-2 font-medium">
                                                             {item.email}
                                                         </span>
                                                         <span
@@ -1789,7 +1847,7 @@ export default function Welcome() {
                         {/* 5. RIWAYAT VIEW */}
                         {activeNav === 'riwayat' && (
                             <div className="w-full space-y-4">
-                                <div className="rounded-2xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#273449] p-5 sm:p-7 shadow-xs space-y-4">
+                                <div className="rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] p-5 sm:p-7 shadow-xs space-y-4">
                                     {/* 1. Search Bar */}
                                     <div className="relative">
                                         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
@@ -1798,7 +1856,7 @@ export default function Welcome() {
                                             value={searchGmailQuery}
                                             onChange={(e) => setSearchGmailQuery(e.target.value)}
                                             placeholder="Cari Gmail..."
-                                            className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1F2937] pl-10 pr-4 py-2.5 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition shadow-2xs"
+                                            className="w-full rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] pl-10 pr-4 py-2.5 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition shadow-2xs"
                                         />
                                     </div>
 
@@ -1819,7 +1877,7 @@ export default function Welcome() {
                                                     onClick={() => setRiwayatFilter(tab.id as any)}
                                                     className={`rounded-lg px-3 py-1.5 text-xs font-medium transition cursor-pointer ${riwayatFilter === tab.id
                                                         ? 'bg-blue-600 text-white shadow-xs'
-                                                        : 'bg-white dark:bg-[#1F2937] text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700'
+                                                        : 'bg-white dark:bg-[#121215] text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-zinc-800 border border-slate-200 dark:border-zinc-800'
                                                         }`}
                                                 >
                                                     {tab.label}
@@ -1833,7 +1891,7 @@ export default function Welcome() {
                                                 <button
                                                     type="button"
                                                     onClick={() => setIsJalurDropdownOpen(!isJalurDropdownOpen)}
-                                                    className="inline-flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1F2937] hover:bg-slate-50 dark:hover:bg-slate-800 px-3.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 transition cursor-pointer shadow-2xs"
+                                                    className="inline-flex items-center gap-2 rounded-lg border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] hover:bg-slate-50 dark:hover:bg-zinc-800 px-3.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 transition cursor-pointer shadow-2xs"
                                                 >
                                                     <span>
                                                         {jalurFilter === 'all'
@@ -1846,7 +1904,7 @@ export default function Welcome() {
                                                 </button>
 
                                                 {isJalurDropdownOpen && (
-                                                    <div className="absolute left-0 sm:right-0 sm:left-auto mt-1.5 w-44 rounded-xl bg-white dark:bg-[#1F2937] border border-slate-200 dark:border-slate-700 p-1 shadow-lg z-20 text-xs">
+                                                    <div className="absolute left-0 sm:right-0 sm:left-auto mt-1.5 w-44 rounded-xl bg-white dark:bg-[#121215] border border-slate-200 dark:border-zinc-800 p-1 shadow-lg z-20 text-xs">
                                                         {[
                                                             { id: 'all', label: 'Semua Jalur' },
                                                             { id: 'zero1122', label: 'PW: zero1122' },
@@ -1861,7 +1919,7 @@ export default function Welcome() {
                                                                 }}
                                                                 className={`w-full text-left px-3 py-1.5 rounded-lg font-medium transition cursor-pointer ${jalurFilter === item.id
                                                                     ? 'bg-blue-600 text-white'
-                                                                    : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+                                                                    : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800'
                                                                     }`}
                                                             >
                                                                 {item.label}
@@ -1885,7 +1943,7 @@ export default function Welcome() {
                                                         onClick={() => setDayFilter(d.id as any)}
                                                         className={`rounded-lg px-2.5 py-1.5 text-xs font-medium transition cursor-pointer ${dayFilter === d.id
                                                             ? 'bg-blue-600 text-white shadow-xs'
-                                                            : 'bg-white dark:bg-[#1F2937] text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700'
+                                                            : 'bg-white dark:bg-[#121215] text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-zinc-800 border border-slate-200 dark:border-zinc-800'
                                                             }`}
                                                     >
                                                         {d.label}
@@ -1897,15 +1955,15 @@ export default function Welcome() {
 
                                     {/* Setoran Content Table / Empty State */}
                                     {filteredStorHistory.length === 0 ? (
-                                        <div className="rounded-xl border border-dashed border-slate-200 dark:border-slate-800 py-16 px-4 text-center">
+                                        <div className="rounded-xl border border-dashed border-slate-200 dark:border-zinc-800 py-16 px-4 text-center">
                                             <p className="text-xs sm:text-sm text-slate-400 dark:text-slate-500">
                                                 Belum ada setoran.
                                             </p>
                                         </div>
                                     ) : (
-                                        <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
+                                        <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-zinc-800">
                                             <table className="w-full text-left text-xs">
-                                                <thead className="bg-slate-50 dark:bg-[#1F2937]/50 border-b border-slate-200 dark:border-slate-800 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                                <thead className="bg-slate-50 dark:bg-[#121215]/50 border-b border-slate-200 dark:border-zinc-800 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                                     <tr>
                                                         <th className="px-4 py-3">Gmail</th>
                                                         <th className="px-4 py-3">Jalur</th>
@@ -1916,10 +1974,10 @@ export default function Welcome() {
                                                 </thead>
                                                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-200">
                                                     {filteredStorHistory.map((item) => (
-                                                        <tr key={item.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition">
-                                                            <td className="px-4 py-3 font-mono font-medium">{item.email}</td>
+                                                        <tr key={item.id} className="hover:bg-slate-50/50 dark:hover:bg-zinc-800/40 transition">
+                                                            <td className="px-4 py-3 font-medium">{item.email}</td>
                                                             <td className="px-4 py-3">
-                                                                <span className="font-mono text-[11px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                                                                <span className="font-mono text-[11px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-slate-300">
                                                                     PW: {item.room}
                                                                 </span>
                                                             </td>
@@ -1952,17 +2010,9 @@ export default function Welcome() {
                         {/* 6. RULES VIEW */}
                         {activeNav === 'rules' && (
                             <div className="w-full space-y-4">
-                                {/* Banner Warning */}
-                                <div className="flex items-center gap-3 rounded-xl border border-rose-200 dark:border-rose-900/40 px-4 py-3 text-xs sm:text-sm text-rose-600 dark:text-rose-400">
-                                    <AlertCircle className="h-5 w-5 shrink-0 text-rose-600 dark:text-rose-400" />
-                                    <span>
-                                        Baca aturan berikut sebelum menyetor Gmail. Melanggar rules dapat menyebabkan Gmail ditolak atau akun diblokir.
-                                    </span>
-                                </div>
-
                                 {/* Main Rules Card */}
-                                <div className="rounded-2xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#273449] p-5 sm:p-7 lg:p-8 shadow-xs space-y-6">
-                                    <div className="pb-3 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
+                                <div className="rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] p-5 sm:p-7 lg:p-8 shadow-xs space-y-6">
+                                    <div className="pb-3 border-b border-slate-100 dark:border-zinc-800 flex items-center gap-2">
                                         <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400 shrink-0" />
                                         <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100">
                                             Rules Storan Gmail
@@ -2064,7 +2114,7 @@ export default function Welcome() {
                                     </ol>
 
                                     {/* Catatan Box */}
-                                    <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-[#1F2937]/50 p-4 sm:p-5 space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                                    <div className="rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50/80 dark:bg-[#121215]/50 p-4 sm:p-5 space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
                                         <h4 className="font-bold text-slate-900 dark:text-slate-100">
                                             Catatan:
                                         </h4>
@@ -2094,25 +2144,20 @@ export default function Welcome() {
 
                         {/* 7. LAPORAN / TIKET VIEW */}
                         {activeNav === 'laporan' && (
-                            <div className="w-full space-y-4">
+                            <div className="w-full space-y-4 sm:space-y-5">
                                 {/* Top Header Bar */}
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#273449] p-5 shadow-xs">
+                                <div className="rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] px-5 min-h-[68px] sm:h-18 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 py-3.5 sm:py-0">
                                     <div className="flex items-center gap-3">
                                         <Ticket className="h-6 w-6 text-blue-600 dark:text-blue-400 shrink-0" />
-                                        <div>
-                                            <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100">
-                                                Laporan Saya
-                                            </h2>
-                                            <p className="text-xs text-slate-500 dark:text-slate-400">
-                                                Riwayat tiket dukungan
-                                            </p>
-                                        </div>
+                                        <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100">
+                                            Laporan Saya
+                                        </h2>
                                     </div>
 
                                     <button
                                         type="button"
                                         onClick={() => setIsCreateTicketModalOpen(true)}
-                                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white px-4 py-2.5 text-xs sm:text-sm font-semibold shadow-xs transition cursor-pointer self-start sm:self-auto"
+                                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white px-3.5 py-2 text-xs font-semibold shadow-xs transition cursor-pointer self-start sm:self-auto"
                                     >
                                         <TicketPlus className="h-4 w-4" />
                                         <span>Buat Laporan</span>
@@ -2122,12 +2167,12 @@ export default function Welcome() {
                                 {/* Two Column Layout (Tickets List & Details) */}
                                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
                                     {/* Left Column: Tiket Saya List */}
-                                    <div className="lg:col-span-4 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#273449] p-4 sm:p-5 shadow-xs flex flex-col min-h-[460px]">
-                                        <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                                    <div className="lg:col-span-4 rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] p-4 sm:p-5 shadow-xs flex flex-col min-h-[420px]">
+                                        <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-zinc-800">
                                             <span className="text-xs font-bold text-slate-600 dark:text-slate-400 tracking-wider">
                                                 TIKET SAYA
                                             </span>
-                                            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                                            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-slate-400">
                                                 {tickets.length}
                                             </span>
                                         </div>
@@ -2139,18 +2184,18 @@ export default function Welcome() {
                                                 </p>
                                             </div>
                                         ) : (
-                                            <div className="space-y-2 pt-3 overflow-y-auto max-h-[500px]">
+                                            <div className="space-y-2 pt-3 overflow-y-auto no-scrollbar max-h-[460px]">
                                                 {tickets.map((t) => (
                                                     <div
                                                         key={t.id}
                                                         onClick={() => setSelectedTicketId(t.id)}
-                                                        className={`p-3.5 rounded-xl border transition cursor-pointer text-xs ${selectedTicketId === t.id
+                                                        className={`p-3 rounded-xl border transition cursor-pointer text-xs ${selectedTicketId === t.id
                                                             ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-950/30 dark:border-blue-500 shadow-2xs'
-                                                            : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1F2937] hover:bg-slate-50 dark:hover:bg-slate-800'
+                                                            : 'border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] hover:bg-slate-50 dark:hover:bg-zinc-800'
                                                             }`}
                                                     >
                                                         <div className="flex items-center justify-between mb-1.5">
-                                                            <span className="font-bold text-slate-900 dark:text-slate-100 truncate mr-2">
+                                                            <span className="font-semibold text-slate-900 dark:text-slate-100 truncate mr-2">
                                                                 {t.title}
                                                             </span>
                                                             <span className="text-[10px] text-slate-400 shrink-0">
@@ -2179,10 +2224,10 @@ export default function Welcome() {
                                     </div>
 
                                     {/* Right Column: Ticket Details / Empty Placeholder */}
-                                    <div className="lg:col-span-8 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#273449] p-5 sm:p-6 shadow-xs flex flex-col min-h-[460px]">
+                                    <div className="lg:col-span-8 rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] p-5 shadow-xs flex flex-col min-h-[420px]">
                                         {!selectedTicketId || !tickets.find((t) => t.id === selectedTicketId) ? (
                                             <div className="flex-1 flex flex-col items-center justify-center text-center p-8 space-y-3">
-                                                <Ticket className="h-12 w-12 text-slate-300 dark:text-slate-600 stroke-[1.5]" />
+                                                <Ticket className="h-10 w-10 text-slate-300 dark:text-slate-600 stroke-[1.5]" />
                                                 <p className="text-xs sm:text-sm text-slate-400 dark:text-slate-500">
                                                     Pilih tiket di sebelah kiri atau buat laporan baru.
                                                 </p>
@@ -2193,7 +2238,7 @@ export default function Welcome() {
                                                 return (
                                                     <div className="flex-1 flex flex-col space-y-5">
                                                         {/* Ticket Header */}
-                                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100 dark:border-slate-800">
+                                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100 dark:border-zinc-800">
                                                             <div>
                                                                 <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100">
                                                                     {ticket.title}
@@ -2226,7 +2271,7 @@ export default function Welcome() {
                                                                 <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
                                                                     Isi Laporan / Kendala
                                                                 </label>
-                                                                <div className="rounded-xl bg-slate-50 dark:bg-[#1F2937]/50 border border-slate-200/80 dark:border-slate-800 p-4 text-xs sm:text-sm text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-wrap">
+                                                                <div className="rounded-xl bg-slate-50 dark:bg-[#121215]/50 border border-slate-200/80 dark:border-zinc-800 p-4 text-xs sm:text-sm text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-wrap">
                                                                     {ticket.message}
                                                                 </div>
                                                             </div>
@@ -2235,7 +2280,7 @@ export default function Welcome() {
                                                                 <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
                                                                     Status Penanganan
                                                                 </label>
-                                                                <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#1F2937]/30 p-4 text-xs text-slate-600 dark:text-slate-400 space-y-1.5">
+                                                                <div className="rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215]/30 p-4 text-xs text-slate-600 dark:text-slate-400 space-y-1.5">
                                                                     <div>
                                                                         <span className="font-semibold text-slate-900 dark:text-slate-100">
                                                                             {ticket.status === 'selesai'
@@ -2255,12 +2300,12 @@ export default function Welcome() {
                                                                 </div>
                                                             </div>
 
-                                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-100 dark:border-slate-800">
-                                                                <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-[#1F2937]/30 border border-slate-100 dark:border-slate-800">
+                                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-100 dark:border-zinc-800">
+                                                                <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-[#121215]/30 border border-slate-100 dark:border-zinc-800">
                                                                     <span className="text-[11px] text-slate-400 block mb-0.5">Pelapor</span>
                                                                     <span className="text-xs font-medium text-slate-900 dark:text-slate-100">{user?.name || 'User Triple9'}</span>
                                                                 </div>
-                                                                <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-[#1F2937]/30 border border-slate-100 dark:border-slate-800">
+                                                                <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-[#121215]/30 border border-slate-100 dark:border-zinc-800">
                                                                     <span className="text-[11px] text-slate-400 block mb-0.5">ID Laporan</span>
                                                                     <span className="text-xs font-mono font-medium text-slate-900 dark:text-slate-100">#{ticket.id}</span>
                                                                 </div>
@@ -2276,8 +2321,8 @@ export default function Welcome() {
                                 {/* Modal Buat Laporan */}
                                 {isCreateTicketModalOpen && (
                                     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs">
-                                        <div className="relative w-full max-w-lg rounded-2xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-[#273449] p-6 shadow-xl space-y-4">
-                                            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                                        <div className="relative w-full max-w-lg rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] p-6 shadow-xl space-y-4">
+                                            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-zinc-800">
                                                 <div className="flex items-center gap-2.5">
                                                     <Ticket className="h-5 w-5 text-blue-600 dark:text-blue-400 shrink-0" />
                                                     <div>
@@ -2308,7 +2353,7 @@ export default function Welcome() {
                                                         value={ticketTitleInput}
                                                         onChange={(e) => setTicketTitleInput(e.target.value)}
                                                         placeholder="Contoh: Akun storan belum terupdate"
-                                                        className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1F2937] p-2.5 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none transition"
+                                                        className="w-full rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] p-2.5 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none transition"
                                                     />
                                                 </div>
 
@@ -2319,7 +2364,7 @@ export default function Welcome() {
                                                     <select
                                                         value={ticketCategoryInput}
                                                         onChange={(e) => setTicketCategoryInput(e.target.value)}
-                                                        className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1F2937] p-2.5 text-xs text-slate-900 dark:text-slate-100 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none transition"
+                                                        className="w-full rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] p-2.5 text-xs text-slate-900 dark:text-slate-100 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none transition"
                                                     >
                                                         <option value="Kendala Stor Akun">Kendala Stor Akun</option>
                                                         <option value="Kendala Tarik Saldo">Kendala Tarik Saldo</option>
@@ -2338,16 +2383,16 @@ export default function Welcome() {
                                                         value={ticketDescInput}
                                                         onChange={(e) => setTicketDescInput(e.target.value)}
                                                         placeholder="Jelaskan detail kendala Anda secara lengkap..."
-                                                        className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1F2937] p-3 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none transition leading-relaxed"
+                                                        className="w-full rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] p-3 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none transition leading-relaxed"
                                                     />
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                                            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100 dark:border-zinc-800">
                                                 <button
                                                     type="button"
                                                     onClick={() => setIsCreateTicketModalOpen(false)}
-                                                    className="px-4 py-2 rounded-xl text-xs font-medium border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition"
+                                                    className="px-4 py-2 rounded-xl text-xs font-medium border border-slate-200 dark:border-zinc-800 hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-300 transition"
                                                 >
                                                     Batal
                                                 </button>
@@ -2385,133 +2430,399 @@ export default function Welcome() {
                         )}
 
                         {/* 8. LEADERBOARD VIEW */}
-                        {activeNav === 'leaderboard' && (
-                            <div className="max-w-3xl rounded-xl bg-white dark:bg-[#111827] p-6 border border-slate-200 dark:border-[#273449] shadow-xs space-y-4">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">
-                                            Leaderboard Storer
-                                        </h2>
-                                        <p className="text-xs text-slate-500 dark:text-slate-400">
-                                            Top contributor dengan volume akun valid tertinggi bulan ini
-                                        </p>
-                                    </div>
-                                    <Trophy className="h-5 w-5 text-amber-500" />
-                                </div>
+                        {activeNav === 'leaderboard' && (() => {
+                            const currentList = leaderboardData[leaderboardPeriod];
+                            const top1 = currentList.find((i) => i.rank === 1)!;
+                            const top2 = currentList.find((i) => i.rank === 2)!;
+                            const top3 = currentList.find((i) => i.rank === 3)!;
+                            const restRanks = currentList.filter((i) => i.rank > 3);
 
-                                <div className="divide-y divide-slate-100 dark:divide-slate-800 text-xs pt-1">
-                                    {[
-                                        { rank: 1, name: 'S****r99', total: '1.240 Akun', reward: 'Bonus Rp200.000' },
-                                        { rank: 2, name: 'M****o21', total: '980 Akun', reward: 'Bonus Rp100.000' },
-                                        { rank: 3, name: 'B****z88', total: '750 Akun', reward: 'Bonus Rp50.000' },
-                                    ].map((item) => (
-                                        <div key={item.rank} className="flex items-center justify-between py-3">
-                                            <div className="flex items-center gap-3">
-                                                <span className="flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
-                                                    {item.rank}
-                                                </span>
-                                                <span className="font-medium text-slate-900 dark:text-slate-100">
-                                                    {item.name}
-                                                </span>
+                            const periodLabels: { id: 'today' | '7days' | '30days' | 'all'; label: string }[] = [
+                                { id: 'today', label: 'Hari Ini' },
+                                { id: '7days', label: '7 Hari' },
+                                { id: '30days', label: '30 Hari' },
+                                { id: 'all', label: 'Sepanjang Masa' },
+                            ];
+
+                            return (
+                                <div className="w-full space-y-4 sm:space-y-5">
+                                    {/* Header & Filter Controls Card */}
+                                    <div className="rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] px-5 min-h-[68px] sm:h-18 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 py-3.5 sm:py-0">
+                                        <div className="flex items-center gap-3">
+                                            <Trophy className="h-6 w-6 text-amber-500 dark:text-amber-400 shrink-0" />
+                                            <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100">
+                                                Leaderboard Storer
+                                            </h2>
+                                        </div>
+
+                                        {/* Period Tabs */}
+                                        <div className="inline-flex flex-wrap items-center gap-1.5 self-start sm:self-auto">
+                                            {periodLabels.map((p) => {
+                                                const isActive = leaderboardPeriod === p.id;
+                                                return (
+                                                    <button
+                                                        key={p.id}
+                                                        type="button"
+                                                        onClick={() => setLeaderboardPeriod(p.id)}
+                                                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${isActive
+                                                            ? 'bg-blue-600 text-white shadow-xs'
+                                                            : 'bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-zinc-800 border border-slate-200/80 dark:border-zinc-800'
+                                                            }`}
+                                                    >
+                                                        {p.label}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+
+                                    {/* TOP 3 PODIUM DIAGRAM */}
+                                    <div className="pt-2 sm:pt-4 pb-1">
+                                        <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 items-end max-w-4xl mx-auto px-1 sm:px-4">
+                                            {/* Rank 2 (Left) */}
+                                            <div className="flex flex-col items-center justify-end text-center group">
+                                                {/* Member Details */}
+                                                <div className="flex flex-col items-center mb-2">
+                                                    <Medal className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400 dark:text-zinc-300 fill-slate-400/20 mb-1" />
+                                                    <div className={`flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-gradient-to-tr ${top2.avatarBg} text-white font-extrabold text-xs sm:text-sm shadow-md ring-2 ring-slate-400/40 mb-1 group-hover:scale-105 transition duration-200`}>
+                                                        {top2.initials}
+                                                    </div>
+                                                    <h3 className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white truncate max-w-[105px] sm:max-w-[180px]">
+                                                        {top2.name}
+                                                    </h3>
+                                                    <p className="text-[10px] sm:text-xs text-slate-500 dark:text-zinc-400 mt-0.5">
+                                                        {top2.gmails.toLocaleString('id-ID')} Gmail
+                                                    </p>
+                                                    <p className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white mt-0.5 font-tabular-nums">
+                                                        Rp{top2.earnings.toLocaleString('id-ID')}
+                                                    </p>
+                                                </div>
+
+                                                {/* Pedestal Bar #2 */}
+                                                <div className="w-full h-18 sm:h-24 rounded-t-xl sm:rounded-t-2xl bg-gradient-to-b from-slate-200 via-slate-100 to-white dark:from-zinc-800 dark:via-zinc-900/90 dark:to-[#09090b] border-t-2 border-x border-slate-300 dark:border-zinc-700/80 flex flex-col items-center justify-center p-2 relative shadow-md">
+                                                    <span className="text-lg sm:text-2xl font-extrabold text-slate-400 dark:text-zinc-500 font-mono">
+                                                        2
+                                                    </span>
+                                                </div>
                                             </div>
-                                            <div className="flex items-center gap-4">
-                                                <span className="text-slate-500 dark:text-slate-400">
-                                                    {item.total}
-                                                </span>
-                                                <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                                                    {item.reward}
-                                                </span>
+
+                                            {/* Rank 1 (Center - Tallest) */}
+                                            <div className="flex flex-col items-center justify-end text-center group">
+                                                {/* Member Details */}
+                                                <div className="flex flex-col items-center mb-2">
+                                                    <Crown className="h-5 w-5 sm:h-6 sm:w-6 text-amber-400 fill-amber-400/30 mb-1" />
+                                                    <div className={`flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-gradient-to-tr ${top1.avatarBg} text-slate-950 font-black text-sm sm:text-base shadow-lg ring-3 ring-amber-400/50 mb-1 group-hover:scale-105 transition duration-200`}>
+                                                        {top1.initials}
+                                                    </div>
+                                                    <h3 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate max-w-[115px] sm:max-w-[200px]">
+                                                        {top1.name}
+                                                    </h3>
+                                                    <p className="text-[10px] sm:text-xs font-medium text-amber-600 dark:text-amber-400 mt-0.5">
+                                                        {top1.gmails.toLocaleString('id-ID')} Gmail
+                                                    </p>
+                                                    <p className="text-xs sm:text-sm font-black text-slate-900 dark:text-white mt-0.5 font-tabular-nums">
+                                                        Rp{top1.earnings.toLocaleString('id-ID')}
+                                                    </p>
+                                                </div>
+
+                                                {/* Pedestal Bar #1 */}
+                                                <div className="w-full h-24 sm:h-32 rounded-t-xl sm:rounded-t-2xl bg-gradient-to-b from-amber-400/30 via-amber-500/10 to-amber-950/20 dark:from-amber-500/25 dark:via-amber-950/30 dark:to-[#09090b] border-t-2 border-x border-amber-400 dark:border-amber-500/70 flex flex-col items-center justify-center p-2 relative shadow-lg shadow-amber-500/10">
+                                                    <span className="text-xl sm:text-3xl font-extrabold text-amber-500 dark:text-amber-400 font-mono drop-shadow-[0_0_10px_rgba(245,158,11,0.3)]">
+                                                        1
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            {/* Rank 3 (Right) */}
+                                            <div className="flex flex-col items-center justify-end text-center group">
+                                                {/* Member Details */}
+                                                <div className="flex flex-col items-center mb-2">
+                                                    <Medal className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600 dark:text-amber-500 fill-amber-600/20 mb-1" />
+                                                    <div className={`flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-gradient-to-tr ${top3.avatarBg} text-amber-100 font-extrabold text-xs sm:text-sm shadow-md ring-2 ring-amber-700/40 mb-1 group-hover:scale-105 transition duration-200`}>
+                                                        {top3.initials}
+                                                    </div>
+                                                    <h3 className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white truncate max-w-[105px] sm:max-w-[180px]">
+                                                        {top3.name}
+                                                    </h3>
+                                                    <p className="text-[10px] sm:text-xs text-slate-500 dark:text-zinc-400 mt-0.5">
+                                                        {top3.gmails.toLocaleString('id-ID')} Gmail
+                                                    </p>
+                                                    <p className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white mt-0.5 font-tabular-nums">
+                                                        Rp{top3.earnings.toLocaleString('id-ID')}
+                                                    </p>
+                                                </div>
+
+                                                {/* Pedestal Bar #3 */}
+                                                <div className="w-full h-14 sm:h-18 rounded-t-xl sm:rounded-t-2xl bg-gradient-to-b from-amber-700/20 via-amber-800/10 to-transparent dark:from-amber-900/30 dark:via-zinc-900/90 dark:to-[#09090b] border-t-2 border-x border-amber-700/50 dark:border-amber-800/60 flex flex-col items-center justify-center p-2 relative shadow-md">
+                                                    <span className="text-lg sm:text-2xl font-extrabold text-amber-700 dark:text-amber-600 font-mono">
+                                                        3
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
-                                    ))}
+                                    </div>
+
+                                    {/* LIST TABLE: RANKS #4 TO #10 */}
+                                    <div className="rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] shadow-xs overflow-hidden">
+                                        {/* Table Header */}
+                                        <div className="px-4 sm:px-5 py-3 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+                                            <span className="flex-1 min-w-0">Peringkat & Member</span>
+                                            <div className="flex items-center shrink-0">
+                                                <span className="hidden sm:inline-block w-32 sm:w-40 text-left">Gmail Diterima</span>
+                                                <span className="w-28 sm:w-36 text-right">Total Pendapatan</span>
+                                            </div>
+                                        </div>
+
+                                        {/* Rows */}
+                                        <div className="divide-y divide-slate-100 dark:divide-zinc-800/80">
+                                            {restRanks.map((item) => (
+                                                <div
+                                                    key={item.rank}
+                                                    className="px-4 sm:px-5 py-3 flex items-center justify-between hover:bg-slate-50/80 dark:hover:bg-[#121215] transition"
+                                                >
+                                                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                                                        <span className="flex h-6 w-6 shrink-0 items-center justify-center text-xs font-bold text-slate-400 dark:text-zinc-500 font-tabular-nums">
+                                                            #{item.rank}
+                                                        </span>
+                                                        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr ${item.avatarBg} text-white font-bold text-xs shadow-2xs`}>
+                                                            {item.initials}
+                                                        </div>
+                                                        <div className="min-w-0">
+                                                            <p className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">
+                                                                {item.name}
+                                                            </p>
+                                                            <p className="text-[11px] text-slate-400 dark:text-slate-500 sm:hidden">
+                                                                {item.gmails.toLocaleString('id-ID')} Gmail diterima
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="flex items-center shrink-0">
+                                                        <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-zinc-400 w-32 sm:w-40 text-left">
+                                                            <CheckCircle2 className="h-3.5 w-3.5 text-blue-500 shrink-0" />
+                                                            <span className="font-tabular-nums">{item.gmails.toLocaleString('id-ID')} Gmail</span>
+                                                        </span>
+                                                        <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white font-tabular-nums w-28 sm:w-36 text-right">
+                                                            Rp{item.earnings.toLocaleString('id-ID')}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* User Rank Row (Formatted like table rows above) */}
+                                    <div className="rounded-2xl border border-slate-200 dark:border-[#27272a] bg-white dark:bg-[#09090b] px-4 sm:px-5 py-3 shadow-xs flex items-center justify-between transition">
+                                        <div className="flex items-center gap-3 min-w-0 flex-1">
+                                            <span className="flex h-6 w-6 shrink-0 items-center justify-center text-xs font-bold text-blue-500 dark:text-blue-400 font-tabular-nums">
+                                                #14
+                                            </span>
+                                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white font-bold text-xs shadow-2xs">
+                                                {user ? user.name.charAt(0).toUpperCase() : 'U'}
+                                            </div>
+                                            <div className="min-w-0">
+                                                <div className="flex items-center gap-2">
+                                                    <p className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">
+                                                        {user ? user.name : 'Anda'}
+                                                    </p>
+                                                    <span className="text-[10px] text-blue-600 dark:text-blue-400 font-medium">
+                                                        (Anda)
+                                                    </span>
+                                                </div>
+                                                <p className="text-[11px] text-slate-400 dark:text-slate-500 sm:hidden">
+                                                    140 Gmail diterima
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center shrink-0">
+                                            <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-zinc-400 w-32 sm:w-40 text-left">
+                                                <CheckCircle2 className="h-3.5 w-3.5 text-blue-500 shrink-0" />
+                                                <span className="font-tabular-nums">140 Gmail</span>
+                                            </span>
+                                            <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white font-tabular-nums w-28 sm:w-36 text-right">
+                                                Rp630.000
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            );
+                        })()}
 
                         {/* 9. KOMUNITAS VIEW */}
                         {activeNav === 'komunitas' && (
-                            <div className="max-w-3xl space-y-4">
-                                <div className="rounded-xl bg-white dark:bg-[#111827] p-6 border border-slate-200 dark:border-[#273449] shadow-xs">
-                                    <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-1">
-                                        Komunitas Triple9
-                                    </h2>
-                                    <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-                                        Bergabung dengan jaringan storer aktif untuk update kuota, tips, dan diskusi
-                                    </p>
-
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        <a
-                                            href="https://whatsapp.com"
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            className="flex items-center gap-3 p-3.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#1F2937]/50 hover:border-slate-300 dark:hover:border-slate-700 transition"
-                                        >
-                                            <MessageCircle className="h-5 w-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                                            <div>
-                                                <strong className="text-xs text-slate-900 dark:text-slate-100 block">
-                                                    Grup WhatsApp
-                                                </strong>
-                                                <span className="text-[11px] text-slate-500 dark:text-slate-400">
-                                                    Diskusi storer dan kuota harian
-                                                </span>
-                                            </div>
-                                        </a>
-
-                                        <a
-                                            href="https://telegram.org"
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            className="flex items-center gap-3 p-3.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#1F2937]/50 hover:border-slate-300 dark:hover:border-slate-700 transition"
-                                        >
-                                            <Send className="h-5 w-5 text-blue-500 dark:text-blue-400 shrink-0" />
-                                            <div>
-                                                <strong className="text-xs text-slate-900 dark:text-slate-100 block">
-                                                    Saluran Telegram
-                                                </strong>
-                                                <span className="text-[11px] text-slate-500 dark:text-slate-400">
-                                                    Broadcast pengumuman sistem
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
+                            <div className="w-full">
                             </div>
                         )}
 
                         {/* 10. REFERRAL VIEW */}
                         {activeNav === 'referral' && (
-                            <div className="max-w-3xl space-y-4">
-                                <div className="rounded-xl bg-white dark:bg-[#111827] p-6 border border-slate-200 dark:border-[#273449] shadow-xs">
-                                    <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-1">
-                                        Program Referral Triple9
-                                    </h2>
-                                    <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-                                        Dapatkan komisi bonus Rp100 untuk setiap akun yang disetujui dari rekan yang Anda ajak
-                                    </p>
+                            <div className="w-full space-y-4 sm:space-y-5">
+                                {/* Header Card */}
+                                <div className="rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] px-5 min-h-[68px] sm:h-18 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 py-3.5 sm:py-0">
+                                    <div className="flex items-center gap-3">
+                                        <Gift className="h-6 w-6 text-blue-600 dark:text-blue-400 shrink-0" />
+                                        <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100">
+                                            Misi Referral
+                                        </h2>
+                                    </div>
+                                </div>
 
-                                    <div className="p-4 rounded-lg bg-slate-50 dark:bg-[#1F2937]/50 border border-slate-200/80 dark:border-slate-800 space-y-2.5">
-                                        <label className="block text-xs font-medium text-slate-700 dark:text-slate-300">
-                                            Tautan Referral Anda
-                                        </label>
-                                        <div className="flex items-center gap-2">
-                                            <input
-                                                type="text"
-                                                readOnly
-                                                value="https://triple9.com/register?ref=TRIPLE9USER"
-                                                className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#111827] px-3 py-2 text-xs font-mono text-slate-800 dark:text-slate-200 focus:outline-none"
-                                            />
-                                            <button
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText('https://triple9.com/register?ref=TRIPLE9USER');
-                                                    setReferralCopied(true);
-                                                    setTimeout(() => setReferralCopied(false), 2000);
-                                                }}
-                                                className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 text-xs font-medium shrink-0 transition"
-                                            >
-                                                {referralCopied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-                                                <span>{referralCopied ? 'Tersalin' : 'Salin'}</span>
-                                            </button>
+                                {/* Mission Card: Undang 20 teman & dapatkan Rp15.000 */}
+                                <div className="rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] p-5 sm:p-6 shadow-xs relative overflow-hidden">
+                                    <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-4 tracking-tight">
+                                        Undang 20 teman & dapatkan Rp15.000
+                                    </h2>
+
+                                    <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-4">
+                                        <div className="bg-slate-50 dark:bg-zinc-900/60 border border-slate-200/80 dark:border-zinc-800 rounded-xl p-3 sm:p-3.5">
+                                            <div className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium">Progress Bonus</div>
+                                            <div className="text-sm sm:text-base font-bold text-slate-900 dark:text-white mt-0.5">0 / 20</div>
                                         </div>
+                                        <div className="bg-slate-50 dark:bg-zinc-900/60 border border-slate-200/80 dark:border-zinc-800 rounded-xl p-3 sm:p-3.5">
+                                            <div className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium">Sisa</div>
+                                            <div className="text-sm sm:text-base font-bold text-slate-900 dark:text-white mt-0.5">20 Teman</div>
+                                        </div>
+                                        <div className="bg-slate-50 dark:bg-zinc-900/60 border border-slate-200/80 dark:border-zinc-800 rounded-xl p-3 sm:p-3.5">
+                                            <div className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium">Bonus</div>
+                                            <div className="text-sm sm:text-base font-bold text-slate-900 dark:text-white mt-0.5">Rp15.000</div>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <div className="h-2 w-full bg-slate-100 dark:bg-zinc-800 rounded-full overflow-hidden p-0.5">
+                                            <div className="h-full bg-blue-600 rounded-full transition-all duration-500" style={{ width: '0%' }} />
+                                        </div>
+                                        <div className="flex justify-end">
+                                            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">0%</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* 3 Summary Cards */}
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                                    <div className="rounded-2xl bg-white dark:bg-[#09090b] p-4 sm:p-5 border border-slate-200 dark:border-[#27272a] shadow-xs hover:border-slate-300 dark:hover:border-zinc-700 transition">
+                                        <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400">
+                                            <Users className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                                            <span>Total Diundang</span>
+                                        </div>
+                                        <div className="mt-2 text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+                                            0
+                                        </div>
+                                    </div>
+
+                                    <div className="rounded-2xl bg-white dark:bg-[#09090b] p-4 sm:p-5 border border-slate-200 dark:border-[#27272a] shadow-xs hover:border-slate-300 dark:hover:border-zinc-700 transition">
+                                        <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400">
+                                            <Users className="h-4 w-4 text-emerald-500 dark:text-emerald-400" />
+                                            <span>Referral Berhasil</span>
+                                        </div>
+                                        <div className="mt-2 text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+                                            0
+                                        </div>
+                                    </div>
+
+                                    <div className="rounded-2xl bg-white dark:bg-[#09090b] p-4 sm:p-5 border border-slate-200 dark:border-[#27272a] shadow-xs hover:border-slate-300 dark:hover:border-zinc-700 transition">
+                                        <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400">
+                                            <Trophy className="h-4 w-4 text-amber-500 dark:text-amber-400" />
+                                            <span>Total Bonus Diterima</span>
+                                        </div>
+                                        <div className="mt-2 text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+                                            Rp0
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Card: Kode & Link Referral Anda */}
+                                <div className="rounded-2xl bg-white dark:bg-[#09090b] p-5 sm:p-6 border border-slate-200 dark:border-[#27272a] shadow-xs space-y-3.5">
+                                    <h3 className="text-sm sm:text-base font-semibold text-slate-900 dark:text-white">
+                                        Kode & Link Referral Anda
+                                    </h3>
+
+                                    {/* Box Kode */}
+                                    <div className="bg-slate-50 dark:bg-zinc-900/60 rounded-xl p-3 sm:p-3.5 border border-slate-200/80 dark:border-zinc-800 flex items-center justify-between">
+                                        <div>
+                                            <div className="text-[10px] sm:text-[11px] font-semibold text-slate-400 dark:text-slate-500 tracking-wider uppercase">
+                                                KODE
+                                            </div>
+                                            <div className="text-base sm:text-lg font-bold font-mono tracking-wider text-slate-900 dark:text-white mt-0.5">
+                                                KEG7QRV0
+                                            </div>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                navigator.clipboard.writeText('KEG7QRV0');
+                                                setReferralCodeCopied(true);
+                                                setTimeout(() => setReferralCodeCopied(false), 2000);
+                                            }}
+                                            title={referralCodeCopied ? 'Tersalin' : 'Salin Kode'}
+                                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-slate-50 dark:hover:bg-zinc-700 text-xs font-medium text-slate-700 dark:text-slate-200 transition shadow-2xs cursor-pointer active:scale-95 shrink-0"
+                                        >
+                                            {referralCodeCopied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4 text-slate-500" />}
+                                        </button>
+                                    </div>
+
+                                    {/* Box Link Undangan */}
+                                    <div className="bg-slate-50 dark:bg-zinc-900/60 rounded-xl p-3 sm:p-3.5 border border-slate-200/80 dark:border-zinc-800 flex items-center justify-between gap-3">
+                                        <div className="min-w-0 flex-1">
+                                            <div className="text-[10px] sm:text-[11px] font-semibold text-slate-400 dark:text-slate-500 tracking-wider uppercase">
+                                                LINK UNDANGAN
+                                            </div>
+                                            <div className="text-xs sm:text-sm font-mono text-slate-600 dark:text-slate-300 truncate mt-0.5 font-medium">
+                                                {typeof window !== 'undefined' ? `${window.location.origin}/auth?ref=KEG7QRV0` : 'https://triple9.com/auth?ref=KEG7QRV0'}
+                                            </div>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                const url = typeof window !== 'undefined' ? `${window.location.origin}/auth?ref=KEG7QRV0` : 'https://triple9.com/auth?ref=KEG7QRV0';
+                                                navigator.clipboard.writeText(url);
+                                                setReferralLinkCopied(true);
+                                                setTimeout(() => setReferralLinkCopied(false), 2000);
+                                            }}
+                                            title={referralLinkCopied ? 'Tersalin' : 'Salin Link Undangan'}
+                                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-slate-50 dark:hover:bg-zinc-700 text-xs font-medium text-slate-700 dark:text-slate-200 transition shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                        >
+                                            {referralLinkCopied ? <Check className="h-4 w-4 text-emerald-500" /> : <Link2 className="h-4 w-4 text-slate-500" />}
+                                        </button>
+                                    </div>
+
+                                    <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                                        Syarat: Teman melakukan stor Gmail pertama yang diterima.
+                                    </p>
+                                </div>
+
+                                {/* Card: Riwayat Tabs & Empty State */}
+                                <div className="rounded-2xl bg-white dark:bg-[#09090b] p-5 sm:p-6 border border-slate-200 dark:border-[#27272a] shadow-xs space-y-4">
+                                    <div className="flex items-center rounded-xl bg-slate-100 dark:bg-zinc-900/80 p-1 border border-slate-200/60 dark:border-zinc-800">
+                                        <button
+                                            type="button"
+                                            onClick={() => setReferralTab('referral')}
+                                            className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-medium transition cursor-pointer ${referralTab === 'referral'
+                                                ? 'bg-white dark:bg-zinc-800 text-slate-900 dark:text-white shadow-2xs font-semibold'
+                                                : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                                                }`}
+                                        >
+                                            <span>Riwayat Referral</span>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => setReferralTab('bonus')}
+                                            className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-medium transition cursor-pointer ${referralTab === 'bonus'
+                                                ? 'bg-white dark:bg-zinc-800 text-slate-900 dark:text-white shadow-2xs font-semibold'
+                                                : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                                                }`}
+                                        >
+                                            <span>Riwayat Bonus</span>
+                                        </button>
+                                    </div>
+
+                                    <div className="py-4 sm:py-6 text-center text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
+                                        {referralTab === 'referral' ? (
+                                            'Belum ada teman yang bergabung menggunakan kode Anda.'
+                                        ) : (
+                                            'Belum ada riwayat bonus referral yang diterima.'
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -2519,65 +2830,7 @@ export default function Welcome() {
 
                         {/* 11. SUPPORT VIEW */}
                         {activeNav === 'support' && (
-                            <div className="max-w-3xl space-y-4">
-                                <div className="rounded-xl bg-white dark:bg-[#111827] p-6 border border-slate-200 dark:border-[#273449] shadow-xs">
-                                    <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-1">
-                                        Layanan Bantuan Pelanggan
-                                    </h2>
-                                    <p className="text-xs text-slate-500 dark:text-slate-400 mb-5">
-                                        Butuh bantuan terkait akun, stor, atau pencairan saldo? Hubungi tim support resmi Triple9
-                                    </p>
-
-                                    <div className="space-y-2.5">
-                                        <a
-                                            href="https://whatsapp.com"
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            className="flex items-center justify-between p-3.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#1F2937]/50 hover:border-slate-300 dark:hover:border-slate-700 transition group"
-                                        >
-                                            <div className="flex items-center gap-3">
-                                                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400">
-                                                    <MessageCircle className="h-4.5 w-4.5" />
-                                                </div>
-                                                <div>
-                                                    <h3 className="text-xs font-semibold text-slate-900 dark:text-slate-100">
-                                                        WhatsApp Customer Care
-                                                    </h3>
-                                                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                                                        08:00 - 22:00 WIB • Respon cepat
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <span className="text-xs font-medium text-blue-600 dark:text-blue-400">
-                                                Hubungi &rarr;
-                                            </span>
-                                        </a>
-
-                                        <a
-                                            href="https://telegram.org"
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            className="flex items-center justify-between p-3.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#1F2937]/50 hover:border-slate-300 dark:hover:border-slate-700 transition group"
-                                        >
-                                            <div className="flex items-center gap-3">
-                                                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400">
-                                                    <Send className="h-4.5 w-4.5" />
-                                                </div>
-                                                <div>
-                                                    <h3 className="text-xs font-semibold text-slate-900 dark:text-slate-100">
-                                                        Telegram Official Support
-                                                    </h3>
-                                                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                                                        Direct message konsultasi
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <span className="text-xs font-medium text-blue-600 dark:text-blue-400">
-                                                Hubungi &rarr;
-                                            </span>
-                                        </a>
-                                    </div>
-                                </div>
+                            <div className="w-full">
                             </div>
                         )}
                     </div>

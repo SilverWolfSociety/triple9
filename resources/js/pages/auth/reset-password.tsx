@@ -28,7 +28,7 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
                 {({ processing, errors }) => (
                     <div className="grid gap-4">
                         <div className="grid gap-1.5">
-                            <Label htmlFor="email" className="text-xs font-bold text-neutral-700">
+                            <Label htmlFor="email" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
                                 Alamat Email
                             </Label>
                             <Input
@@ -37,7 +37,7 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
                                 name="email"
                                 autoComplete="email"
                                 value={email}
-                                className="rounded-xl border-neutral-200 bg-neutral-50 text-xs py-2.5 text-neutral-500"
+                                className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-[#121215] text-xs py-2.5 text-neutral-500 dark:text-neutral-400"
                                 readOnly
                             />
                             <InputError
@@ -47,14 +47,14 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
                         </div>
 
                         <div className="grid gap-1.5">
-                            <Label htmlFor="password" className="text-xs font-bold text-neutral-700">
+                            <Label htmlFor="password" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
                                 Password Baru
                             </Label>
                             <PasswordInput
                                 id="password"
                                 name="password"
                                 autoComplete="new-password"
-                                className="rounded-xl border-neutral-200 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
+                                className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
                                 autoFocus
                                 placeholder="Minimal 8 karakter"
                                 passwordrules={passwordRules}
@@ -63,14 +63,14 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
                         </div>
 
                         <div className="grid gap-1.5">
-                            <Label htmlFor="password_confirmation" className="text-xs font-bold text-neutral-700">
+                            <Label htmlFor="password_confirmation" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
                                 Konfirmasi Password Baru
                             </Label>
                             <PasswordInput
                                 id="password_confirmation"
                                 name="password_confirmation"
                                 autoComplete="new-password"
-                                className="rounded-xl border-neutral-200 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
+                                className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
                                 placeholder="Ulangi password baru"
                                 passwordrules={passwordRules}
                             />
@@ -90,12 +90,12 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
                             Simpan Password Baru
                         </Button>
 
-                        <div className="flex flex-col gap-2.5 text-center text-xs text-neutral-600 pt-2">
+                        <div className="flex flex-col gap-2.5 text-center text-xs text-neutral-600 dark:text-neutral-400 pt-2">
                             <div>
                                 Sudah ingat password?{' '}
                                 <Link
                                     href={login()}
-                                    className="font-bold text-blue-600 hover:text-blue-700 hover:underline"
+                                    className="font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline"
                                 >
                                     Masuk di sini
                                 </Link>

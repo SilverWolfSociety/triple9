@@ -21,7 +21,7 @@ export default function AdminRegister() {
                     <>
                         <div className="grid gap-3.5">
                             <div className="grid gap-1.5">
-                                <Label htmlFor="name" className="text-xs font-bold text-neutral-700">
+                                <Label htmlFor="name" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
                                     Nama Lengkap
                                 </Label>
                                 <Input
@@ -33,13 +33,13 @@ export default function AdminRegister() {
                                     tabIndex={1}
                                     autoComplete="name"
                                     placeholder="Nama Administrator"
-                                    className="rounded-xl border-neutral-200 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
+                                    className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
                                 />
                                 <InputError message={errors.name} className="mt-1" />
                             </div>
 
                             <div className="grid gap-1.5">
-                                <Label htmlFor="email" className="text-xs font-bold text-neutral-700">
+                                <Label htmlFor="email" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
                                     Email address
                                 </Label>
                                 <Input
@@ -50,13 +50,13 @@ export default function AdminRegister() {
                                     tabIndex={2}
                                     autoComplete="email"
                                     placeholder="admin@example.com"
-                                    className="rounded-xl border-neutral-200 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
+                                    className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
                                 />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div className="grid gap-1.5">
-                                <Label htmlFor="password" className="text-xs font-bold text-neutral-700">
+                                <Label htmlFor="password" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
                                     Password
                                 </Label>
                                 <PasswordInput
@@ -66,13 +66,13 @@ export default function AdminRegister() {
                                     tabIndex={3}
                                     autoComplete="new-password"
                                     placeholder="••••••••"
-                                    className="rounded-xl border-neutral-200 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
+                                    className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
                                 />
                                 <InputError message={errors.password} />
                             </div>
 
                             <div className="grid gap-1.5">
-                                <Label htmlFor="password_confirmation" className="text-xs font-bold text-neutral-700">
+                                <Label htmlFor="password_confirmation" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
                                     Confirm password
                                 </Label>
                                 <PasswordInput
@@ -82,7 +82,7 @@ export default function AdminRegister() {
                                     tabIndex={4}
                                     autoComplete="new-password"
                                     placeholder="••••••••"
-                                    className="rounded-xl border-neutral-200 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
+                                    className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
                                 />
                                 <InputError message={errors.password_confirmation} className="mt-1" />
                             </div>
@@ -98,13 +98,13 @@ export default function AdminRegister() {
                             </Button>
                         </div>
 
-                        <div className="flex flex-col gap-2 text-center text-xs text-neutral-500 pt-1">
+                        <div className="flex flex-col gap-2 text-center text-xs text-neutral-500 dark:text-neutral-400 pt-1">
                             <div>
                                 Sudah memiliki akun admin?{' '}
                                 <Link
                                     href="/admin/login"
                                     tabIndex={6}
-                                    className="font-bold text-blue-600 hover:text-blue-700 hover:underline"
+                                    className="font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline"
                                 >
                                     Masuk di sini
                                 </Link>
