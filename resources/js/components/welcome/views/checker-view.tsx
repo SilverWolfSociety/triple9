@@ -67,21 +67,21 @@ export function CheckerView() {
 
     return (
         <div className="w-full space-y-4">
-            <div className="rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] p-5 sm:p-7 lg:p-8 shadow-xs space-y-5">
-                <div className="pb-3 border-b border-slate-100 dark:border-zinc-800">
+            <div className="rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 p-5 sm:p-7 lg:p-8 shadow-xs space-y-5">
+                <div className="pb-3 border-b border-neutral-100 dark:border-neutral-800">
                     <div className="flex items-center gap-2">
                         <SearchCheck className="h-5 w-5 text-blue-600 dark:text-blue-400 shrink-0" />
-                        <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100">
+                        <h2 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">
                             Email Checker
                         </h2>
                     </div>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
                         Periksa status Gmail hasil Generate milik Anda sebelum disetor.
                     </p>
                 </div>
 
                 <div className="space-y-2">
-                    <label className="block text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
+                    <label className="block text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-100">
                         Daftar Email
                     </label>
 
@@ -93,10 +93,10 @@ export function CheckerView() {
                             if (checkerResults) setCheckerResults(null);
                         }}
                         placeholder="Masukkan daftar email di sini..."
-                        className="w-full min-h-[260px] rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] p-4 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition leading-relaxed shadow-2xs"
+                        className="w-full min-h-[260px] rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-950 p-4 text-xs sm:text-sm text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition leading-relaxed shadow-2xs"
                     />
 
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                    <p className="text-[11px] text-neutral-500 dark:text-neutral-400">
                         {emailCount} email terdeteksi • 1 per baris • maks 100 per cek. Hanya email hasil Generate Gmail milik Anda yang diproses.
                     </p>
                 </div>
@@ -118,24 +118,24 @@ export function CheckerView() {
                         <button
                             type="button"
                             onClick={() => setIsSalinDropdownOpen(!isSalinDropdownOpen)}
-                            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-300 px-3.5 py-2 text-xs font-medium transition cursor-pointer shadow-2xs"
+                            className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-3.5 py-2 text-xs font-medium transition cursor-pointer shadow-2xs"
                         >
                             <Copy className="h-3.5 w-3.5" />
-                            <ChevronDown className="h-3 w-3 text-slate-400" />
+                            <ChevronDown className="h-3 w-3 text-neutral-400" />
                         </button>
                         {isSalinDropdownOpen && (
-                            <div className="absolute left-0 mt-1.5 w-40 rounded-xl bg-white dark:bg-[#121215] border border-slate-200 dark:border-zinc-800 p-1 shadow-lg z-20 text-xs">
+                            <div className="absolute left-0 mt-1.5 w-40 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-1 shadow-lg z-20 text-xs">
                                 <button
                                     type="button"
                                     onClick={handleCopyAll}
-                                    className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-200 font-medium cursor-pointer"
+                                    className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-200 font-medium cursor-pointer"
                                 >
                                     Salin Semua
                                 </button>
                                 <button
                                     type="button"
                                     onClick={handleCopyValidOnly}
-                                    className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-200 font-medium cursor-pointer"
+                                    className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-200 font-medium cursor-pointer"
                                 >
                                     Salin Valid Saja
                                 </button>
@@ -147,7 +147,7 @@ export function CheckerView() {
                     <button
                         type="button"
                         onClick={handleClear}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 dark:hover:bg-rose-950/30 text-slate-700 dark:text-slate-300 px-3.5 py-2 text-xs font-medium transition cursor-pointer shadow-2xs"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 dark:hover:bg-rose-950/30 text-neutral-700 dark:text-neutral-300 px-3.5 py-2 text-xs font-medium transition cursor-pointer shadow-2xs"
                     >
                         <Trash2 className="h-3.5 w-3.5" />
                     </button>
@@ -155,28 +155,28 @@ export function CheckerView() {
 
                 {/* Checker Results Table if checked */}
                 {checkerResults && (
-                    <div className="pt-3 border-t border-slate-100 dark:border-zinc-800 space-y-3">
+                    <div className="pt-3 border-t border-neutral-100 dark:border-neutral-800 space-y-3">
                         <div className="flex items-center justify-between">
-                            <h4 className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
+                            <h4 className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-100">
                                 Hasil Pengecekan ({checkerResults.length} akun)
                             </h4>
                             <div className="flex items-center gap-2 text-xs">
                                 <span className="text-emerald-600 font-semibold">
                                     {checkerResults.filter((r) => r.status === 'valid').length} Valid
                                 </span>
-                                <span className="text-slate-300">•</span>
+                                <span className="text-neutral-300 dark:text-neutral-600">•</span>
                                 <span className="text-rose-600 font-semibold">
                                     {checkerResults.filter((r) => r.status === 'invalid').length} Tidak Valid
                                 </span>
                             </div>
                         </div>
-                        <div className="max-h-60 overflow-y-auto no-scrollbar space-y-1.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50/50 dark:bg-[#121215]/40 p-2 text-xs">
+                        <div className="max-h-60 overflow-y-auto no-scrollbar space-y-1.5 rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/40 p-2 text-xs">
                             {checkerResults.map((item, idx) => (
                                 <div
                                     key={idx}
-                                    className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-[#09090b] border border-slate-200/80 dark:border-zinc-800"
+                                    className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800"
                                 >
-                                    <span className="text-slate-800 dark:text-slate-200 truncate mr-2 font-medium">
+                                    <span className="text-neutral-800 dark:text-neutral-200 truncate mr-2 font-medium">
                                         {item.email}
                                     </span>
                                     <span

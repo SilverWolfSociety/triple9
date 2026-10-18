@@ -1,5 +1,3 @@
-import { FileText } from 'lucide-react';
-
 interface RulesViewProps {
     onNavigateToStor: () => void;
 }
@@ -8,87 +6,87 @@ export function RulesView({ onNavigateToStor }: RulesViewProps) {
     return (
         <div className="w-full space-y-4 sm:space-y-5">
             {/* Header Card */}
-            <div className="rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] px-5 min-h-[68px] sm:h-18 shadow-xs flex items-center justify-between gap-3 sm:gap-4 py-3.5 sm:py-0">
+            <div className="rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 px-5 min-h-[68px] sm:h-18 shadow-xs flex items-center justify-between gap-3 sm:gap-4 py-3.5 sm:py-0">
                 <div className="flex items-center gap-3">
-                    <FileText className="h-6 w-6 text-blue-600 dark:text-blue-400 shrink-0" />
-                    <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100">
+                    <img src="/images/icon/notes.png" alt="Rules" className="h-6 w-6 object-contain shrink-0" />
+                    <h2 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">
                         Rules Storan Gmail
                     </h2>
                 </div>
             </div>
 
             {/* Main Rules Card */}
-            <div className="rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] p-5 sm:p-7 lg:p-8 shadow-xs space-y-6">
+            <div className="rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 p-5 sm:p-7 lg:p-8 shadow-xs space-y-6">
 
                 {/* 7 Rules List */}
-                <ol className="space-y-4 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                <ol className="space-y-4 text-xs sm:text-sm text-neutral-700 dark:text-neutral-300">
                     <li className="flex items-start gap-3">
-                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-bold text-xs">
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center text-neutral-900 dark:text-white font-bold text-xs sm:text-sm">
                             1
                         </span>
                         <div className="pt-0.5">
-                            <strong className="text-slate-900 dark:text-slate-100 font-semibold">
+                            <strong className="text-neutral-900 dark:text-neutral-100 font-semibold">
                                 Gmail harus Fresh (baru dibuat).
                             </strong>
                         </div>
                     </li>
 
                     <li className="flex items-start gap-3">
-                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-bold text-xs">
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center text-neutral-900 dark:text-white font-bold text-xs sm:text-sm">
                             2
                         </span>
                         <div className="pt-0.5">
-                            <strong className="text-slate-900 dark:text-slate-100 font-semibold">
+                            <strong className="text-neutral-900 dark:text-neutral-100 font-semibold">
                                 Nama Gmail yang didaftarkan wajib sama persis dengan nama Gmail hasil Generate di website.
                             </strong>
-                            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
                                 Tidak boleh mengubah, menambah, atau mengurangi karakter apa pun.
                             </p>
                         </div>
                     </li>
 
                     <li className="flex items-start gap-3">
-                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-bold text-xs">
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center text-neutral-900 dark:text-white font-bold text-xs sm:text-sm">
                             3
                         </span>
                         <div className="pt-0.5">
-                            <strong className="text-slate-900 dark:text-slate-100 font-semibold">
+                            <strong className="text-neutral-900 dark:text-neutral-100 font-semibold">
                                 Tanggal lahir akun Gmail wajib 18 tahun ke atas.
                             </strong>
                         </div>
                     </li>
 
                     <li className="flex items-start gap-3">
-                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-bold text-xs">
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center text-neutral-900 dark:text-white font-bold text-xs sm:text-sm">
                             4
                         </span>
                         <div className="pt-0.5">
-                            <strong className="text-slate-900 dark:text-slate-100 font-semibold">
-                                Password Gmail wajib menggunakan: <code className="font-mono font-semibold text-slate-900 dark:text-slate-100">zero1122</code> ATAU <code className="font-mono font-semibold text-slate-900 dark:text-slate-100">hehe1122</code>
+                            <strong className="text-neutral-900 dark:text-neutral-100 font-semibold">
+                                Password Gmail wajib menggunakan: <code className="font-mono font-semibold text-neutral-900 dark:text-neutral-100">zero1122</code> ATAU <code className="font-mono font-semibold text-neutral-900 dark:text-neutral-100">hehe1122</code>
                             </strong>
-                            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
                                 (Pilih salah satu pasword)
                             </p>
                         </div>
                     </li>
 
                     <li className="flex items-start gap-3">
-                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-bold text-xs">
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center text-neutral-900 dark:text-white font-bold text-xs sm:text-sm">
                             5
                         </span>
                         <div className="pt-0.5">
-                            <strong className="text-slate-900 dark:text-slate-100 font-semibold">
+                            <strong className="text-neutral-900 dark:text-neutral-100 font-semibold">
                                 Akun tidak boleh ditautkan dengan nomor pemulihan maupun Gmail pemulihan.
                             </strong>
                         </div>
                     </li>
 
                     <li className="flex items-start gap-3">
-                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-bold text-xs">
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center text-neutral-900 dark:text-white font-bold text-xs sm:text-sm">
                             6
                         </span>
                         <div className="pt-0.5">
-                            <strong className="text-slate-900 dark:text-slate-100 font-semibold">
+                            <strong className="text-neutral-900 dark:text-neutral-100 font-semibold">
                                 Sebelum melakukan storan, cek status Gmail di{' '}
                                 <a
                                     href="https://en.gmailcheck.com/"
@@ -103,11 +101,11 @@ export function RulesView({ onNavigateToStor }: RulesViewProps) {
                     </li>
 
                     <li className="flex items-start gap-3">
-                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-bold text-xs">
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center text-neutral-900 dark:text-white font-bold text-xs sm:text-sm">
                             7
                         </span>
                         <div className="pt-0.5">
-                            <strong className="text-slate-900 dark:text-slate-100 font-semibold">
+                            <strong className="text-neutral-900 dark:text-neutral-100 font-semibold">
                                 Hanya kirim Gmail dengan status Live/Aktif.
                             </strong>
                         </div>
@@ -115,8 +113,8 @@ export function RulesView({ onNavigateToStor }: RulesViewProps) {
                 </ol>
 
                 {/* Catatan Box */}
-                <div className="rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50/80 dark:bg-[#121215]/50 p-4 sm:p-5 space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
-                    <h4 className="font-bold text-slate-900 dark:text-slate-100">
+                <div className="rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/50 p-4 sm:p-5 space-y-2 text-xs sm:text-sm text-neutral-600 dark:text-neutral-300">
+                    <h4 className="font-bold text-neutral-900 dark:text-neutral-100">
                         Catatan:
                     </h4>
                     <ul className="space-y-1.5 list-disc list-inside text-xs sm:text-sm">

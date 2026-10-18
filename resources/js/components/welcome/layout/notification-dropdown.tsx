@@ -2,11 +2,6 @@ import { useState, useRef, useEffect } from 'react';
 import {
     Bell,
     CheckCheck,
-    CheckCircle2,
-    Wallet,
-    Flame,
-    Clock,
-    MessageSquare,
     Trash2,
     X,
     ChevronRight,
@@ -143,33 +138,33 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
         switch (type) {
             case 'reward':
                 return (
-                    <div className="flex shrink-0 items-center justify-center pt-0.5 text-emerald-600 dark:text-emerald-400">
-                        <CheckCircle2 className="h-4 w-4" />
+                    <div className="flex shrink-0 items-center justify-center pt-0.5">
+                        <img src="/images/icon/checklist.png" alt="Reward" className="h-5 w-5 object-contain shrink-0" />
                     </div>
                 );
             case 'wallet':
                 return (
-                    <div className="flex shrink-0 items-center justify-center pt-0.5 text-blue-600 dark:text-blue-400">
-                        <Wallet className="h-4 w-4" />
+                    <div className="flex shrink-0 items-center justify-center pt-0.5">
+                        <img src="/images/icon/wallet.png" alt="Wallet" className="h-5 w-5 object-contain shrink-0" />
                     </div>
                 );
             case 'bonus':
                 return (
-                    <div className="flex shrink-0 items-center justify-center pt-0.5 text-amber-600 dark:text-amber-400">
-                        <Flame className="h-4 w-4" />
+                    <div className="flex shrink-0 items-center justify-center pt-0.5">
+                        <img src="/images/icon/fire.png" alt="Bonus" className="h-5 w-5 object-contain shrink-0" />
                     </div>
                 );
             case 'ticket':
                 return (
-                    <div className="flex shrink-0 items-center justify-center pt-0.5 text-purple-600 dark:text-purple-400">
-                        <MessageSquare className="h-4 w-4" />
+                    <div className="flex shrink-0 items-center justify-center pt-0.5">
+                        <img src="/images/icon/ticket.png" alt="Ticket" className="h-5 w-5 object-contain shrink-0" />
                     </div>
                 );
             case 'system':
             default:
                 return (
-                    <div className="flex shrink-0 items-center justify-center pt-0.5 text-indigo-600 dark:text-indigo-400">
-                        <Clock className="h-4 w-4" />
+                    <div className="flex shrink-0 items-center justify-center pt-0.5">
+                        <img src="/images/icon/find.png" alt="System" className="h-5 w-5 object-contain shrink-0" />
                     </div>
                 );
         }
@@ -181,22 +176,22 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="relative flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-zinc-800 transition border border-slate-200 dark:border-zinc-800 cursor-pointer"
+                className="relative flex h-8 w-8 items-center justify-center rounded-lg text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition border border-neutral-200/80 dark:border-neutral-800 cursor-pointer"
                 title="Notifikasi"
                 aria-label="Notifikasi sistem"
                 aria-expanded={isOpen}
             >
                 <Bell className="h-4 w-4" />
                 {unreadCount > 0 && (
-                    <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-[#09090b] animate-pulse" />
+                    <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-neutral-900" />
                 )}
             </button>
 
             {/* Dropdown Menu Modal */}
             {isOpen && (
-                <div className="fixed left-3 right-3 top-16 sm:left-auto sm:right-0 sm:top-10 sm:w-[380px] z-50 rounded-2xl bg-white dark:bg-[#121215] shadow-2xl border border-slate-200 dark:border-zinc-800 animate-in fade-in zoom-in-95 overflow-hidden">
+                <div className="fixed left-3 right-3 top-16 sm:left-auto sm:right-0 sm:top-10 sm:w-[380px] z-50 rounded-xl bg-white dark:bg-neutral-900 shadow-xl border border-neutral-200/80 dark:border-neutral-800 animate-in fade-in zoom-in-95 overflow-hidden">
                     {/* Header */}
-                    <div className="p-3.5 border-b border-slate-100 dark:border-zinc-800/80">
+                    <div className="p-3.5 border-b border-neutral-100 dark:border-neutral-800">
                         <div className="flex items-center justify-between mb-2.5">
                             <div className="flex items-center gap-2">
                                 <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">

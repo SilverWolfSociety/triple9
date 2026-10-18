@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Wallet, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import type { EwalletType } from '../types';
 
 interface WithdrawModalProps {
@@ -62,10 +62,10 @@ export function WithdrawModal({
                 if (e.target === e.currentTarget) onClose();
             }}
         >
-            <div className="relative w-full max-w-md rounded-2xl bg-white dark:bg-[#09090b] border border-slate-200 dark:border-[#27272a] p-6 shadow-xl space-y-4 animate-in zoom-in-95 duration-150">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-zinc-800">
+            <div className="relative w-full max-w-md rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 p-6 shadow-xl space-y-4 animate-in zoom-in-95 duration-150">
+                <div className="flex items-center justify-between pb-3 border-b border-neutral-100 dark:border-neutral-800">
                     <div className="flex items-center gap-2.5">
-                        <Wallet className="h-5 w-5 text-blue-600 dark:text-blue-400 shrink-0" />
+                        <img src="/images/icon/wallet.png" alt="Tarik Saldo" className="h-5 w-5 object-contain shrink-0" />
                         <div>
                             <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
                                 Tarik Saldo
@@ -82,23 +82,51 @@ export function WithdrawModal({
                 </div>
 
                 <div className="space-y-3.5 text-xs">
-                    <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#121215]/50 border border-slate-100 dark:border-zinc-800 flex justify-between items-center">
-                        <span className="text-slate-500 dark:text-slate-400">Saldo Tersedia:</span>
-                        <span className="font-bold text-slate-900 dark:text-slate-100 text-sm font-tabular-nums">
+                    <div className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-200/80 dark:border-neutral-800 flex justify-between items-center">
+                        <span className="text-neutral-500 dark:text-neutral-400">Saldo Tersedia:</span>
+                        <span className="font-bold text-neutral-900 dark:text-neutral-100 text-sm font-tabular-nums">
                             Rp{currentBalance.toLocaleString('id-ID')}
                         </span>
                     </div>
 
                     <div>
-                        <label className="flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                        <label className="flex items-center gap-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-300 mb-1.5">
                             <span>Tujuan Penarikan</span>
-                            <span className="inline-flex items-center gap-1.5 font-semibold text-slate-900 dark:text-slate-100">
-                                <span className="flex h-4.5 w-7 items-center justify-center rounded bg-white p-0.5 shrink-0 border border-slate-200 dark:border-zinc-800 shadow-2xs">
-                                    <img
-                                        src={`/images/${selectedEwallet.toLowerCase()}.png`}
-                                        alt={selectedEwallet}
-                                        className="h-full w-full object-contain"
-                                    />
+                            <span className="inline-flex items-center gap-1.5 font-semibold text-neutral-900 dark:text-neutral-100">
+                                <span className="flex h-5 w-9 items-center justify-center rounded-md bg-neutral-100 dark:bg-neutral-800 p-0.5 shrink-0 border border-neutral-200/80 dark:border-neutral-700/80 shadow-2xs">
+                                    {selectedEwallet === 'GoPay' ? (
+                                        <>
+                                            <img
+                                                src="/images/gopay.png"
+                                                alt="GoPay"
+                                                className="h-full w-full object-contain dark:hidden"
+                                            />
+                                            <img
+                                                src="/images/gopay-dark.png"
+                                                alt="GoPay"
+                                                className="h-full w-full object-contain hidden dark:block"
+                                            />
+                                        </>
+                                    ) : selectedEwallet === 'OVO' ? (
+                                        <>
+                                            <img
+                                                src="/images/ovo.png"
+                                                alt="OVO"
+                                                className="h-full w-full object-contain dark:hidden"
+                                            />
+                                            <img
+                                                src="/images/ovo-dark.png"
+                                                alt="OVO"
+                                                className="h-full w-full object-contain hidden dark:block"
+                                            />
+                                        </>
+                                    ) : (
+                                        <img
+                                            src={`/images/${selectedEwallet.toLowerCase()}.png`}
+                                            alt={selectedEwallet}
+                                            className="h-full w-full object-contain"
+                                        />
+                                    )}
                                 </span>
                                 <span>({selectedEwallet})</span>
                             </span>
@@ -109,7 +137,7 @@ export function WithdrawModal({
                             onChange={(e) => setAccountInput(e.target.value.replace(/\D/g, ''))}
                             placeholder="Masukkan nomor e-wallet tujuan"
                             maxLength={15}
-                            className="w-full rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] p-2.5 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 font-sans placeholder:font-sans focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition"
+                            className="w-full rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-950 p-2.5 text-xs text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 font-sans placeholder:font-sans focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition"
                         />
                     </div>
 
@@ -145,7 +173,7 @@ export function WithdrawModal({
                                     const raw = e.target.value.replace(/\D/g, '');
                                     setWithdrawAmount(raw ? String(Number(raw.slice(0, 10))) : '');
                                 }}
-                                className="w-full rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] py-2.5 pl-10 pr-3 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition"
+                                className="w-full rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-950 py-2.5 pl-10 pr-3 text-xs text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition"
                             />
                         </div>
 
@@ -159,8 +187,8 @@ export function WithdrawModal({
                                         type="button"
                                         onClick={() => setWithdrawAmount(String(preset))}
                                         className={`py-2 px-1.5 rounded-xl text-xs font-medium border text-center transition cursor-pointer ${isSelected
-                                            ? 'border-blue-600 dark:border-blue-500 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 font-semibold shadow-2xs'
-                                            : 'border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-zinc-800 hover:border-slate-300 dark:hover:border-zinc-700'
+                                            ? 'border-blue-600 dark:border-blue-500 bg-transparent text-blue-600 dark:text-blue-400 font-semibold shadow-2xs'
+                                            : 'border-neutral-200/80 dark:border-neutral-800 bg-transparent text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 hover:border-neutral-300 dark:hover:border-neutral-700'
                                             }`}
                                     >
                                         Rp{preset.toLocaleString('id-ID')}
@@ -169,17 +197,17 @@ export function WithdrawModal({
                             })}
                         </div>
 
-                        <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-2">
+                        <p className="text-[11px] text-neutral-400 dark:text-neutral-500 mt-2">
                             Minimal penarikan adalah Rp10.000.
                         </p>
                     </div>
                 </div>
 
-                <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100 dark:border-zinc-800">
+                <div className="flex items-center justify-end gap-2 pt-2 border-t border-neutral-100 dark:border-neutral-800">
                     <button
                         type="button"
                         onClick={onClose}
-                        className="px-4 py-2 rounded-xl text-xs font-medium border border-slate-200 dark:border-zinc-800 hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-300 transition"
+                        className="px-4 py-2 rounded-xl text-xs font-medium border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 transition"
                     >
                         Batal
                     </button>

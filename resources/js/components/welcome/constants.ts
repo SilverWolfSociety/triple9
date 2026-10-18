@@ -25,7 +25,7 @@ export const navGroups: NavGroupConfig[] = [
             { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
             { id: 'stor', label: 'Stor Akun', icon: Mail },
             { id: 'saldo', label: 'Saldo & Penarikan', icon: Wallet },
-            { id: 'checker', label: 'Email Cecker', icon: SearchCheck },
+            { id: 'checker', label: 'Email Checker', icon: SearchCheck },
         ],
     },
     {
@@ -41,7 +41,7 @@ export const navGroups: NavGroupConfig[] = [
         items: [
             { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
             { id: 'komunitas', label: 'Komunitas', icon: Users },
-            { id: 'referral', label: 'Program Referral', icon: Gift },
+            { id: 'referral', label: 'Referral', icon: Gift },
             { id: 'support', label: 'Triple9 Support', icon: Headphones },
         ],
     },

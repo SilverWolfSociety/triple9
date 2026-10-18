@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Head, usePage } from '@inertiajs/react';
+import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { useAppearance } from '@/hooks/use-appearance';
 import type { Auth } from '@/types';
 import {
@@ -32,10 +33,8 @@ export default function Welcome() {
     const user = auth?.user;
     const { resolvedAppearance, updateAppearance } = useAppearance();
 
-    // Navigation & Shell UI State
+    // Navigation state
     const [activeNav, setActiveNav] = useState('dashboard');
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     // Balance, E-Wallet & Transactions
     const [currentBalance, setCurrentBalance] = useState(20000);
@@ -60,7 +59,6 @@ export default function Welcome() {
 
     const handleSelectNav = (id: string) => {
         setActiveNav(id);
-        setIsMobileMenuOpen(false);
     };
 
     const handleToggleTheme = () => {
@@ -102,34 +100,31 @@ export default function Welcome() {
         <>
             <Head title={`${activeItemLabel} — Triple9`} />
 
-            {/* Main Application Shell */}
-            <div className="flex h-screen w-full bg-slate-50 dark:bg-[#000000] font-sans antialiased text-slate-900 dark:text-slate-100 overflow-hidden">
+            {/* Main Application Shell using shadcn SidebarProvider & SidebarInset */}
+            <SidebarProvider defaultOpen={true} className="bg-sidebar">
                 {/* SIDEBAR */}
                 <WelcomeSidebar
                     user={user}
                     activeNav={activeNav}
-                    isSidebarOpen={isSidebarOpen}
-                    isMobileMenuOpen={isMobileMenuOpen}
                     onSelectNav={handleSelectNav}
-                    onToggleSidebar={setIsSidebarOpen}
-                    onCloseMobileMenu={() => setIsMobileMenuOpen(false)}
+                    onOpenAccountSettings={() => setIsAccountSettingsModalOpen(true)}
                 />
 
-                {/* MAIN CONTENT AREA */}
-                <main className="flex-1 min-w-0 flex flex-col h-full overflow-y-auto no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                {/* INSET MAIN CONTENT AREA WITH ROUNDED CORNERS & BORDER */}
+                <SidebarInset className="min-w-0 overflow-hidden m-2 md:m-2 md:ml-0 rounded-xl border border-sidebar-border/70 shadow-sm bg-background flex flex-col h-[calc(100vh-1rem)]">
                     {/* TOP HEADER */}
                     <WelcomeHeader
                         user={user}
                         activeItemLabel={activeItemLabel}
                         resolvedAppearance={resolvedAppearance}
                         onToggleTheme={handleToggleTheme}
-                        onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
                         onNavigate={handleSelectNav}
                         onOpenAccountSettings={() => setIsAccountSettingsModalOpen(true)}
                     />
 
                     {/* DASHBOARD PAGE CONTENT */}
-                    <div className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+                    <div className="flex-1 overflow-y-auto no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden p-4 sm:p-6 lg:p-6">
+                        <div className="max-w-7xl w-full mx-auto">
                         {/* 1. DASHBOARD VIEW */}
                         {activeNav === 'dashboard' && (
                             <DashboardView
@@ -200,8 +195,9 @@ export default function Welcome() {
 
                         {/* 11. SUPPORT VIEW */}
                         {activeNav === 'support' && <SupportView />}
+                        </div>
                     </div>
-                </main>
+                </SidebarInset>
 
                 {/* TRIPLE9 INTRODUCTION POPUP MODAL */}
                 <Triple9IntroModal
@@ -220,7 +216,7 @@ export default function Welcome() {
                     savedEwalletNumbers={savedEwalletNumbers}
                     onSaveEwalletNumber={handleSaveEwalletNumber}
                 />
-            </div>
+            </SidebarProvider>
         </>
     );
 }
