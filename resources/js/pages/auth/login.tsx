@@ -1,5 +1,5 @@
 import { Form, Head, Link } from '@inertiajs/react';
-import { Shield, LogIn } from 'lucide-react';
+import { LogIn } from 'lucide-react';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import TextLink from '@/components/text-link';
@@ -166,17 +166,6 @@ export default function Login({ status, canResetPassword }: Props) {
                                     className="font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline"
                                 >
                                     Daftar Sekarang
-                                </Link>
-                            </div>
-
-                            <div className="pt-3 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-center gap-1.5 text-[11px] text-neutral-500 dark:text-neutral-400">
-                                <Shield className="h-3.5 w-3.5 text-neutral-400 dark:text-neutral-500" />
-                                <span>Administrator staff?</span>
-                                <Link
-                                    href="/admin/login"
-                                    className="font-bold text-neutral-800 dark:text-neutral-200 hover:text-blue-600 dark:hover:text-blue-400 hover:underline"
-                                >
-                                    Portal Khusus Admin
                                 </Link>
                             </div>
                         </div>

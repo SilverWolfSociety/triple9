@@ -180,10 +180,10 @@ export function CheckerView() {
                                         {item.email}
                                     </span>
                                     <span
-                                        className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${
+                                        className={`text-[11px] font-bold uppercase tracking-wider ${
                                             item.status === 'valid'
-                                                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300'
-                                                : 'bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300'
+                                                ? 'text-emerald-600 dark:text-emerald-400'
+                                                : 'text-rose-600 dark:text-rose-400'
                                         }`}
                                     >
                                         {item.status === 'valid' ? 'Valid' : 'Gagal'}

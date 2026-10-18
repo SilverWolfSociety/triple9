@@ -12,17 +12,17 @@ import type { NavItem } from '@/types';
 
 const sidebarNavItems: NavItem[] = [
     {
-        title: 'Profile',
+        title: 'Profil Saya',
         href: edit(),
         icon: null,
     },
     {
-        title: 'Security',
+        title: 'Keamanan & Sandi',
         href: editSecurity(),
         icon: null,
     },
     {
-        title: 'Appearance',
+        title: 'Tampilan & Tema',
         href: editAppearance(),
         icon: null,
     },
@@ -33,16 +33,24 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
 
     return (
         <div className="px-4 py-6">
-            <Heading
-                title="Settings"
-                description="Manage your profile and account settings"
-            />
+            <div className="flex items-center justify-between mb-4">
+                <Heading
+                    title="Pengaturan Akun"
+                    description="Kelola data profil, keamanan sandi, dan preferensi akun Triple9 Anda"
+                />
+                <Link
+                    href="/"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition"
+                >
+                    <span>← Kembali ke Dashboard</span>
+                </Link>
+            </div>
 
             <div className="flex flex-col lg:flex-row lg:space-x-12">
                 <aside className="w-full max-w-xl lg:w-48">
                     <nav
                         className="flex flex-col space-y-1 space-x-0"
-                        aria-label="Settings"
+                        aria-label="Pengaturan Akun"
                     >
                         {sidebarNavItems.map((item, index) => (
                             <Button

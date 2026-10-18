@@ -7,16 +7,16 @@ Route::middleware(['auth'])->group(function () {
     Route::inertia('/', 'welcome')->name('home');
 });
 
-// Admin Auth
+// Admin Auth & Portal (Akses langsung via /admin)
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('login', [AdminAuthController::class, 'create'])->name('login');
-    Route::post('login', [AdminAuthController::class, 'store'])->name('login.store');
+    Route::get('/', [AdminAuthController::class, 'create'])->name('login');
+    Route::post('/', [AdminAuthController::class, 'store'])->name('login.store');
+
+    Route::get('login', fn () => redirect()->route('admin.login'));
+    Route::post('login', [AdminAuthController::class, 'store']);
+
     Route::get('register', [AdminAuthController::class, 'createRegister'])->name('register');
     Route::post('register', [AdminAuthController::class, 'storeRegister'])->name('register.store');
-});
-
-Route::get('admin', function () {
-    return redirect()->route('dashboard');
 });
 
 Route::middleware(['admin'])->group(function () {

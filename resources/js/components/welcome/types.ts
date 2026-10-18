@@ -73,3 +73,15 @@ export interface AnnouncementItem {
     actionText: string;
     onAction: () => void;
 }
+
+export type NotificationCategory = 'reward' | 'wallet' | 'bonus' | 'system' | 'ticket';
+
+export interface NotificationItem {
+    id: string;
+    title: string;
+    message: string;
+    time: string;
+    type: NotificationCategory;
+    read: boolean;
+    actionNav?: string;
+}

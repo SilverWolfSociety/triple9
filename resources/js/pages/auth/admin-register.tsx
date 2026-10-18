@@ -102,7 +102,7 @@ export default function AdminRegister() {
                             <div>
                                 Sudah memiliki akun admin?{' '}
                                 <Link
-                                    href="/admin/login"
+                                    href="/admin"
                                     tabIndex={6}
                                     className="font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline"
                                 >

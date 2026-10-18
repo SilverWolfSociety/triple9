@@ -1,10 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link } from '@inertiajs/react';
 import {
     Menu,
     Sun,
     Moon,
-    Bell,
     ChevronDown,
     Shield,
     User as UserIcon,
@@ -12,6 +11,7 @@ import {
 } from 'lucide-react';
 import { dashboard, login, register } from '@/routes';
 import type { User } from '@/types';
+import { NotificationDropdown } from './notification-dropdown';
 
 interface WelcomeHeaderProps {
     user?: User;
@@ -19,6 +19,8 @@ interface WelcomeHeaderProps {
     resolvedAppearance: string;
     onToggleTheme: () => void;
     onOpenMobileMenu: () => void;
+    onNavigate?: (id: string) => void;
+    onOpenAccountSettings?: () => void;
 }
 
 export function WelcomeHeader({
@@ -27,8 +29,36 @@ export function WelcomeHeader({
     resolvedAppearance,
     onToggleTheme,
     onOpenMobileMenu,
+    onNavigate,
+    onOpenAccountSettings,
 }: WelcomeHeaderProps) {
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+    const userMenuRef = useRef<HTMLDivElement>(null);
+
+    // Handle outside click for user menu
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+                setIsUserMenuOpen(false);
+            }
+        }
+
+        function handleKeyDown(event: KeyboardEvent) {
+            if (event.key === 'Escape') {
+                setIsUserMenuOpen(false);
+            }
+        }
+
+        if (isUserMenuOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+            document.addEventListener('keydown', handleKeyDown);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isUserMenuOpen]);
 
     return (
         <header className="sticky top-0 z-30 shrink-0 flex items-center justify-between h-14 bg-white/80 dark:bg-[#09090b]/80 backdrop-blur-md px-4 sm:px-6 lg:px-8 border-b border-slate-200 dark:border-[#27272a]">
@@ -70,19 +100,12 @@ export function WelcomeHeader({
                     )}
                 </button>
 
-                {/* Notification Control */}
-                <button
-                    className="relative flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-zinc-800 transition border border-slate-200 dark:border-zinc-800"
-                    title="Notifikasi"
-                    aria-label="Notifikasi sistem"
-                >
-                    <Bell className="h-4 w-4" />
-                    <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-red-500 ring-2 ring-white dark:ring-[#09090b]" />
-                </button>
+                {/* Notification Dropdown */}
+                <NotificationDropdown onNavigate={onNavigate} />
 
                 {/* User Profile Pill & Dropdown */}
                 {user ? (
-                    <div className="relative">
+                    <div className="relative" ref={userMenuRef}>
                         <button
                             onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                             className="flex items-center gap-2 rounded-lg py-1 px-2 text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition border border-slate-200 dark:border-zinc-800"
@@ -123,13 +146,27 @@ export function WelcomeHeader({
                                     </Link>
                                 )}
 
-                                <Link
-                                    href="/settings/profile"
-                                    className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition"
-                                >
-                                    <UserIcon className="h-3.5 w-3.5 text-slate-500" />
-                                    <span>Pengaturan Profil</span>
-                                </Link>
+                                {onOpenAccountSettings ? (
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setIsUserMenuOpen(false);
+                                            onOpenAccountSettings();
+                                        }}
+                                        className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition cursor-pointer text-left"
+                                    >
+                                        <UserIcon className="h-3.5 w-3.5 text-slate-500" />
+                                        <span>Pengaturan Akun</span>
+                                    </button>
+                                ) : (
+                                    <Link
+                                        href="/settings/profile"
+                                        className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition"
+                                    >
+                                        <UserIcon className="h-3.5 w-3.5 text-slate-500" />
+                                        <span>Pengaturan Akun</span>
+                                    </Link>
+                                )}
 
                                 <Link
                                     href="/logout"

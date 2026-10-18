@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Head, usePage } from '@inertiajs/react';
 import { useAppearance } from '@/hooks/use-appearance';
 import type { Auth } from '@/types';
@@ -17,6 +17,8 @@ import {
     KomunitasView,
     ReferralView,
     SupportView,
+    Triple9IntroModal,
+    AccountSettingsModal,
 } from '@/components/welcome';
 import type {
     StorRecord,
@@ -46,6 +48,8 @@ export default function Welcome() {
         ShopeePay: '',
     });
     const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
+    const [isIntroModalOpen, setIsIntroModalOpen] = useState(true);
+    const [isAccountSettingsModalOpen, setIsAccountSettingsModalOpen] = useState(false);
     const [transactionHistory, setTransactionHistory] = useState<TransactionRecord[]>([]);
 
     // Stor Akun History
@@ -120,6 +124,8 @@ export default function Welcome() {
                         resolvedAppearance={resolvedAppearance}
                         onToggleTheme={handleToggleTheme}
                         onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
+                        onNavigate={handleSelectNav}
+                        onOpenAccountSettings={() => setIsAccountSettingsModalOpen(true)}
                     />
 
                     {/* DASHBOARD PAGE CONTENT */}
@@ -134,6 +140,7 @@ export default function Welcome() {
                                 onNavigate={handleSelectNav}
                                 onNavigateToRiwayat={handleNavigateToRiwayat}
                                 onOpenWithdrawModal={() => setIsWithdrawModalOpen(true)}
+                                onOpenIntroModal={() => setIsIntroModalOpen(true)}
                             />
                         )}
 
@@ -195,6 +202,24 @@ export default function Welcome() {
                         {activeNav === 'support' && <SupportView />}
                     </div>
                 </main>
+
+                {/* TRIPLE9 INTRODUCTION POPUP MODAL */}
+                <Triple9IntroModal
+                    isOpen={isIntroModalOpen}
+                    onClose={() => setIsIntroModalOpen(false)}
+                    onNavigate={handleSelectNav}
+                />
+
+                {/* ACCOUNT SETTINGS POPUP MODAL */}
+                <AccountSettingsModal
+                    isOpen={isAccountSettingsModalOpen}
+                    onClose={() => setIsAccountSettingsModalOpen(false)}
+                    user={user}
+                    selectedEwallet={selectedEwallet}
+                    onChangeEwallet={setSelectedEwallet}
+                    savedEwalletNumbers={savedEwalletNumbers}
+                    onSaveEwalletNumber={handleSaveEwalletNumber}
+                />
             </div>
         </>
     );

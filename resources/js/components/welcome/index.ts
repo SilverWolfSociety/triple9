@@ -7,11 +7,14 @@ export * from './constants';
 // Layout
 export * from './layout/welcome-sidebar';
 export * from './layout/welcome-header';
+export * from './layout/notification-dropdown';
 
 // Modals
 export * from './modals/generate-gmail-modal';
 export * from './modals/withdraw-modal';
 export * from './modals/create-ticket-modal';
+export * from './modals/triple9-intro-modal';
+export * from './modals/account-settings-modal';
 
 // Views
 export * from './views/dashboard-view';

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FileText, KeyRound, Sparkles, Send, CheckCircle2 } from 'lucide-react';
+import { FileText, KeyRound, Sparkles } from 'lucide-react';
 import type { StorRecord, StorRoom } from '../types';
 import { GenerateGmailModal } from '../modals/generate-gmail-modal';
 
@@ -168,7 +168,7 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                             : 'border-slate-200 dark:border-[#27272a] hover:border-slate-300 dark:hover:border-slate-700'
                             }`}
                     >
-                        <Send className="h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400 mt-0.5" />
+                        <KeyRound className="h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400 mt-0.5" />
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between">
                                 <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100">
@@ -195,7 +195,7 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                             : 'border-slate-200 dark:border-[#27272a] hover:border-slate-300 dark:hover:border-slate-700'
                             }`}
                     >
-                        <CheckCircle2 className="h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400 mt-0.5" />
+                        <KeyRound className="h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400 mt-0.5" />
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between">
                                 <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100">

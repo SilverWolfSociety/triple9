@@ -1,5 +1,5 @@
 import { Form, Head, Link } from '@inertiajs/react';
-import { Shield, UserPlus } from 'lucide-react';
+import { UserPlus } from 'lucide-react';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import { Button } from '@/components/ui/button';
@@ -169,7 +169,7 @@ export default function Register({ passwordRules }: Props) {
                                 </button>
                             </div>
 
-                            {/* Bottom Links: Login Redirect & Admin Portal */}
+                            {/* Bottom Links: Login Redirect */}
                             <div className="flex flex-col gap-3 text-center text-xs text-neutral-500 dark:text-neutral-400 pt-2">
                                 <div>
                                     Sudah memiliki akun?{' '}
@@ -179,17 +179,6 @@ export default function Register({ passwordRules }: Props) {
                                         className="font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline"
                                     >
                                         Masuk di sini
-                                    </Link>
-                                </div>
-
-                                <div className="pt-3 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-center gap-1.5 text-[11px] text-neutral-500 dark:text-neutral-400">
-                                    <Shield className="h-3.5 w-3.5 text-neutral-400 dark:text-neutral-500" />
-                                    <span>Administrator staff?</span>
-                                    <Link
-                                        href="/admin/login"
-                                        className="font-bold text-neutral-800 dark:text-neutral-200 hover:text-blue-600 dark:hover:text-blue-400 hover:underline"
-                                    >
-                                        Portal Khusus Admin
                                     </Link>
                                 </div>
                             </div>

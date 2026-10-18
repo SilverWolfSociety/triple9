@@ -1,6 +1,6 @@
 import {
     LayoutDashboard,
-    Send,
+    Mail,
     Wallet,
     SearchCheck,
     History,
@@ -23,7 +23,7 @@ export const navGroups: NavGroupConfig[] = [
         title: 'Menu Utama',
         items: [
             { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-            { id: 'stor', label: 'Stor Akun', icon: Send },
+            { id: 'stor', label: 'Stor Akun', icon: Mail },
             { id: 'saldo', label: 'Saldo & Penarikan', icon: Wallet },
             { id: 'checker', label: 'Email Cecker', icon: SearchCheck },
         ],

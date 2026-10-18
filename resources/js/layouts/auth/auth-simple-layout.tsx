@@ -49,7 +49,7 @@ export default function AuthSimpleLayout({
                             {/* Header */}
                             {title && (
                                 <div className="mb-4 space-y-1 text-left">
-                                    <h1 className="text-2xl sm:text-3xl font-extrabold text-blue-600 dark:text-blue-500 tracking-tight">
+                                    <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                                         {title}
                                     </h1>
                                     {description && (

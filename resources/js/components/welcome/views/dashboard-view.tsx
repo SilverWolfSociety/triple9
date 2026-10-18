@@ -13,7 +13,7 @@ import {
     CheckCircle2,
     XCircle,
     ScanSearch,
-    Send,
+    HelpCircle,
 } from 'lucide-react';
 import type { StorRecord, RiwayatFilter, AnnouncementItem } from '../types';
 
@@ -25,6 +25,7 @@ interface DashboardViewProps {
     onNavigate: (navId: string) => void;
     onNavigateToRiwayat: (filter: RiwayatFilter) => void;
     onOpenWithdrawModal: () => void;
+    onOpenIntroModal?: () => void;
 }
 
 export function DashboardView({
@@ -35,6 +36,7 @@ export function DashboardView({
     onNavigate,
     onNavigateToRiwayat,
     onOpenWithdrawModal,
+    onOpenIntroModal,
 }: DashboardViewProps) {
     const [activeSlideIndex, setActiveSlideIndex] = useState(0);
     const [isSlidePaused, setIsSlidePaused] = useState(false);
@@ -74,6 +76,21 @@ export function DashboardView({
             onAction: () => {
                 onNavigate('rules');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+            },
+        },
+        {
+            badge: 'Panduan Triple9',
+            badgeColor: 'text-blue-600 dark:text-blue-400',
+            icon: HelpCircle,
+            title: 'Apa itu Triple9 & Cara Kerjanya?',
+            description: 'Pelajari pengenalan platform, alur penyetoran Gmail, audit akun, hingga pencairan reward.',
+            actionText: 'Buka Pengenalan',
+            onAction: () => {
+                if (onOpenIntroModal) {
+                    onOpenIntroModal();
+                } else {
+                    onNavigate('rules');
+                }
             },
         },
     ];
@@ -164,8 +181,8 @@ export function DashboardView({
                             type="button"
                             onClick={() => setActiveSlideIndex(idx)}
                             className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${idx === activeSlideIndex
-                                    ? 'w-5 bg-blue-600 dark:bg-blue-400'
-                                    : 'w-1.5 bg-slate-200 dark:bg-zinc-800 hover:bg-slate-300'
+                                ? 'w-5 bg-blue-600 dark:bg-blue-400'
+                                : 'w-1.5 bg-slate-200 dark:bg-zinc-800 hover:bg-slate-300'
                                 }`}
                             aria-label={`Ke slide ${idx + 1}`}
                         />
@@ -371,7 +388,6 @@ export function DashboardView({
                             onClick={() => onNavigate('stor')}
                             className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 text-xs font-medium shadow-xs transition cursor-pointer"
                         >
-                            <Send className="h-3.5 w-3.5" />
                             <span>Mulai Stor Akun Sekarang</span>
                         </button>
                     </div>
@@ -400,10 +416,10 @@ export function DashboardView({
                                                 </div>
                                             ) : (
                                                 <span className={`inline-block text-[11px] font-semibold uppercase ${item.status === 'diterima'
-                                                        ? 'text-emerald-600 dark:text-emerald-400'
-                                                        : item.status === 'ditolak'
-                                                            ? 'text-rose-600 dark:text-rose-400'
-                                                            : 'text-amber-600 dark:text-amber-400'
+                                                    ? 'text-emerald-600 dark:text-emerald-400'
+                                                    : item.status === 'ditolak'
+                                                        ? 'text-rose-600 dark:text-rose-400'
+                                                        : 'text-amber-600 dark:text-amber-400'
                                                     }`}>
                                                     {item.status === 'dicek' ? 'Di Cek' : item.status}
                                                 </span>

@@ -17,7 +17,7 @@ export default function AdminLogin({ status }: Props) {
             <Head title="Admin" />
 
             <Form
-                action="/admin/login"
+                action="/admin"
                 method="post"
                 resetOnSuccess={['password']}
                 className="flex flex-col gap-5"
@@ -90,15 +90,6 @@ export default function AdminLogin({ status }: Props) {
                                     className="font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline"
                                 >
                                     Daftar Admin
-                                </Link>
-                            </div>
-                            <div>
-                                Bukan administrator?{' '}
-                                <Link
-                                    href="/login"
-                                    className="font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline"
-                                >
-                                    Masuk ke Portal Member
                                 </Link>
                             </div>
                         </div>
