@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Medal, Crown, CheckCircle2 } from 'lucide-react';
 import type { User } from '@/types';
 import type { LeaderboardPeriod } from '../types';
 import { leaderboardData } from '../constants';
@@ -64,7 +63,7 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
                     <div className="flex flex-col items-center justify-end text-center group">
                         {/* Member Details */}
                         <div className="flex flex-col items-center mb-2">
-                            <Medal className="h-4 w-4 sm:h-5 sm:w-5 text-neutral-400 dark:text-neutral-300 fill-neutral-400/20 mb-1" />
+                            <img src="/images/icon/2nd.png" alt="Juara 2" className="h-6 w-6 sm:h-7 sm:w-7 object-contain mb-1 drop-shadow-xs" />
                             <div className={`flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-gradient-to-tr ${top2.avatarBg} text-white font-extrabold text-xs sm:text-sm shadow-md ring-2 ring-neutral-400/40 mb-1 group-hover:scale-105 transition duration-200`}>
                                 {top2.initials}
                             </div>
@@ -91,7 +90,7 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
                     <div className="flex flex-col items-center justify-end text-center group">
                         {/* Member Details */}
                         <div className="flex flex-col items-center mb-2">
-                            <Crown className="h-5 w-5 sm:h-6 sm:w-6 text-amber-400 fill-amber-400/30 mb-1" />
+                            <img src="/images/icon/1st.png" alt="Juara 1" className="h-7 w-7 sm:h-8 sm:w-8 object-contain mb-1 drop-shadow-sm" />
                             <div className={`flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-gradient-to-tr ${top1.avatarBg} text-neutral-950 font-black text-sm sm:text-base shadow-lg ring-3 ring-amber-400/50 mb-1 group-hover:scale-105 transition duration-200`}>
                                 {top1.initials}
                             </div>
@@ -118,7 +117,7 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
                     <div className="flex flex-col items-center justify-end text-center group">
                         {/* Member Details */}
                         <div className="flex flex-col items-center mb-2">
-                            <Medal className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600 dark:text-amber-500 fill-amber-600/20 mb-1" />
+                            <img src="/images/icon/3rd.png" alt="Juara 3" className="h-6 w-6 sm:h-7 sm:w-7 object-contain mb-1 drop-shadow-xs" />
                             <div className={`flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-gradient-to-tr ${top3.avatarBg} text-amber-100 font-extrabold text-xs sm:text-sm shadow-md ring-2 ring-amber-700/40 mb-1 group-hover:scale-105 transition duration-200`}>
                                 {top3.initials}
                             </div>
@@ -180,7 +179,7 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
 
                             <div className="flex items-center shrink-0">
                                 <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-neutral-500 dark:text-neutral-400 w-32 sm:w-40 text-left">
-                                    <CheckCircle2 className="h-3.5 w-3.5 text-blue-500 shrink-0" />
+                                    <img src="/images/icon/checklist.png" alt="Diterima" className="h-3.5 w-3.5 object-contain shrink-0" />
                                     <span className="font-tabular-nums">{item.gmails.toLocaleString('id-ID')} Gmail</span>
                                 </span>
                                 <span className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-neutral-100 font-tabular-nums w-28 sm:w-36 text-right">
@@ -218,7 +217,7 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
 
                 <div className="flex items-center shrink-0">
                     <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-neutral-500 dark:text-neutral-400 w-32 sm:w-40 text-left">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-blue-500 shrink-0" />
+                        <img src="/images/icon/checklist.png" alt="Diterima" className="h-3.5 w-3.5 object-contain shrink-0" />
                         <span className="font-tabular-nums">140 Gmail</span>
                     </span>
                     <span className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-neutral-100 font-tabular-nums w-28 sm:w-36 text-right">

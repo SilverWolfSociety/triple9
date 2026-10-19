@@ -23,7 +23,7 @@ export const navGroups: NavGroupConfig[] = [
         title: 'Menu Utama',
         items: [
             { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-            { id: 'stor', label: 'Stor Akun', icon: Mail },
+            { id: 'stor', label: 'Setor Akun', icon: Mail },
             { id: 'saldo', label: 'Saldo & Penarikan', icon: Wallet },
             { id: 'checker', label: 'Email Checker', icon: SearchCheck },
         ],
@@ -31,7 +31,7 @@ export const navGroups: NavGroupConfig[] = [
     {
         title: 'Transaksi & Audit',
         items: [
-            { id: 'riwayat', label: 'Riwayat Stor', icon: History },
+            { id: 'riwayat', label: 'Riwayat Setor', icon: History },
             { id: 'rules', label: 'Ketentuan & Rules', icon: FileText },
             { id: 'laporan', label: 'Laporan Saya', icon: Ticket },
         ],

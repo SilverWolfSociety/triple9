@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import {
-    Clock,
     ChevronLeft,
     ChevronRight,
     Eye,
@@ -179,11 +178,10 @@ export function DashboardView({
                             key={idx}
                             type="button"
                             onClick={() => setActiveSlideIndex(idx)}
-                            className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                                idx === activeSlideIndex
-                                    ? 'w-5 bg-neutral-900 dark:bg-neutral-100'
-                                    : 'w-1.5 bg-neutral-200 dark:bg-neutral-800 hover:bg-neutral-300'
-                            }`}
+                            className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${idx === activeSlideIndex
+                                ? 'w-5 bg-neutral-900 dark:bg-neutral-100'
+                                : 'w-1.5 bg-neutral-200 dark:bg-neutral-800 hover:bg-neutral-300'
+                                }`}
                             aria-label={`Ke slide ${idx + 1}`}
                         />
                     ))}
@@ -258,11 +256,11 @@ export function DashboardView({
                 </div>
             </div>
 
-            {/* 3. RINGKASAN VERIFIKASI STOR (4 Columns, subtle icons, clean typography) */}
+            {/* 3. RINGKASAN VERIFIKASI SETOR (4 Columns, subtle icons, clean typography) */}
             <div>
                 <div className="flex items-center justify-between mb-3">
                     <h2 className="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
-                        Ringkasan Verifikasi Stor
+                        Ringkasan Verifikasi Setor
                     </h2>
                 </div>
 
@@ -341,12 +339,12 @@ export function DashboardView({
                 </div>
             </div>
 
-            {/* 4. AKTIVITAS STOR TERAKHIR */}
+            {/* 4. AKTIVITAS SETORAN TERAKHIR */}
             <div className="rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 shadow-xs overflow-hidden transition-colors">
                 <div className="flex items-center justify-between px-5 py-4 border-b border-neutral-200/80 dark:border-neutral-800">
                     <div>
                         <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                            Aktivitas Stor Terakhir
+                            Aktivitas Setoran Terakhir
                         </h3>
                     </div>
 
@@ -366,17 +364,17 @@ export function DashboardView({
                             <img src="/images/icon/pending.png" alt="Pending" className="h-6 w-6 object-contain" />
                         </div>
                         <h4 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mb-1">
-                            Belum Ada Aktivitas Stor
+                            Belum Ada Aktivitas Setor
                         </h4>
                         <p className="text-xs text-neutral-500 dark:text-neutral-400 max-w-sm mb-4 leading-relaxed">
-                            Setiap pengajuan stor akun akan dicatat di sini secara transparan beserta status verifikasi dan reward saldo Anda.
+                            Setiap pengajuan setor akun akan dicatat di sini secara transparan beserta status verifikasi dan reward saldo Anda.
                         </p>
                         <button
                             type="button"
                             onClick={() => onNavigate('stor')}
                             className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 text-xs font-medium shadow-xs transition cursor-pointer"
                         >
-                            <span>Mulai Stor Akun Sekarang</span>
+                            <span>Mulai Setor Akun Sekarang</span>
                         </button>
                     </div>
                 ) : (
@@ -400,16 +398,15 @@ export function DashboardView({
                                         <td className="px-5 py-3 text-center align-middle">
                                             {item.status === 'pending' ? (
                                                 <div className="flex items-center justify-center" title="Pending">
-                                                    <Clock className="h-4 w-4 text-amber-500 dark:text-amber-400" />
+                                                    <img src="/images/icon/pending.png" alt="Pending" className="h-4 w-4 object-contain" />
                                                 </div>
                                             ) : (
-                                                <span className={`inline-block text-[11px] font-semibold uppercase ${
-                                                    item.status === 'diterima'
-                                                        ? 'text-emerald-600 dark:text-emerald-400'
-                                                        : item.status === 'ditolak'
-                                                            ? 'text-rose-600 dark:text-rose-400'
-                                                            : 'text-amber-600 dark:text-amber-400'
-                                                }`}>
+                                                <span className={`inline-block text-[11px] font-semibold uppercase ${item.status === 'diterima'
+                                                    ? 'text-emerald-600 dark:text-emerald-400'
+                                                    : item.status === 'ditolak'
+                                                        ? 'text-rose-600 dark:text-rose-400'
+                                                        : 'text-amber-600 dark:text-amber-400'
+                                                    }`}>
                                                     {item.status === 'dicek' ? 'Di Cek' : item.status}
                                                 </span>
                                             )}

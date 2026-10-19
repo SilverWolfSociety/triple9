@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, ChevronDown, Clock } from 'lucide-react';
+import { Search, ChevronDown } from 'lucide-react';
 import type { StorRecord, RiwayatFilter, JalurFilter, DayFilter } from '../types';
 
 interface RiwayatViewProps {
@@ -90,7 +90,7 @@ export function RiwayatView({
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2">
-                        {/* Dropdown Jalur (PW: zero1122 / PW: hehe1122) */}
+                        {/* Dropdown Jalur (PW: triple999 / PW: 999triple) */}
                         <div className="relative">
                             <button
                                 type="button"
@@ -100,9 +100,9 @@ export function RiwayatView({
                                 <span>
                                     {jalurFilter === 'all'
                                         ? 'Semua Jalur'
-                                        : jalurFilter === 'zero1122'
-                                        ? 'PW: zero1122'
-                                        : 'PW: hehe1122'}
+                                        : jalurFilter === 'triple9'
+                                        ? 'PW: triple9'
+                                        : 'PW: 9triple'}
                                 </span>
                                 <ChevronDown className="h-3.5 w-3.5 text-neutral-400" />
                             </button>
@@ -111,8 +111,8 @@ export function RiwayatView({
                                 <div className="absolute left-0 sm:right-0 sm:left-auto mt-1.5 w-44 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-1 shadow-lg z-20 text-xs">
                                     {[
                                         { id: 'all' as const, label: 'Semua Jalur' },
-                                        { id: 'zero1122' as const, label: 'PW: zero1122' },
-                                        { id: 'hehe1122' as const, label: 'PW: hehe1122' },
+                                        { id: 'triple9' as const, label: 'PW: triple9' },
+                                        { id: '9triple' as const, label: 'PW: 9triple' },
                                     ].map((item) => (
                                         <button
                                             key={item.id}
@@ -189,7 +189,7 @@ export function RiwayatView({
                                         <td className="px-4 py-3 text-center align-middle">
                                             {item.status === 'pending' ? (
                                                 <div className="flex items-center justify-center" title="Pending">
-                                                    <Clock className="h-4 w-4 text-amber-500 dark:text-amber-400" />
+                                                    <img src="/images/icon/pending.png" alt="Pending" className="h-4 w-4 object-contain" />
                                                 </div>
                                             ) : (
                                                 <span className={`inline-block text-[11px] font-semibold uppercase ${

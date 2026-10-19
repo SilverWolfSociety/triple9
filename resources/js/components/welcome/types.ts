@@ -12,7 +12,7 @@ export interface NavGroupConfig {
     items: NavItemConfig[];
 }
 
-export type StorRoom = 'zero1122' | 'hehe1122';
+export type StorRoom = 'triple9' | '9triple' | 'triple999' | '999triple' | 'zero1122' | 'hehe1122';
 
 export interface StorRecord {
     id: string;

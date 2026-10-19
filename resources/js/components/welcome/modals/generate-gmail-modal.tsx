@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, Check, Copy } from 'lucide-react';
+import { X, Check } from 'lucide-react';
 
 interface GenerateGmailModalProps {
     isOpen: boolean;
@@ -93,7 +93,7 @@ export function GenerateGmailModal({
                             <button
                                 type="button"
                                 onClick={() => copyToClipboard(email, idx)}
-                                className="flex items-center gap-1 px-2 py-1 rounded text-[11px] font-medium text-neutral-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition"
+                                className="flex items-center gap-1 px-2 py-1 rounded text-[11px] font-medium text-neutral-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition cursor-pointer"
                             >
                                 {copiedIndex === idx ? (
                                     <>
@@ -101,7 +101,11 @@ export function GenerateGmailModal({
                                         <span className="text-emerald-600">Disalin</span>
                                     </>
                                 ) : (
-                                    <Copy className="h-3 w-3" />
+                                    <img
+                                        src="/images/icon/copy.png"
+                                        alt="Salin"
+                                        className="h-3.5 w-3.5 object-contain shrink-0"
+                                    />
                                 )}
                             </button>
                         </div>
@@ -113,7 +117,7 @@ export function GenerateGmailModal({
                     <button
                         type="button"
                         onClick={() => copyToClipboard(generatedGmails.join('\n'))}
-                        className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-medium border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 transition"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-medium border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 transition cursor-pointer"
                     >
                         {copiedAll ? (
                             <>
@@ -122,7 +126,11 @@ export function GenerateGmailModal({
                             </>
                         ) : (
                             <>
-                                <Copy className="h-3.5 w-3.5" />
+                                <img
+                                    src="/images/icon/copy.png"
+                                    alt="Salin Semua"
+                                    className="h-4 w-4 object-contain shrink-0"
+                                />
                                 <span>Salin Semua</span>
                             </>
                         )}

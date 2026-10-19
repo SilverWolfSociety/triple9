@@ -18,7 +18,7 @@ export * from './modals/account-settings-modal';
 
 // Views
 export * from './views/dashboard-view';
-export * from './views/stor-view';
+export * from './views/setor-view';
 export * from './views/saldo-view';
 export * from './views/checker-view';
 export * from './views/riwayat-view';

@@ -8,7 +8,7 @@ interface StorViewProps {
 }
 
 export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps) {
-    const [selectedRoom, setSelectedRoom] = useState<StorRoom>('zero1122');
+    const [selectedRoom, setSelectedRoom] = useState<StorRoom>('triple9');
     const [storInput, setStorInput] = useState('');
     const [isGenerateModalOpen, setIsGenerateModalOpen] = useState(false);
     const [generateCount, setGenerateCount] = useState(5);
@@ -18,7 +18,7 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
     const handleGenerateGmail = (count: number) => {
         setIsGenerating(true);
         setTimeout(() => {
-            const prefixes = ['zerogtg', 'account', 'validmail', 'alphastore', 'usergtg', 'speedgtg', 'turbomail', 'primeacc'];
+            const prefixes = ['triple9', '9triple', 'triple9acc', 'triple9mail', 'user9', 'speed9', 'validmail', 'primeacc'];
             const results: string[] = [];
             for (let i = 0; i < count; i++) {
                 const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
@@ -57,7 +57,7 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                 room: selectedRoom,
                 status: 'pending',
                 date: todayStr,
-                reward: 4300,
+                reward: 5000,
             }));
             onAddStorRecords(newRecords);
             setStorInput('');
@@ -71,13 +71,13 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
 
     return (
         <div className="w-full space-y-4 sm:space-y-5">
-            {/* Banner Rules: Cek Rules dulu sebelum stor */}
+            {/* Banner Rules: Cek Rules dulu sebelum setor */}
             <div className="rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 px-5 min-h-[68px] sm:h-18 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 py-3.5 sm:py-0">
                 <div className="flex items-center gap-3">
                     <img src="/images/icon/notes.png" alt="Notes" className="h-6 w-6 object-contain shrink-0" />
                     <div>
                         <h2 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">
-                            Cek rules dulu sebelum stor gmail
+                            Cek rules dulu sebelum setor gmail
                         </h2>
                     </div>
                 </div>
@@ -110,7 +110,7 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                     </div>
                     <div className="pl-6 space-y-1">
                         <p className="font-mono font-bold text-neutral-900 dark:text-neutral-100 text-sm tracking-wide">
-                            zero1122 <span className="text-xs font-normal text-neutral-500 dark:text-neutral-400 font-sans">ATAU</span> hehe1122
+                            triple9 <span className="text-xs font-normal text-neutral-500 dark:text-neutral-400 font-sans">ATAU</span> 9triple
                         </p>
                         <p className="text-[11px] text-neutral-600 dark:text-neutral-400">
                             Pilih Salah satu password &amp; setorkan sesuai Room
@@ -141,7 +141,7 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                     </ol>
 
                     <p className="text-[11px] text-neutral-500 dark:text-neutral-400 pt-1">
-                        Password wajib: <code className="font-mono font-semibold text-neutral-800 dark:text-neutral-200">zero1122</code> ATAU <code className="font-mono font-semibold text-neutral-800 dark:text-neutral-200">hehe1122</code> Pilih Salah satu password &amp; setorkan sesuai Room
+                        Password wajib: <code className="font-mono font-semibold text-neutral-800 dark:text-neutral-200">triple9</code> ATAU <code className="font-mono font-semibold text-neutral-800 dark:text-neutral-200">9triple</code> Pilih Salah satu password &amp; setorkan sesuai Room
                     </p>
 
                     <div className="pt-1">
@@ -161,8 +161,8 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                     {/* Room 1 */}
                     <div
-                        onClick={() => setSelectedRoom('zero1122')}
-                        className={`rounded-xl border p-4 cursor-pointer transition flex items-start gap-3.5 bg-white dark:bg-neutral-900 ${selectedRoom === 'zero1122'
+                        onClick={() => setSelectedRoom('triple9')}
+                        className={`rounded-xl border p-4 cursor-pointer transition flex items-start gap-3.5 bg-white dark:bg-neutral-900 ${selectedRoom === 'triple9'
                             ? 'border-blue-600 dark:border-blue-500 ring-1 ring-blue-600 dark:ring-blue-500 shadow-xs'
                             : 'border-neutral-200/80 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700'
                             }`}
@@ -171,9 +171,9 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between">
                                 <h4 className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-neutral-100">
-                                    PW: zero1122
+                                    PW: triple9
                                 </h4>
-                                {selectedRoom === 'zero1122' && (
+                                {selectedRoom === 'triple9' && (
                                     <span className="h-2 w-2 shrink-0 aspect-square rounded-full bg-blue-600 dark:bg-blue-400 animate-pulse" />
                                 )}
                             </div>
@@ -181,15 +181,15 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                                 Untuk Gmail dengan status Good
                             </p>
                             <div className="text-xs font-semibold text-neutral-900 dark:text-neutral-100 mt-1.5">
-                                Harga: Rp4.300
+                                Harga: Rp5.000
                             </div>
                         </div>
                     </div>
 
                     {/* Room 2 */}
                     <div
-                        onClick={() => setSelectedRoom('hehe1122')}
-                        className={`rounded-xl border p-4 cursor-pointer transition flex items-start gap-3.5 bg-white dark:bg-neutral-900 ${selectedRoom === 'hehe1122'
+                        onClick={() => setSelectedRoom('9triple')}
+                        className={`rounded-xl border p-4 cursor-pointer transition flex items-start gap-3.5 bg-white dark:bg-neutral-900 ${selectedRoom === '9triple'
                             ? 'border-blue-600 dark:border-blue-500 ring-1 ring-blue-600 dark:ring-blue-500 shadow-xs'
                             : 'border-neutral-200/80 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700'
                             }`}
@@ -198,9 +198,9 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between">
                                 <h4 className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-neutral-100">
-                                    PW: hehe1122
+                                    PW: 9triple
                                 </h4>
-                                {selectedRoom === 'hehe1122' && (
+                                {selectedRoom === '9triple' && (
                                     <span className="h-2 w-2 shrink-0 aspect-square rounded-full bg-blue-600 dark:bg-blue-400 animate-pulse" />
                                 )}
                             </div>
@@ -208,7 +208,7 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                                 Untuk Gmail dengan status Good
                             </p>
                             <div className="text-xs font-semibold text-neutral-900 dark:text-neutral-100 mt-1.5">
-                                Harga: Rp4.300
+                                Harga: Rp5.000
                             </div>
                         </div>
                     </div>
@@ -220,7 +220,7 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                         rows={11}
                         value={storInput}
                         onChange={(e) => setStorInput(e.target.value)}
-                        placeholder={`zerogtg1@gmail.com\nzerogtg2@gmail.com`}
+                        placeholder={`triple9@gmail.com\n9triple@gmail.com`}
                         spellCheck={false}
                         className="w-full min-h-[240px] rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-950 p-4 text-xs sm:text-sm text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition leading-relaxed shadow-2xs"
                     />
@@ -242,7 +242,7 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                             </span>{' '}
                             |{' '}
                             <span className="text-blue-600 dark:text-blue-400 font-semibold">
-                                Rp4.300 jika di ACC
+                                Rp5.000 jika di ACC
                             </span>
                         </div>
                         <div className="text-[11px] text-neutral-400 dark:text-neutral-500">

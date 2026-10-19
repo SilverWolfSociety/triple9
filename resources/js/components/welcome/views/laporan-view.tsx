@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Ticket, CheckCircle2, Clock } from 'lucide-react';
+
 import type { TicketRecord } from '../types';
 import { CreateTicketModal } from '../modals/create-ticket-modal';
 
@@ -55,7 +55,7 @@ export function LaporanView({ userName }: LaporanViewProps) {
                         <span className="text-xs font-bold text-neutral-600 dark:text-neutral-400 tracking-wider">
                             TIKET SAYA
                         </span>
-                        <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400">
+                        <span className="text-xs font-semibold text-neutral-500 dark:text-neutral-400 font-tabular-nums">
                             {tickets.length}
                         </span>
                     </div>
@@ -72,9 +72,9 @@ export function LaporanView({ userName }: LaporanViewProps) {
                                 <div
                                     key={t.id}
                                     onClick={() => setSelectedTicketId(t.id)}
-                                    className={`p-3 rounded-xl border transition cursor-pointer text-xs ${selectedTicketId === t.id
-                                            ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-950/30 dark:border-blue-500 shadow-2xs'
-                                            : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 hover:bg-neutral-50 dark:hover:bg-neutral-800'
+                                    className={`p-3 rounded-xl border transition cursor-pointer text-xs bg-white dark:bg-neutral-950 ${selectedTicketId === t.id
+                                            ? 'border-blue-600 dark:border-blue-500 shadow-2xs'
+                                            : 'border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-800'
                                         }`}
                                 >
                                     <div className="flex items-center justify-between mb-1.5">
@@ -94,9 +94,9 @@ export function LaporanView({ userName }: LaporanViewProps) {
                                         </span>
                                         <span title={t.status === 'selesai' ? 'Selesai' : t.status === 'diproses' ? 'Diproses' : 'Menunggu'}>
                                             {t.status === 'selesai' ? (
-                                                <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                                                <img src="/images/icon/checklist.png" alt="Selesai" className="h-4 w-4 object-contain" />
                                             ) : (
-                                                <Clock className="h-4 w-4 text-amber-500 dark:text-amber-400" />
+                                                <img src="/images/icon/pending.png" alt="Pending" className="h-4 w-4 object-contain" />
                                             )}
                                         </span>
                                     </div>
@@ -110,7 +110,11 @@ export function LaporanView({ userName }: LaporanViewProps) {
                 <div className="lg:col-span-8 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 p-5 shadow-xs flex flex-col min-h-[420px]">
                     {!selectedTicket ? (
                         <div className="flex-1 flex flex-col items-center justify-center text-center p-8 space-y-3">
-                            <Ticket className="h-10 w-10 text-neutral-300 dark:text-neutral-600 stroke-[1.5]" />
+                            <img
+                                src="/images/icon/ticket.png"
+                                alt="Ticket"
+                                className="h-10 w-10 sm:h-12 sm:w-12 object-contain"
+                            />
                             <p className="text-xs sm:text-sm text-neutral-400 dark:text-neutral-500">
                                 Pilih tiket di sebelah kiri atau buat laporan baru.
                             </p>
@@ -138,9 +142,9 @@ export function LaporanView({ userName }: LaporanViewProps) {
                                     className="self-start sm:self-auto flex items-center"
                                 >
                                     {selectedTicket.status === 'selesai' ? (
-                                        <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                                        <img src="/images/icon/checklist.png" alt="Selesai" className="h-5 w-5 object-contain" />
                                     ) : (
-                                        <Clock className="h-5 w-5 text-amber-500 dark:text-amber-400" />
+                                        <img src="/images/icon/pending.png" alt="Pending" className="h-5 w-5 object-contain" />
                                     )}
                                 </div>
                             </div>
@@ -187,7 +191,7 @@ export function LaporanView({ userName }: LaporanViewProps) {
                                     </div>
                                     <div className="p-3 rounded-xl bg-neutral-50/70 dark:bg-neutral-800/40 border border-neutral-200/80 dark:border-neutral-800">
                                         <span className="text-[11px] text-neutral-400 block mb-0.5">ID Laporan</span>
-                                        <span className="text-xs font-mono font-medium text-neutral-900 dark:text-neutral-100">#{selectedTicket.id}</span>
+                                        <span className="text-xs font-medium text-neutral-900 dark:text-neutral-100">#{selectedTicket.id}</span>
                                     </div>
                                 </div>
                             </div>

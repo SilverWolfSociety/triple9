@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Users, Trophy, Check, Copy } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 export function ReferralView() {
     const [referralCodeCopied, setReferralCodeCopied] = useState(false);
@@ -68,33 +68,57 @@ export function ReferralView() {
 
             {/* 3 Summary Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-                <div className="rounded-xl bg-white dark:bg-neutral-900 p-4 sm:p-5 border border-neutral-200/80 dark:border-neutral-800 shadow-xs hover:border-neutral-300 dark:hover:border-neutral-700 transition">
-                    <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-neutral-500 dark:text-neutral-400">
-                        <Users className="h-4 w-4 text-blue-500 dark:text-blue-400" />
-                        <span>Total Diundang</span>
+                <div className="group flex flex-col justify-between rounded-xl bg-white dark:bg-neutral-900 p-4.5 sm:p-5 border border-neutral-200/80 dark:border-neutral-800 shadow-xs hover:border-neutral-300 dark:hover:border-neutral-700 transition">
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                            Total Diundang
+                        </span>
+                        <img
+                            src="/images/icon/person_yellow.png"
+                            alt="Total Diundang"
+                            className="h-7 w-7 sm:h-8 sm:w-8 object-contain shrink-0"
+                        />
                     </div>
-                    <div className="mt-2 text-xl sm:text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-                        0
-                    </div>
-                </div>
-
-                <div className="rounded-xl bg-white dark:bg-neutral-900 p-4 sm:p-5 border border-neutral-200/80 dark:border-neutral-800 shadow-xs hover:border-neutral-300 dark:hover:border-neutral-700 transition">
-                    <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-neutral-500 dark:text-neutral-400">
-                        <Users className="h-4 w-4 text-emerald-500 dark:text-emerald-400" />
-                        <span>Referral Berhasil</span>
-                    </div>
-                    <div className="mt-2 text-xl sm:text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-                        0
+                    <div className="flex items-baseline justify-between mt-1">
+                        <span className="text-2xl sm:text-3xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100 font-tabular-nums">
+                            0
+                        </span>
                     </div>
                 </div>
 
-                <div className="rounded-xl bg-white dark:bg-neutral-900 p-4 sm:p-5 border border-neutral-200/80 dark:border-neutral-800 shadow-xs hover:border-neutral-300 dark:hover:border-neutral-700 transition">
-                    <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-neutral-500 dark:text-neutral-400">
-                        <Trophy className="h-4 w-4 text-amber-500 dark:text-amber-400" />
-                        <span>Total Bonus Diterima</span>
+                <div className="group flex flex-col justify-between rounded-xl bg-white dark:bg-neutral-900 p-4.5 sm:p-5 border border-neutral-200/80 dark:border-neutral-800 shadow-xs hover:border-neutral-300 dark:hover:border-neutral-700 transition">
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                            Referral Berhasil
+                        </span>
+                        <img
+                            src="/images/icon/person_green.png"
+                            alt="Referral Berhasil"
+                            className="h-7 w-7 sm:h-8 sm:w-8 object-contain shrink-0"
+                        />
                     </div>
-                    <div className="mt-2 text-xl sm:text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-                        Rp0
+                    <div className="flex items-baseline justify-between mt-1">
+                        <span className="text-2xl sm:text-3xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100 font-tabular-nums">
+                            0
+                        </span>
+                    </div>
+                </div>
+
+                <div className="group flex flex-col justify-between rounded-xl bg-white dark:bg-neutral-900 p-4.5 sm:p-5 border border-neutral-200/80 dark:border-neutral-800 shadow-xs hover:border-neutral-300 dark:hover:border-neutral-700 transition">
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                            Total Bonus Diterima
+                        </span>
+                        <img
+                            src="/images/icon/bonus.png"
+                            alt="Total Bonus Diterima"
+                            className="h-7 w-7 sm:h-8 sm:w-8 object-contain shrink-0"
+                        />
+                    </div>
+                    <div className="flex items-baseline justify-between mt-1">
+                        <span className="text-2xl sm:text-3xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100 font-tabular-nums">
+                            Rp0
+                        </span>
                     </div>
                 </div>
             </div>
@@ -121,7 +145,15 @@ export function ReferralView() {
                         title={referralCodeCopied ? 'Tersalin' : 'Salin Kode'}
                         className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-700 text-xs font-medium text-neutral-700 dark:text-neutral-200 transition shadow-2xs cursor-pointer active:scale-95 shrink-0"
                     >
-                        {referralCodeCopied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4 text-neutral-500" />}
+                        {referralCodeCopied ? (
+                            <Check className="h-4 w-4 text-emerald-500" />
+                        ) : (
+                            <img
+                                src="/images/icon/copy.png"
+                                alt="Salin Kode"
+                                className="h-4 w-4 object-contain shrink-0"
+                            />
+                        )}
                     </button>
                 </div>
 
@@ -141,7 +173,15 @@ export function ReferralView() {
                         title={referralLinkCopied ? 'Tersalin' : 'Salin Link Undangan'}
                         className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-700 text-xs font-medium text-neutral-700 dark:text-neutral-200 transition shadow-2xs shrink-0 cursor-pointer active:scale-95"
                     >
-                        {referralLinkCopied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4 text-neutral-500" />}
+                        {referralLinkCopied ? (
+                            <Check className="h-4 w-4 text-emerald-500" />
+                        ) : (
+                            <img
+                                src="/images/icon/copy.png"
+                                alt="Salin Link Undangan"
+                                className="h-4 w-4 object-contain shrink-0"
+                            />
+                        )}
                     </button>
                 </div>
 

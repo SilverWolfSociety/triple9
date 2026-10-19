@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SearchCheck, Search, Copy, ChevronDown, Trash2 } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 export function CheckerView() {
     const [checkerInput, setCheckerInput] = useState('');
@@ -69,8 +69,12 @@ export function CheckerView() {
         <div className="w-full space-y-4">
             <div className="rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 p-5 sm:p-7 lg:p-8 shadow-xs space-y-5">
                 <div className="pb-3 border-b border-neutral-100 dark:border-neutral-800">
-                    <div className="flex items-center gap-2">
-                        <SearchCheck className="h-5 w-5 text-blue-600 dark:text-blue-400 shrink-0" />
+                    <div className="flex items-center gap-2.5">
+                        <img
+                            src="/images/icon/find_checker.png"
+                            alt="Email Checker"
+                            className="h-6 w-6 object-contain shrink-0"
+                        />
                         <h2 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">
                             Email Checker
                         </h2>
@@ -109,7 +113,11 @@ export function CheckerView() {
                         disabled={isChecking}
                         className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white px-4 py-2 text-xs font-semibold shadow-xs transition cursor-pointer disabled:opacity-60"
                     >
-                        <Search className="h-3.5 w-3.5" />
+                        <img
+                            src="/images/icon/find_checker.png"
+                            alt="Checker"
+                            className="h-4 w-4 object-contain shrink-0"
+                        />
                         <span>{isChecking ? 'Memeriksa...' : 'Mulai Checker'}</span>
                     </button>
 
@@ -120,7 +128,11 @@ export function CheckerView() {
                             onClick={() => setIsSalinDropdownOpen(!isSalinDropdownOpen)}
                             className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-3.5 py-2 text-xs font-medium transition cursor-pointer shadow-2xs"
                         >
-                            <Copy className="h-3.5 w-3.5" />
+                            <img
+                                src="/images/icon/copy.png"
+                                alt="Salin"
+                                className="h-4 w-4 object-contain shrink-0"
+                            />
                             <ChevronDown className="h-3 w-3 text-neutral-400" />
                         </button>
                         {isSalinDropdownOpen && (
@@ -147,9 +159,14 @@ export function CheckerView() {
                     <button
                         type="button"
                         onClick={handleClear}
+                        title="Hapus"
                         className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 dark:hover:bg-rose-950/30 text-neutral-700 dark:text-neutral-300 px-3.5 py-2 text-xs font-medium transition cursor-pointer shadow-2xs"
                     >
-                        <Trash2 className="h-3.5 w-3.5" />
+                        <img
+                            src="/images/icon/trash.png"
+                            alt="Hapus"
+                            className="h-4 w-4 object-contain shrink-0"
+                        />
                     </button>
                 </div>
 

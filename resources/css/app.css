@@ -158,3 +158,12 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
+[data-sidebar="content"] {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+[data-sidebar="content"]::-webkit-scrollbar {
+    display: none;
+}

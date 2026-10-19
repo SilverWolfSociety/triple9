@@ -70,7 +70,7 @@ export function WelcomeSidebar({
             </SidebarHeader>
 
             {/* Navigation Groups with animated group labels and icon tooltips */}
-            <SidebarContent>
+            <SidebarContent className="no-scrollbar">
                 {navGroups.map((group) => (
                     <SidebarGroup key={group.title} className="px-2 py-0">
                         <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
@@ -149,14 +149,17 @@ export function WelcomeSidebar({
                                         </DropdownMenuItem>
                                     )}
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem asChild>
+                                    <DropdownMenuItem
+                                        asChild
+                                        className="cursor-pointer text-red-600 dark:text-red-400 focus:bg-red-500/10 dark:focus:bg-red-500/20 focus:text-red-600 dark:focus:text-red-400"
+                                    >
                                         <Link
                                             href="/logout"
                                             method="post"
                                             as="button"
-                                            className="flex w-full items-center gap-2 cursor-pointer text-destructive focus:text-destructive"
+                                            className="flex w-full items-center gap-2 cursor-pointer text-red-600 dark:text-red-400 font-medium"
                                         >
-                                            <LogOut className="h-4 w-4" />
+                                            <LogOut className="h-4 w-4 text-red-600 dark:text-red-400 shrink-0" />
                                             <span>Keluar</span>
                                         </Link>
                                     </DropdownMenuItem>

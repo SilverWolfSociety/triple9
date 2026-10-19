@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { X, Check } from 'lucide-react';
 import type { EwalletType } from '../types';
+import { ewalletOptions } from '../constants';
 
 interface WithdrawModalProps {
     isOpen: boolean;
     onClose: () => void;
     currentBalance: number;
     selectedEwallet: EwalletType;
-    savedEwalletNumber: string;
+    onChangeEwallet?: (wallet: EwalletType) => void;
+    savedEwalletNumbers?: Record<string, string>;
+    onSaveEwalletNumber?: (wallet: EwalletType, number: string) => void;
     onConfirmWithdraw: (amount: number, account: string) => void;
 }
 
@@ -18,20 +21,43 @@ export function WithdrawModal({
     onClose,
     currentBalance,
     selectedEwallet,
-    savedEwalletNumber,
+    onChangeEwallet,
+    savedEwalletNumbers,
+    onSaveEwalletNumber,
     onConfirmWithdraw,
 }: WithdrawModalProps) {
-    const [withdrawAmount, setWithdrawAmount] = useState('');
+    const [currentWallet, setCurrentWallet] = useState<EwalletType>(selectedEwallet);
     const [accountInput, setAccountInput] = useState('');
+    const [withdrawAmount, setWithdrawAmount] = useState('');
+    const [isSavedSuccess, setIsSavedSuccess] = useState(false);
 
     useEffect(() => {
         if (isOpen) {
-            setAccountInput(savedEwalletNumber || '');
+            setCurrentWallet(selectedEwallet);
+            setAccountInput(savedEwalletNumbers?.[selectedEwallet] || '');
             setWithdrawAmount('');
+            setIsSavedSuccess(false);
         }
-    }, [isOpen, savedEwalletNumber]);
+    }, [isOpen, selectedEwallet, savedEwalletNumbers]);
 
     if (!isOpen) return null;
+
+    const handleSelectWallet = (wallet: EwalletType) => {
+        setCurrentWallet(wallet);
+        onChangeEwallet?.(wallet);
+        setAccountInput(savedEwalletNumbers?.[wallet] || '');
+        setIsSavedSuccess(false);
+    };
+
+    const handleSaveEwallet = () => {
+        if (accountInput.length >= 10) {
+            onSaveEwalletNumber?.(currentWallet, accountInput);
+            setIsSavedSuccess(true);
+            setTimeout(() => setIsSavedSuccess(false), 2000);
+        } else {
+            alert('Nomor e-wallet harus terdiri dari 10-15 digit angka.');
+        }
+    };
 
     const handleConfirm = () => {
         const numAmount = Number(withdrawAmount);
@@ -62,7 +88,7 @@ export function WithdrawModal({
                 if (e.target === e.currentTarget) onClose();
             }}
         >
-            <div className="relative w-full max-w-md rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 p-6 shadow-xl space-y-4 animate-in zoom-in-95 duration-150">
+            <div className="relative w-full max-w-lg rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 p-6 shadow-xl space-y-4 animate-in zoom-in-95 duration-150 max-h-[92vh] overflow-y-auto no-scrollbar">
                 <div className="flex items-center justify-between pb-3 border-b border-neutral-100 dark:border-neutral-800">
                     <div className="flex items-center gap-2.5">
                         <img src="/images/icon/wallet.png" alt="Tarik Saldo" className="h-5 w-5 object-contain shrink-0" />
@@ -75,13 +101,14 @@ export function WithdrawModal({
                     <button
                         type="button"
                         onClick={onClose}
-                        className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition"
+                        className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition cursor-pointer"
                     >
                         <X className="h-4 w-4" />
                     </button>
                 </div>
 
-                <div className="space-y-3.5 text-xs">
+                <div className="space-y-4 text-xs">
+                    {/* Saldo Tersedia */}
                     <div className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-200/80 dark:border-neutral-800 flex justify-between items-center">
                         <span className="text-neutral-500 dark:text-neutral-400">Saldo Tersedia:</span>
                         <span className="font-bold text-neutral-900 dark:text-neutral-100 text-sm font-tabular-nums">
@@ -89,12 +116,25 @@ export function WithdrawModal({
                         </span>
                     </div>
 
-                    <div>
-                        <label className="flex items-center gap-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-300 mb-1.5">
-                            <span>Tujuan Penarikan</span>
-                            <span className="inline-flex items-center gap-1.5 font-semibold text-neutral-900 dark:text-neutral-100">
-                                <span className="flex h-5 w-9 items-center justify-center rounded-md bg-neutral-100 dark:bg-neutral-800 p-0.5 shrink-0 border border-neutral-200/80 dark:border-neutral-700/80 shadow-2xs">
-                                    {selectedEwallet === 'GoPay' ? (
+                    {/* E-Wallet Selection & Saved Number */}
+                    <div className="space-y-2.5">
+                        <label className="block text-xs font-medium text-slate-700 dark:text-slate-300">
+                            Tujuan Penarikan
+                        </label>
+
+                        {/* E-wallet selector tabs */}
+                        <div className="grid grid-cols-4 gap-2">
+                            {ewalletOptions.map((wallet) => (
+                                <button
+                                    key={wallet.id}
+                                    type="button"
+                                    onClick={() => handleSelectWallet(wallet.id)}
+                                    className={`flex h-11 sm:h-12 w-full items-center justify-center p-2 rounded-xl transition cursor-pointer border ${currentWallet === wallet.id
+                                        ? 'bg-neutral-50 dark:bg-neutral-800/80 border-blue-500 dark:border-blue-400 shadow-xs ring-1 ring-blue-500/30'
+                                        : 'bg-white dark:bg-neutral-900 border-neutral-200/80 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-800/60'
+                                        }`}
+                                >
+                                    {wallet.id === 'GoPay' ? (
                                         <>
                                             <img
                                                 src="/images/gopay.png"
@@ -107,7 +147,7 @@ export function WithdrawModal({
                                                 className="h-full w-full object-contain hidden dark:block"
                                             />
                                         </>
-                                    ) : selectedEwallet === 'OVO' ? (
+                                    ) : wallet.id === 'OVO' ? (
                                         <>
                                             <img
                                                 src="/images/ovo.png"
@@ -122,25 +162,45 @@ export function WithdrawModal({
                                         </>
                                     ) : (
                                         <img
-                                            src={`/images/${selectedEwallet.toLowerCase()}.png`}
-                                            alt={selectedEwallet}
+                                            src={wallet.logo}
+                                            alt={wallet.id}
                                             className="h-full w-full object-contain"
                                         />
                                     )}
-                                </span>
-                                <span>({selectedEwallet})</span>
-                            </span>
-                        </label>
-                        <input
-                            type="text"
-                            value={accountInput}
-                            onChange={(e) => setAccountInput(e.target.value.replace(/\D/g, ''))}
-                            placeholder="Masukkan nomor e-wallet tujuan"
-                            maxLength={15}
-                            className="w-full rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-950 p-2.5 text-xs text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 font-sans placeholder:font-sans focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition"
-                        />
+                                </button>
+                            ))}
+                        </div>
+
+                        <p className="text-[11px] text-neutral-500 dark:text-neutral-400 leading-tight">
+                            Simpan nomor {currentWallet} Anda agar tidak perlu mengetik ulang setiap penarikan. Hanya angka, 10-15 digit.
+                        </p>
+
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="text"
+                                value={accountInput}
+                                onChange={(e) => setAccountInput(e.target.value.replace(/\D/g, ''))}
+                                placeholder="081234567890"
+                                maxLength={15}
+                                className="flex-1 rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-950 px-3.5 py-2.5 text-xs text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition shadow-2xs"
+                            />
+                            <button
+                                type="button"
+                                onClick={handleSaveEwallet}
+                                title={isSavedSuccess ? 'Tersimpan!' : 'Simpan nomor'}
+                                aria-label="Simpan nomor"
+                                className="inline-flex items-center justify-center p-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white shadow-xs transition cursor-pointer shrink-0"
+                            >
+                                {isSavedSuccess ? (
+                                    <Check className="h-4 w-4" />
+                                ) : (
+                                    <img src="/images/icon/save.png" alt="Simpan" className="h-4 w-4 object-contain shrink-0" />
+                                )}
+                            </button>
+                        </div>
                     </div>
 
+                    {/* Nominal Penarikan */}
                     <div>
                         <div className="flex items-center justify-between mb-1.5">
                             <label className="block text-xs font-medium text-slate-700 dark:text-slate-300">
@@ -207,14 +267,14 @@ export function WithdrawModal({
                     <button
                         type="button"
                         onClick={onClose}
-                        className="px-4 py-2 rounded-xl text-xs font-medium border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 transition"
+                        className="px-4 py-2 rounded-xl text-xs font-medium border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 transition cursor-pointer"
                     >
                         Batal
                     </button>
                     <button
                         type="button"
                         onClick={handleConfirm}
-                        className="px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-xs transition"
+                        className="px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-xs transition cursor-pointer"
                     >
                         Konfirmasi Penarikan
                     </button>

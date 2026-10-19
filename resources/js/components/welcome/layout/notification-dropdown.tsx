@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import {
     Bell,
-    CheckCheck,
-    Trash2,
     X,
     ChevronRight,
     BellOff,
@@ -17,8 +15,8 @@ interface NotificationDropdownProps {
 const initialNotifications: NotificationItem[] = [
     {
         id: 'notif-1',
-        title: 'Reward Stor Diterima',
-        message: 'Akun google.sec***@gmail.com (PW: hehe1122) berhasil disetujui. Reward +Rp4.500 telah masuk ke saldo.',
+        title: 'Reward Setor Diterima',
+        message: 'Akun google.sec***@gmail.com (PW: 9triple) berhasil disetujui. Reward +Rp5.000 telah masuk ke saldo.',
         time: '5 menit lalu',
         type: 'reward',
         read: false,
@@ -35,8 +33,8 @@ const initialNotifications: NotificationItem[] = [
     },
     {
         id: 'notif-3',
-        title: 'Event Bonus Rate Hehe1122! 🔥',
-        message: 'Rate stor untuk jalur hehe1122 naik menjadi Rp4.800 per akun sampai pukul 23:59 WIB hari ini.',
+        title: 'Event Bonus Rate 9triple!',
+        message: 'Rate setor untuk jalur 9triple naik menjadi Rp5.000 per akun sampai pukul 23:59 WIB hari ini.',
         time: '2 jam lalu',
         type: 'bonus',
         read: false,
@@ -213,10 +211,14 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
                                     <button
                                         type="button"
                                         onClick={markAllAsRead}
-                                        className="text-[11px] font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 inline-flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-blue-50 dark:hover:bg-blue-950/50 transition cursor-pointer"
+                                        className="text-[11px] font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 inline-flex items-center gap-1.5 px-1.5 py-1 rounded-md hover:bg-slate-100 dark:hover:bg-zinc-800 transition cursor-pointer"
                                         title="Tandai semua telah dibaca"
                                     >
-                                        <CheckCheck className="h-3 w-3" />
+                                        <img
+                                            src="/images/icon/checklist_notif.png"
+                                            alt="Tandai dibaca"
+                                            className="h-3.5 w-3.5 object-contain shrink-0"
+                                        />
                                         <span>Tandai dibaca</span>
                                     </button>
                                 )}
@@ -225,10 +227,14 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
                                     <button
                                         type="button"
                                         onClick={clearAll}
-                                        className="p-1 rounded-md text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition cursor-pointer"
+                                        className="p-1 rounded-md hover:bg-slate-100 dark:hover:bg-zinc-800 transition cursor-pointer"
                                         title="Hapus semua notifikasi"
                                     >
-                                        <Trash2 className="h-3.5 w-3.5" />
+                                        <img
+                                            src="/images/icon/trash.png"
+                                            alt="Hapus semua notifikasi"
+                                            className="h-3.5 w-3.5 object-contain shrink-0"
+                                        />
                                     </button>
                                 ) : (
                                     <button
@@ -249,8 +255,8 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
                                 type="button"
                                 onClick={() => setActiveTab('all')}
                                 className={`flex-1 py-1 px-2.5 rounded-md font-medium transition cursor-pointer ${activeTab === 'all'
-                                        ? 'bg-white dark:bg-zinc-700 text-slate-900 dark:text-slate-100 shadow-xs'
-                                        : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                                    ? 'bg-white dark:bg-zinc-700 text-slate-900 dark:text-slate-100 shadow-xs'
+                                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                                     }`}
                             >
                                 Semua ({notifications.length})
@@ -259,8 +265,8 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
                                 type="button"
                                 onClick={() => setActiveTab('unread')}
                                 className={`flex-1 py-1 px-2.5 rounded-md font-medium transition cursor-pointer ${activeTab === 'unread'
-                                        ? 'bg-white dark:bg-zinc-700 text-slate-900 dark:text-slate-100 shadow-xs'
-                                        : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                                    ? 'bg-white dark:bg-zinc-700 text-slate-900 dark:text-slate-100 shadow-xs'
+                                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                                     }`}
                             >
                                 Belum Dibaca ({unreadCount})
@@ -309,8 +315,8 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
                                         <div className="flex items-center gap-1.5 mb-0.5">
                                             <p
                                                 className={`text-xs truncate ${!item.read
-                                                        ? 'font-semibold text-slate-900 dark:text-slate-100'
-                                                        : 'font-medium text-slate-700 dark:text-slate-300'
+                                                    ? 'font-semibold text-slate-900 dark:text-slate-100'
+                                                    : 'font-medium text-slate-700 dark:text-slate-300'
                                                     }`}
                                             >
                                                 {item.title}
