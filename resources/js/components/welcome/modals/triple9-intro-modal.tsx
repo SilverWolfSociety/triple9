@@ -194,7 +194,7 @@ export function Triple9IntroModal({
                                             Buat Akun Gmail Sesuai Format
                                         </h4>
                                         <p className="text-[11px] text-neutral-600 dark:text-neutral-400 mt-0.5 leading-relaxed">
-                                            Gunakan format password room yang tersedia (misal: <code>triple9</code> atau <code>9triple</code>). Manfaatkan fitur Generator Gmail Cepat untuk inspirasi nama email.
+                                            Gunakan format password room yang tersedia. Manfaatkan fitur Generator Gmail Cepat untuk inspirasi nama email.
                                         </p>
                                     </div>
                                 </div>
@@ -205,10 +205,10 @@ export function Triple9IntroModal({
                                     </span>
                                     <div>
                                         <h4 className="text-xs font-bold text-neutral-900 dark:text-neutral-100">
-                                            Setorkan Akun di Menu &quot;Stor Akun&quot;
+                                            Setorkan Akun di Menu &quot;Setor Akun&quot;
                                         </h4>
                                         <p className="text-[11px] text-neutral-600 dark:text-neutral-400 mt-0.5 leading-relaxed">
-                                            Ketik atau paste email Anda (bisa batch banyak akun sekaligus). Pilih jalur room yang sesuai dan klik tombol Stor.
+                                            Ketik atau paste email Anda bisa batch banyak akun sekaligus. Pilih jalur room yang sesuai dan klik tombol Setor.
                                         </p>
                                     </div>
                                 </div>
@@ -222,7 +222,7 @@ export function Triple9IntroModal({
                                             Audit &amp; Verifikasi Transparan
                                         </h4>
                                         <p className="text-[11px] text-neutral-600 dark:text-neutral-400 mt-0.5 leading-relaxed">
-                                            Sistem dan tim pemeriksa mengecek validitas akun secara akurat. Pantau status akun Anda secara realtime di menu <strong>Riwayat Stor</strong>.
+                                            Sistem dan tim pemeriksa mengecek validitas akun secara akurat. Pantau status akun Anda secara realtime di menu <strong>Riwayat Setor</strong>.
                                         </p>
                                     </div>
                                 </div>
@@ -250,12 +250,12 @@ export function Triple9IntroModal({
                             <div className="p-3.5 rounded-2xl bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200/80 dark:border-neutral-800">
                                 <h4 className="text-xs font-bold text-neutral-900 dark:text-neutral-100 mb-1 flex items-center gap-1.5">
                                     <img src="/images/icon/checklist.png" alt="ACC" className="h-4 w-4 object-contain shrink-0" />
-                                    <span>Tips Agar 100% Akun Disetujui (ACC):</span>
+                                    <span>Tips Agar 100% Akun Disetujui:</span>
                                 </h4>
                                 <ul className="space-y-1.5 text-xs text-neutral-600 dark:text-neutral-400 pl-5 list-disc mt-1.5">
                                     <li>Pastikan password akun persis sesuai room (misal: <code className="text-neutral-800 dark:text-neutral-200 font-semibold">triple9</code>).</li>
-                                    <li>Akun tidak dalam status dinonaktifkan (*disabled*) atau meminta verifikasi nomor telepon.</li>
-                                    <li>Gunakan format nama pengguna yang wajar dan bukan spam acak ekstrim.</li>
+                                    <li>Akun tidak dalam status dinonaktifkan atau meminta verifikasi nomor telepon.</li>
+                                    <li>Gunakan format nama pengguna yang wajar dan bukan spam acak.</li>
                                     <li>Cek berkala ketentuan terbaru pada menu <strong>Ketentuan &amp; Rules</strong>.</li>
                                 </ul>
                             </div>
@@ -277,7 +277,7 @@ export function Triple9IntroModal({
                                         <span>Bantuan CS 24 Jam</span>
                                     </h5>
                                     <p className="text-[11px] text-neutral-500 dark:text-neutral-400 leading-snug">
-                                        Kirimkan kendala melalui menu Laporan Saya atau grup komunitas Triple9.
+                                        Kirimkan kendala melalui menu Laporan Saya.
                                     </p>
                                 </div>
                             </div>
@@ -288,7 +288,7 @@ export function Triple9IntroModal({
                 {/* Footer Controls */}
                 <div className="p-4 sm:p-5 border-t border-neutral-100 dark:border-neutral-800 bg-neutral-50/70 dark:bg-neutral-900/50 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
                     <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
-                        <span>Panduan resmi ekosistem &amp; reward Triple9</span>
+                        <span>Panduan Resmi Triple9</span>
                     </div>
 
                     <div className="flex items-center gap-2 w-full sm:w-auto">

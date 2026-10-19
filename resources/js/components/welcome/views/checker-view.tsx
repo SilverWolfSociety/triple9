@@ -178,12 +178,22 @@ export function CheckerView() {
                                 Hasil Pengecekan ({checkerResults.length} akun)
                             </h4>
                             <div className="flex items-center gap-2 text-xs">
-                                <span className="text-emerald-600 font-semibold">
-                                    {checkerResults.filter((r) => r.status === 'valid').length} Valid
+                                <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-semibold">
+                                    <img
+                                        src="/images/icon/checklist.png"
+                                        alt="Valid"
+                                        className="h-3.5 w-3.5 object-contain shrink-0"
+                                    />
+                                    <span>{checkerResults.filter((r) => r.status === 'valid').length} Valid</span>
                                 </span>
                                 <span className="text-neutral-300 dark:text-neutral-600">•</span>
-                                <span className="text-rose-600 font-semibold">
-                                    {checkerResults.filter((r) => r.status === 'invalid').length} Tidak Valid
+                                <span className="flex items-center gap-1 text-rose-600 dark:text-rose-400 font-semibold">
+                                    <img
+                                        src="/images/icon/reject.png"
+                                        alt="Tidak Valid"
+                                        className="h-3.5 w-3.5 object-contain shrink-0"
+                                    />
+                                    <span>{checkerResults.filter((r) => r.status === 'invalid').length} Tidak Valid</span>
                                 </span>
                             </div>
                         </div>
@@ -196,15 +206,21 @@ export function CheckerView() {
                                     <span className="text-neutral-800 dark:text-neutral-200 truncate mr-2 font-medium">
                                         {item.email}
                                     </span>
-                                    <span
-                                        className={`text-[11px] font-bold uppercase tracking-wider ${
-                                            item.status === 'valid'
-                                                ? 'text-emerald-600 dark:text-emerald-400'
-                                                : 'text-rose-600 dark:text-rose-400'
-                                        }`}
-                                    >
-                                        {item.status === 'valid' ? 'Valid' : 'Gagal'}
-                                    </span>
+                                    {item.status === 'valid' ? (
+                                        <img
+                                            src="/images/icon/checklist.png"
+                                            alt="Valid"
+                                            title="Valid"
+                                            className="h-4.5 w-4.5 object-contain shrink-0"
+                                        />
+                                    ) : (
+                                        <img
+                                            src="/images/icon/reject.png"
+                                            alt="Tidak Valid"
+                                            title="Tidak Valid"
+                                            className="h-4.5 w-4.5 object-contain shrink-0"
+                                        />
+                                    )}
                                 </div>
                             ))}
                         </div>
