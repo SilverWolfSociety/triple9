@@ -52,8 +52,8 @@ export function DashboardView({
             badge: 'Pengumuman Storan',
             badgeColor: 'text-emerald-600 dark:text-emerald-400',
             icon: AnnouncementIcon,
-            title: 'Storan OPEN setiap Senin–Jumat',
-            description: 'Jam operasional: 07.00–17.00 WIB. Sabtu & Minggu storan CLOSE.',
+            title: 'Storan OPEN setiap hari Senin s/d Jumat',
+            description: 'Jam operasional: 08:00 - 16:00 WIB',
             actionText: 'Stor Akun',
             onAction: () => {
                 onNavigate('stor');
@@ -65,7 +65,7 @@ export function DashboardView({
             badgeColor: 'text-amber-600 dark:text-amber-400',
             icon: TrophyIcon,
             title: 'Bonus Reward Leaderboard Top 10',
-            description: 'Tingkatkan setoran akun Anda dan raih hadiah saldo ekstra mingguan untuk 10 member teratas.',
+            description: 'Tingkatkan setoran dan dapatkan hadiah bonus saldo mingguan untuk 10 member teratas.',
             actionText: 'Lihat Peringkat',
             onAction: () => {
                 onNavigate('leaderboard');
@@ -77,7 +77,7 @@ export function DashboardView({
             badgeColor: 'text-purple-600 dark:text-purple-400',
             icon: NotesIcon,
             title: 'Pastikan Format Akun Sesuai Ketentuan',
-            description: 'Wajib email utama, recovery email, password terformat dan 2FA aktif agar setoran lolos audit.',
+            description: 'Gmail harus Fresh, Tanggal lahir akun Gmail wajib 18 tahun ke atas. ',
             actionText: 'Buka Rules',
             onAction: () => {
                 onNavigate('rules');
@@ -89,7 +89,7 @@ export function DashboardView({
             badgeColor: 'text-blue-600 dark:text-blue-400',
             icon: WhatIcon,
             title: 'Apa itu Triple9 & Cara Kerjanya?',
-            description: 'Pelajari pengenalan platform, alur penyetoran Gmail, audit akun, hingga pencairan reward.',
+            description: 'Pelajari pengenalan, alur penyetoran Gmail, hingga pencairan reward.',
             actionText: 'Buka Pengenalan',
             onAction: () => {
                 if (onOpenIntroModal) {
@@ -160,7 +160,7 @@ export function DashboardView({
                 </div>
 
                 {/* Middle row: Content */}
-                <div key={activeSlideIndex} className="py-1 animate-in fade-in duration-300">
+                <div key={activeSlideIndex} className="py-1 animate-in fade-in duration-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="space-y-1">
                         <h3 className="text-sm sm:text-base font-semibold text-neutral-900 dark:text-neutral-100">
                             {announcements[activeSlideIndex].title}
@@ -169,6 +169,16 @@ export function DashboardView({
                             {announcements[activeSlideIndex].description}
                         </p>
                     </div>
+
+                    {announcements[activeSlideIndex].actionText && (
+                        <button
+                            type="button"
+                            onClick={announcements[activeSlideIndex].onAction}
+                            className="self-start sm:self-auto inline-flex items-center justify-center px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white shadow-xs transition cursor-pointer shrink-0"
+                        >
+                            {announcements[activeSlideIndex].actionText}
+                        </button>
+                    )}
                 </div>
 
                 {/* Bottom row: Dot Indicators */}

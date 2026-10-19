@@ -97,9 +97,6 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                     <h2 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">
                         Setor Daftar Gmail
                     </h2>
-                    <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1 leading-relaxed">
-                        Tempel daftar, satu Gmail per baris. Duplikat otomatis dihapus. Hanya Gmail hasil &ldquo;Generate Gmail&rdquo; milik akun ini yang bisa disetor.
-                    </p>
                 </div>
 
                 {/* Alert 1: Password Wajib */}
@@ -178,7 +175,7 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                                 )}
                             </div>
                             <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-0.5">
-                                Untuk Gmail dengan status Good
+                                Untuk Gmail dengan password triple9
                             </p>
                             <div className="text-xs font-semibold text-neutral-900 dark:text-neutral-100 mt-1.5">
                                 Harga: Rp5.000
@@ -205,7 +202,7 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                                 )}
                             </div>
                             <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-0.5">
-                                Untuk Gmail dengan status Good
+                                Untuk Gmail dengan password 9triple
                             </p>
                             <div className="text-xs font-semibold text-neutral-900 dark:text-neutral-100 mt-1.5">
                                 Harga: Rp5.000
@@ -227,33 +224,11 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                 </div>
 
                 {/* Section 5: Footer Actions & Summary */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
-                    <div className="space-y-0.5 text-xs text-neutral-500 dark:text-neutral-400">
-                        <div>
-                            Terdeteksi:{' '}
-                            <span className="font-semibold text-neutral-900 dark:text-neutral-100 font-tabular-nums">
-                                {uniqueLinesCount} baris
-                            </span>
-                        </div>
-                        <div className="text-[11px]">
-                            PW:{' '}
-                            <span className="font-mono font-semibold text-neutral-800 dark:text-neutral-200">
-                                {selectedRoom}
-                            </span>{' '}
-                            |{' '}
-                            <span className="text-blue-600 dark:text-blue-400 font-semibold">
-                                Rp5.000 jika di ACC
-                            </span>
-                        </div>
-                        <div className="text-[11px] text-neutral-400 dark:text-neutral-500">
-                            Estimasi pengecekan 24-48 jam.
-                        </div>
-                    </div>
-
+                <div className="flex justify-end pt-1">
                     <button
                         type="button"
                         onClick={handleSubmitSetoran}
-                        className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white px-4 py-2 text-xs font-semibold shadow-xs transition cursor-pointer self-start sm:self-auto"
+                        className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white px-4 py-2 text-xs font-semibold shadow-xs transition cursor-pointer"
                     >
                         <span>Kirim Setoran</span>
                     </button>

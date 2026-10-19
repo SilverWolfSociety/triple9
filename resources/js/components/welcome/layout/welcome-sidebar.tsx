@@ -148,6 +148,7 @@ export function WelcomeSidebar({
                                             <span>Pengaturan Akun</span>
                                         </DropdownMenuItem>
                                     )}
+
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem
                                         asChild

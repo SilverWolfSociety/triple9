@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon, HelpCircle } from 'lucide-react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { login, register } from '@/routes';
 import type { User } from '@/types';
@@ -12,6 +12,7 @@ interface WelcomeHeaderProps {
     onToggleTheme: () => void;
     onNavigate?: (id: string) => void;
     onOpenAccountSettings?: () => void;
+    onOpenIntroModal?: () => void;
 }
 
 export function WelcomeHeader({
@@ -20,6 +21,7 @@ export function WelcomeHeader({
     resolvedAppearance,
     onToggleTheme,
     onNavigate,
+    onOpenIntroModal,
 }: WelcomeHeaderProps) {
     return (
         <header className="sticky top-0 z-20 shrink-0 flex items-center justify-between h-14 bg-background/80 backdrop-blur-md px-4 sm:px-6 border-b border-sidebar-border/50 transition-[width,height] ease-linear">
@@ -34,6 +36,19 @@ export function WelcomeHeader({
 
             {/* Top Header Controls */}
             <div className="flex items-center gap-2 sm:gap-2.5">
+                {/* Panduan / Intro Modal Trigger */}
+                {onOpenIntroModal && (
+                    <button
+                        type="button"
+                        onClick={onOpenIntroModal}
+                        className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-sidebar-accent transition border border-sidebar-border/50 cursor-pointer"
+                        title="Buka Panduan & Pengenalan Triple9"
+                        aria-label="Buka panduan pengenalan"
+                    >
+                        <HelpCircle className="h-4 w-4" />
+                    </button>
+                )}
+
                 {/* Theme Switcher Toggle */}
                 <button
                     onClick={onToggleTheme}

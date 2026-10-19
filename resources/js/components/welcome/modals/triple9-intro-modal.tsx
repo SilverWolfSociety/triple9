@@ -41,7 +41,7 @@ export function Triple9IntroModal({
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs animate-in fade-in duration-200"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs animate-in fade-in duration-200"
             onClick={(e) => {
                 if (e.target === e.currentTarget) handleClose();
             }}

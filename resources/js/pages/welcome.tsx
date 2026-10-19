@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Head, usePage } from '@inertiajs/react';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { useAppearance } from '@/hooks/use-appearance';
@@ -47,9 +47,20 @@ export default function Welcome() {
         ShopeePay: '',
     });
     const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
-    const [isIntroModalOpen, setIsIntroModalOpen] = useState(true);
+    const [isIntroModalOpen, setIsIntroModalOpen] = useState(false);
     const [isAccountSettingsModalOpen, setIsAccountSettingsModalOpen] = useState(false);
     const [transactionHistory, setTransactionHistory] = useState<TransactionRecord[]>([]);
+
+    useEffect(() => {
+        try {
+            const hasSeen = localStorage.getItem('triple9_intro_seen');
+            if (!hasSeen) {
+                setIsIntroModalOpen(true);
+            }
+        } catch {
+            // ignore
+        }
+    }, []);
 
     // Stor Akun History
     const [storHistory, setStorHistory] = useState<StorRecord[]>([]);
@@ -96,6 +107,15 @@ export default function Welcome() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
+    const handleCloseIntroModal = () => {
+        setIsIntroModalOpen(false);
+        try {
+            localStorage.setItem('triple9_intro_seen', 'true');
+        } catch {
+            // ignore
+        }
+    };
+
     return (
         <>
             <Head title={`${activeItemLabel} — Triple9`} />
@@ -120,6 +140,7 @@ export default function Welcome() {
                         onToggleTheme={handleToggleTheme}
                         onNavigate={handleSelectNav}
                         onOpenAccountSettings={() => setIsAccountSettingsModalOpen(true)}
+                        onOpenIntroModal={() => setIsIntroModalOpen(true)}
                     />
 
                     {/* DASHBOARD PAGE CONTENT */}
@@ -202,7 +223,7 @@ export default function Welcome() {
                 {/* TRIPLE9 INTRODUCTION POPUP MODAL */}
                 <Triple9IntroModal
                     isOpen={isIntroModalOpen}
-                    onClose={() => setIsIntroModalOpen(false)}
+                    onClose={handleCloseIntroModal}
                     onNavigate={handleSelectNav}
                 />
 
