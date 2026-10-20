@@ -38,7 +38,7 @@ export function ReferralView() {
             {/* Mission Card: Undang 20 teman & dapatkan Rp15.000 */}
             <div className="rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 p-5 sm:p-6 shadow-xs relative overflow-hidden">
                 <h2 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">
-                    Undang 20 teman & dapatkan Rp15.000
+                    Undang 20 teman & dapatkan Rp50.000
                 </h2>
 
                 <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-4">
@@ -52,7 +52,7 @@ export function ReferralView() {
                     </div>
                     <div className="bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-200/80 dark:border-neutral-800 rounded-xl p-3 sm:p-3.5">
                         <div className="text-[11px] sm:text-xs text-neutral-500 dark:text-neutral-400 font-medium">Bonus</div>
-                        <div className="text-sm sm:text-base font-bold text-neutral-900 dark:text-neutral-100 mt-0.5">Rp15.000</div>
+                        <div className="text-sm sm:text-base font-bold text-neutral-900 dark:text-neutral-100 mt-0.5">Rp50.000</div>
                     </div>
                 </div>
 
@@ -196,22 +196,20 @@ export function ReferralView() {
                     <button
                         type="button"
                         onClick={() => setReferralTab('referral')}
-                        className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-medium transition cursor-pointer ${
-                            referralTab === 'referral'
-                                ? 'bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 shadow-2xs font-semibold'
-                                : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100'
-                        }`}
+                        className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-medium transition cursor-pointer ${referralTab === 'referral'
+                            ? 'bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 shadow-2xs font-semibold'
+                            : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100'
+                            }`}
                     >
                         <span>Riwayat Referral</span>
                     </button>
                     <button
                         type="button"
                         onClick={() => setReferralTab('bonus')}
-                        className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-medium transition cursor-pointer ${
-                            referralTab === 'bonus'
-                                ? 'bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 shadow-2xs font-semibold'
-                                : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100'
-                        }`}
+                        className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-medium transition cursor-pointer ${referralTab === 'bonus'
+                            ? 'bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 shadow-2xs font-semibold'
+                            : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100'
+                            }`}
                     >
                         <span>Riwayat Bonus</span>
                     </button>

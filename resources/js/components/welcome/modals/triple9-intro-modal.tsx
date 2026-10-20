@@ -109,7 +109,7 @@ export function Triple9IntroModal({
                                 }`}
                         >
                             <img src="/images/icon/notes.png" alt="Rules" className="h-4 w-4 object-contain shrink-0" />
-                            <span>Rules &amp; Keunggulan</span>
+                            <span>Ketentuan &amp; Rules</span>
                         </button>
                     </div>
                 </div>
@@ -244,7 +244,7 @@ export function Triple9IntroModal({
                         </div>
                     )}
 
-                    {/* TAB 3: RULES & KEUNGGULAN */}
+                    {/* TAB 3: KETENTUAN & RULES*/}
                     {activeTab === 'tips' && (
                         <div className="space-y-3.5 animate-in fade-in duration-150">
                             <div className="p-3.5 rounded-2xl bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200/80 dark:border-neutral-800">

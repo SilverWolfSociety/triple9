@@ -1,16 +1,25 @@
 import { useState, useEffect } from 'react';
 import { router } from '@inertiajs/react';
+import { toast } from 'sonner';
 import {
     X,
-    Check,
-    AlertCircle,
     Eye,
     EyeOff,
+    Check,
 } from 'lucide-react';
 import type { User as UserType } from '@/types';
 import type { EwalletType } from '../types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useInitials } from '@/hooks/use-initials';
+
+const AVAILABLE_AVATARS = [
+    { id: 'anjing', name: 'Anjing', path: '/images/avatar/anjing.png' },
+    { id: 'kelinci', name: 'Kelinci', path: '/images/avatar/kelinci.png' },
+    { id: 'kucing', name: 'Kucing', path: '/images/avatar/kucing.png' },
+    { id: 'panda', name: 'Panda', path: '/images/avatar/panda.png' },
+    { id: 'penguin', name: 'Penguin', path: '/images/avatar/penguin.png' },
+    { id: 'rubah', name: 'Rubah', path: '/images/avatar/rubah.png' },
+];
 
 interface AccountSettingsModalProps {
     isOpen: boolean;
@@ -37,9 +46,8 @@ export function AccountSettingsModal({
     // Profile Form State
     const [name, setName] = useState(user?.name || '');
     const [email, setEmail] = useState(user?.email || '');
+    const [selectedAvatar, setSelectedAvatar] = useState(user?.avatar || '/images/avatar/kucing.png');
     const [isSavingProfile, setIsSavingProfile] = useState(false);
-    const [profileSuccessMsg, setProfileSuccessMsg] = useState('');
-    const [profileErrorMsg, setProfileErrorMsg] = useState('');
 
     // Security Form State
     const [currentPassword, setCurrentPassword] = useState('');
@@ -47,14 +55,16 @@ export function AccountSettingsModal({
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showCurrentPw, setShowCurrentPw] = useState(false);
     const [showNewPw, setShowNewPw] = useState(false);
+    const [showConfirmPw, setShowConfirmPw] = useState(false);
     const [isSavingPassword, setIsSavingPassword] = useState(false);
-    const [passwordSuccessMsg, setPasswordSuccessMsg] = useState('');
-    const [passwordErrorMsg, setPasswordErrorMsg] = useState('');
 
     useEffect(() => {
         if (user) {
             setName(user.name || '');
             setEmail(user.email || '');
+            if (user.avatar) {
+                setSelectedAvatar(user.avatar);
+            }
         }
     }, [user]);
 
@@ -72,23 +82,21 @@ export function AccountSettingsModal({
 
     const handleUpdateProfile = (e: React.FormEvent) => {
         e.preventDefault();
-        setProfileSuccessMsg('');
-        setProfileErrorMsg('');
         setIsSavingProfile(true);
 
         router.patch(
             '/settings/profile',
-            { name, email },
+            { name, email, avatar: selectedAvatar },
             {
                 preserveScroll: true,
+                preserveState: true,
                 onSuccess: () => {
                     setIsSavingProfile(false);
-                    setProfileSuccessMsg('Data profil berhasil diperbarui!');
-                    setTimeout(() => setProfileSuccessMsg(''), 3500);
+                    onClose();
                 },
                 onError: (errs) => {
                     setIsSavingProfile(false);
-                    setProfileErrorMsg(errs.name || errs.email || 'Gagal memperbarui profil.');
+                    toast.error(errs.name || errs.email || errs.avatar || 'Gagal memperbarui profil.');
                 },
             }
         );
@@ -98,16 +106,14 @@ export function AccountSettingsModal({
 
     const handleUpdatePassword = (e: React.FormEvent) => {
         e.preventDefault();
-        setPasswordSuccessMsg('');
-        setPasswordErrorMsg('');
 
         if (newPassword.length < 8) {
-            setPasswordErrorMsg('Kata sandi baru minimal 8 karakter.');
+            toast.error('Kata sandi baru minimal 8 karakter.');
             return;
         }
 
         if (newPassword !== confirmPassword) {
-            setPasswordErrorMsg('Konfirmasi kata sandi baru tidak cocok.');
+            toast.error('Konfirmasi kata sandi baru tidak cocok.');
             return;
         }
 
@@ -121,17 +127,17 @@ export function AccountSettingsModal({
             },
             {
                 preserveScroll: true,
+                preserveState: true,
                 onSuccess: () => {
                     setIsSavingPassword(false);
                     setCurrentPassword('');
                     setNewPassword('');
                     setConfirmPassword('');
-                    setPasswordSuccessMsg('Kata sandi berhasil diperbarui!');
-                    setTimeout(() => setPasswordSuccessMsg(''), 3500);
+                    onClose();
                 },
                 onError: (errs) => {
                     setIsSavingPassword(false);
-                    setPasswordErrorMsg(
+                    toast.error(
                         errs.current_password ||
                         errs.password ||
                         'Gagal memperbarui kata sandi. Periksa kata sandi saat ini.'
@@ -212,8 +218,8 @@ export function AccountSettingsModal({
                         <div className="space-y-4 animate-in fade-in duration-150">
                             {/* Member ID Card */}
                             <div className="flex items-center gap-3.5 p-4 rounded-2xl bg-slate-50 dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800">
-                                <Avatar className="h-12 w-12 shrink-0 overflow-hidden rounded-full">
-                                    <AvatarImage src={user?.avatar} alt={user?.name} />
+                                <Avatar className="h-12 w-12 shrink-0 overflow-hidden rounded-full border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800">
+                                    <AvatarImage src={selectedAvatar || user?.avatar} alt={user?.name} className="object-cover size-full" />
                                     <AvatarFallback className="rounded-full bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white font-semibold text-base">
                                         {user?.name ? getInitials(user.name) : 'TR'}
                                     </AvatarFallback>
@@ -234,29 +240,48 @@ export function AccountSettingsModal({
                                 </div>
                                 <div className="text-right shrink-0">
                                     <div className="text-[10px] text-slate-400 dark:text-slate-500">ID Member</div>
-                                    <div className="text-xs font-mono font-bold text-blue-600 dark:text-blue-400">
+                                    <div className="text-xs font-medium text-slate-700 dark:text-slate-300">
                                         #TRP-{user?.id ? String(user.id).padStart(4, '0') : '9999'}
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Alert Notifications */}
-                            {profileSuccessMsg && (
-                                <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-700 dark:text-emerald-300 flex items-center gap-2">
-                                    <Check className="h-4 w-4 shrink-0 text-emerald-600" />
-                                    <span>{profileSuccessMsg}</span>
-                                </div>
-                            )}
-
-                            {profileErrorMsg && (
-                                <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-xs text-rose-700 dark:text-rose-300 flex items-center gap-2">
-                                    <AlertCircle className="h-4 w-4 shrink-0 text-rose-600" />
-                                    <span>{profileErrorMsg}</span>
-                                </div>
-                            )}
-
                             {/* Form Edit Profile */}
-                            <form onSubmit={handleUpdateProfile} className="space-y-3.5">
+                            <form onSubmit={handleUpdateProfile} className="space-y-4">
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                                        Pilih Avatar Profil
+                                    </label>
+                                    <div className="grid grid-cols-6 gap-2">
+                                        {AVAILABLE_AVATARS.map((item) => {
+                                            const isSelected = selectedAvatar === item.path;
+                                            return (
+                                                <button
+                                                    key={item.id}
+                                                    type="button"
+                                                    onClick={() => setSelectedAvatar(item.path)}
+                                                    className={`relative aspect-square rounded-2xl p-1.5 transition-all flex items-center justify-center cursor-pointer ${
+                                                        isSelected
+                                                            ? 'border-2 border-blue-600 bg-transparent scale-105 shadow-xs'
+                                                            : 'border border-slate-200 dark:border-zinc-800 hover:border-slate-300 dark:hover:border-zinc-700 bg-transparent hover:scale-102'
+                                                    }`}
+                                                    title={item.name}
+                                                >
+                                                    <img
+                                                        src={item.path}
+                                                        alt={item.name}
+                                                        className="h-full w-full object-contain"
+                                                    />
+                                                    {isSelected && (
+                                                        <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-white shadow-xs">
+                                                            <Check className="h-2.5 w-2.5 stroke-[3]" />
+                                                        </span>
+                                                    )}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
                                 <div className="space-y-1.5">
                                     <label htmlFor="settings-name" className="text-xs font-bold text-slate-800 dark:text-slate-200">
                                         Nama Lengkap
@@ -306,19 +331,7 @@ export function AccountSettingsModal({
                     {activeTab === 'security' && (
                         <div className="space-y-4 animate-in fade-in duration-150">
 
-                            {passwordSuccessMsg && (
-                                <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-700 dark:text-emerald-300 flex items-center gap-2">
-                                    <Check className="h-4 w-4 shrink-0 text-emerald-600" />
-                                    <span>{passwordSuccessMsg}</span>
-                                </div>
-                            )}
 
-                            {passwordErrorMsg && (
-                                <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-xs text-rose-700 dark:text-rose-300 flex items-center gap-2">
-                                    <AlertCircle className="h-4 w-4 shrink-0 text-rose-600" />
-                                    <span>{passwordErrorMsg}</span>
-                                </div>
-                            )}
 
                             <form onSubmit={handleUpdatePassword} className="space-y-3.5">
                                 <div className="space-y-1.5">
@@ -374,15 +387,24 @@ export function AccountSettingsModal({
                                         <label htmlFor="settings-confirm-pw" className="text-xs font-bold text-slate-800 dark:text-slate-200">
                                             Konfirmasi Kata Sandi Baru
                                         </label>
-                                        <input
-                                            id="settings-confirm-pw"
-                                            type={showNewPw ? 'text' : 'password'}
-                                            value={confirmPassword}
-                                            onChange={(e) => setConfirmPassword(e.target.value)}
-                                            required
-                                            placeholder="Ketik ulang kata sandi baru"
-                                            className="w-full rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] px-3.5 py-2.5 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none transition"
-                                        />
+                                        <div className="relative">
+                                            <input
+                                                id="settings-confirm-pw"
+                                                type={showConfirmPw ? 'text' : 'password'}
+                                                value={confirmPassword}
+                                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                                required
+                                                placeholder="Ketik ulang kata sandi baru"
+                                                className="w-full rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] px-3.5 py-2.5 pr-10 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none transition"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowConfirmPw(!showConfirmPw)}
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer"
+                                            >
+                                                {showConfirmPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 

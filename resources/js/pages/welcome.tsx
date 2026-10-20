@@ -40,11 +40,19 @@ export default function Welcome() {
     const [currentBalance, setCurrentBalance] = useState(20000);
     const [isSaldoVisible, setIsSaldoVisible] = useState(true);
     const [selectedEwallet, setSelectedEwallet] = useState<EwalletType>('DANA');
-    const [savedEwalletNumbers, setSavedEwalletNumbers] = useState<Record<string, string>>({
-        DANA: '',
-        OVO: '',
-        GoPay: '',
-        ShopeePay: '',
+    const [savedEwalletNumbers, setSavedEwalletNumbers] = useState<Record<string, string>>(() => {
+        try {
+            const saved = localStorage.getItem('triple9_saved_ewallets');
+            if (saved) return JSON.parse(saved);
+        } catch {
+            // ignore
+        }
+        return {
+            DANA: '',
+            OVO: '',
+            GoPay: '',
+            ShopeePay: '',
+        };
     });
     const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
     const [isIntroModalOpen, setIsIntroModalOpen] = useState(false);
@@ -81,10 +89,18 @@ export default function Welcome() {
     };
 
     const handleSaveEwalletNumber = (wallet: EwalletType, number: string) => {
-        setSavedEwalletNumbers((prev) => ({
-            ...prev,
-            [wallet]: number,
-        }));
+        setSavedEwalletNumbers((prev) => {
+            const next = {
+                ...prev,
+                [wallet]: number,
+            };
+            try {
+                localStorage.setItem('triple9_saved_ewallets', JSON.stringify(next));
+            } catch {
+                // ignore
+            }
+            return next;
+        });
     };
 
     const handleWithdraw = (amount: number, account: string) => {
@@ -96,6 +112,7 @@ export default function Welcome() {
                 desc: `Tarik Saldo ke ${selectedEwallet} (${account})`,
                 amount: -amount,
                 balance: currentBalance - amount,
+                status: 'complete',
             },
             ...prev,
         ]);

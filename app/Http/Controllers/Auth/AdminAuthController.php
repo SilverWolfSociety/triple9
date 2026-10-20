@@ -98,6 +98,7 @@ class AdminAuthController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => 'admin',
+            'avatar' => User::getRandomAvatar(),
         ]);
 
         Auth::login($user);

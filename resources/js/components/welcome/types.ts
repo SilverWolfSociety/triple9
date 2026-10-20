@@ -41,6 +41,7 @@ export interface TransactionRecord {
     desc: string;
     amount: number;
     balance: number;
+    status?: 'pending' | 'complete' | 'sukses' | 'selesai' | 'ditolak' | string;
 }
 
 export interface WithdrawRecord {
@@ -70,8 +71,8 @@ export interface AnnouncementItem {
     icon: React.ComponentType<{ className?: string }>;
     title: string;
     description: string;
-    actionText: string;
-    onAction: () => void;
+    actionText?: string;
+    onAction?: () => void;
 }
 
 export type NotificationCategory = 'reward' | 'wallet' | 'bonus' | 'system' | 'ticket';

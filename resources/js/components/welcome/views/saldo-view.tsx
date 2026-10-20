@@ -91,15 +91,15 @@ export function SaldoView({
                                 <th className="px-4 py-3">Tanggal</th>
                                 <th className="px-4 py-3">Keterangan</th>
                                 <th className="px-4 py-3">Nominal</th>
-                                <th className="px-4 py-3">Saldo</th>
+                                <th className="px-4 py-3 text-center">Status</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-neutral-100 dark:divide-neutral-800 font-mono">
+                        <tbody className="divide-y divide-neutral-100 dark:divide-neutral-800">
                             {transactionHistory.length === 0 ? (
                                 <tr>
                                     <td
                                         colSpan={4}
-                                        className="py-8 text-center font-sans text-xs text-neutral-400 dark:text-neutral-500"
+                                        className="py-8 text-center text-xs text-neutral-400 dark:text-neutral-500"
                                     >
                                         Belum ada transaksi.
                                     </td>
@@ -110,17 +110,38 @@ export function SaldoView({
                                         key={idx}
                                         className="hover:bg-neutral-50 dark:hover:bg-neutral-800/40 transition"
                                     >
-                                        <td className="px-4 py-3 font-sans text-neutral-600 dark:text-neutral-300">
+                                        <td className="px-4 py-3 text-neutral-600 dark:text-neutral-300">
                                             {item.date}
                                         </td>
-                                        <td className="px-4 py-3 font-sans text-neutral-800 dark:text-neutral-200">
+                                        <td className="px-4 py-3 text-neutral-800 dark:text-neutral-200">
                                             {item.desc}
                                         </td>
-                                        <td className={`px-4 py-3 font-semibold font-tabular-nums ${item.amount < 0 ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
+                                        <td className={`px-4 py-3 font-semibold ${item.amount < 0 ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
                                             {item.amount < 0 ? `-Rp${Math.abs(item.amount).toLocaleString('id-ID')}` : `+Rp${item.amount.toLocaleString('id-ID')}`}
                                         </td>
-                                        <td className="px-4 py-3 font-tabular-nums text-neutral-900 dark:text-neutral-100">
-                                            Rp{item.balance.toLocaleString('id-ID')}
+                                        <td className="px-4 py-3 text-center align-middle">
+                                            {item.status === 'ditolak' || item.status === 'rejected' || item.status === 'gagal' ? (
+                                                <div className="inline-flex items-center justify-center gap-1.5" title="Ditolak">
+                                                    <img src="/images/icon/reject.png" alt="Ditolak" className="h-4 w-4 object-contain shrink-0" />
+                                                    <span className="text-[11px] font-medium text-rose-600 dark:text-rose-400">
+                                                        Ditolak
+                                                    </span>
+                                                </div>
+                                            ) : item.status === 'pending' ? (
+                                                <div className="inline-flex items-center justify-center gap-1.5" title="Pending">
+                                                    <img src="/images/icon/pending.png" alt="Pending" className="h-4 w-4 object-contain shrink-0" />
+                                                    <span className="text-[11px] font-medium text-amber-600 dark:text-amber-400">
+                                                        Pending
+                                                    </span>
+                                                </div>
+                                            ) : (
+                                                <div className="inline-flex items-center justify-center gap-1.5" title="Complete">
+                                                    <img src="/images/icon/checklist.png" alt="Complete" className="h-4 w-4 object-contain shrink-0" />
+                                                    <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+                                                        Complete
+                                                    </span>
+                                                </div>
+                                            )}
                                         </td>
                                     </tr>
                                 ))

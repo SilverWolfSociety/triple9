@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { X, Check } from 'lucide-react';
+import { X } from 'lucide-react';
+import { toast } from 'sonner';
 import type { EwalletType } from '../types';
 import { ewalletOptions } from '../constants';
 
@@ -29,14 +30,12 @@ export function WithdrawModal({
     const [currentWallet, setCurrentWallet] = useState<EwalletType>(selectedEwallet);
     const [accountInput, setAccountInput] = useState('');
     const [withdrawAmount, setWithdrawAmount] = useState('');
-    const [isSavedSuccess, setIsSavedSuccess] = useState(false);
 
     useEffect(() => {
         if (isOpen) {
             setCurrentWallet(selectedEwallet);
             setAccountInput(savedEwalletNumbers?.[selectedEwallet] || '');
             setWithdrawAmount('');
-            setIsSavedSuccess(false);
         }
     }, [isOpen, selectedEwallet, savedEwalletNumbers]);
 
@@ -46,16 +45,14 @@ export function WithdrawModal({
         setCurrentWallet(wallet);
         onChangeEwallet?.(wallet);
         setAccountInput(savedEwalletNumbers?.[wallet] || '');
-        setIsSavedSuccess(false);
     };
 
     const handleSaveEwallet = () => {
         if (accountInput.length >= 10) {
             onSaveEwalletNumber?.(currentWallet, accountInput);
-            setIsSavedSuccess(true);
-            setTimeout(() => setIsSavedSuccess(false), 2000);
+            toast.info('Nomor telah tersimpan.');
         } else {
-            alert('Nomor e-wallet harus terdiri dari 10-15 digit angka.');
+            toast.error('Nomor e-wallet harus terdiri dari 10-15 digit angka.');
         }
     };
 
@@ -64,21 +61,21 @@ export function WithdrawModal({
         const targetAccount = accountInput.trim();
 
         if (!targetAccount || targetAccount.length < 10) {
-            alert('Silakan masukkan nomor e-wallet yang valid (10-15 digit).');
+            toast.error('Silakan masukkan nomor e-wallet yang valid (10-15 digit).');
             return;
         }
         if (!numAmount || numAmount < 10000) {
-            alert('Minimal penarikan adalah Rp10.000.');
+            toast.error('Minimal penarikan adalah Rp10.000.');
             return;
         }
         if (numAmount > currentBalance) {
-            alert('Saldo Anda belum mencukupi untuk melakukan penarikan ini.');
+            toast.error('Saldo Anda belum mencukupi untuk melakukan penarikan ini.');
             return;
         }
 
         onConfirmWithdraw(numAmount, targetAccount);
         onClose();
-        alert('Pengajuan penarikan berhasil dikirim!');
+        toast.success('Pengajuan penarikan berhasil dikirim!');
     };
 
     return (
@@ -137,12 +134,12 @@ export function WithdrawModal({
                                     {wallet.id === 'GoPay' ? (
                                         <>
                                             <img
-                                                src="/images/gopay.png"
+                                                src="/images/saldo/gopay.png"
                                                 alt="GoPay"
                                                 className="h-full w-full object-contain dark:hidden"
                                             />
                                             <img
-                                                src="/images/gopay-dark.png"
+                                                src="/images/saldo/gopay-dark.png"
                                                 alt="GoPay"
                                                 className="h-full w-full object-contain hidden dark:block"
                                             />
@@ -150,12 +147,12 @@ export function WithdrawModal({
                                     ) : wallet.id === 'OVO' ? (
                                         <>
                                             <img
-                                                src="/images/ovo.png"
+                                                src="/images/saldo/ovo.png"
                                                 alt="OVO"
                                                 className="h-full w-full object-contain dark:hidden"
                                             />
                                             <img
-                                                src="/images/ovo-dark.png"
+                                                src="/images/saldo/ovo-dark.png"
                                                 alt="OVO"
                                                 className="h-full w-full object-contain hidden dark:block"
                                             />
@@ -187,15 +184,11 @@ export function WithdrawModal({
                             <button
                                 type="button"
                                 onClick={handleSaveEwallet}
-                                title={isSavedSuccess ? 'Tersimpan!' : 'Simpan nomor'}
+                                title="Simpan nomor"
                                 aria-label="Simpan nomor"
                                 className="inline-flex items-center justify-center p-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white shadow-xs transition cursor-pointer shrink-0"
                             >
-                                {isSavedSuccess ? (
-                                    <Check className="h-4 w-4" />
-                                ) : (
-                                    <img src="/images/icon/save.png" alt="Simpan" className="h-4 w-4 object-contain shrink-0" />
-                                )}
+                                <img src="/images/icon/save.png" alt="Simpan" className="h-4 w-4 object-contain shrink-0" />
                             </button>
                         </div>
                     </div>

@@ -101,8 +101,8 @@ export const leaderboardData: Record<LeaderboardPeriod, LeaderboardItem[]> = {
 };
 
 export const ewalletOptions: { id: EwalletType; logo: string }[] = [
-    { id: 'DANA', logo: '/images/dana.png' },
-    { id: 'OVO', logo: '/images/ovo.png' },
-    { id: 'GoPay', logo: '/images/gopay.png' },
-    { id: 'ShopeePay', logo: '/images/shopeepay.png' },
+    { id: 'DANA', logo: '/images/saldo/dana.png' },
+    { id: 'OVO', logo: '/images/saldo/ovo.png' },
+    { id: 'GoPay', logo: '/images/saldo/gopay.png' },
+    { id: 'ShopeePay', logo: '/images/saldo/shopeepay.png' },
 ];

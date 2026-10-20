@@ -54,11 +54,6 @@ export function DashboardView({
             icon: AnnouncementIcon,
             title: 'Storan OPEN setiap hari Senin s/d Jumat',
             description: 'Jam operasional: 08:00 - 16:00 WIB',
-            actionText: 'Stor Akun',
-            onAction: () => {
-                onNavigate('stor');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            },
         },
         {
             badge: 'Event Reward',
@@ -66,23 +61,13 @@ export function DashboardView({
             icon: TrophyIcon,
             title: 'Bonus Reward Leaderboard Top 10',
             description: 'Tingkatkan setoran dan dapatkan hadiah bonus saldo mingguan untuk 10 member teratas.',
-            actionText: 'Lihat Peringkat',
-            onAction: () => {
-                onNavigate('leaderboard');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            },
         },
         {
-            badge: 'Rules & Ketentuan',
+            badge: 'Ketentuan & Rules',
             badgeColor: 'text-purple-600 dark:text-purple-400',
             icon: NotesIcon,
             title: 'Pastikan Format Akun Sesuai Ketentuan',
             description: 'Gmail harus Fresh, Tanggal lahir akun Gmail wajib 18 tahun ke atas. ',
-            actionText: 'Buka Rules',
-            onAction: () => {
-                onNavigate('rules');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            },
         },
         {
             badge: 'Panduan Triple9',
@@ -90,14 +75,6 @@ export function DashboardView({
             icon: WhatIcon,
             title: 'Apa itu Triple9 & Cara Kerjanya?',
             description: 'Pelajari pengenalan, alur penyetoran Gmail, hingga pencairan reward.',
-            actionText: 'Buka Pengenalan',
-            onAction: () => {
-                if (onOpenIntroModal) {
-                    onOpenIntroModal();
-                } else {
-                    onNavigate('rules');
-                }
-            },
         },
     ];
 
@@ -160,7 +137,7 @@ export function DashboardView({
                 </div>
 
                 {/* Middle row: Content */}
-                <div key={activeSlideIndex} className="py-1 animate-in fade-in duration-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div key={activeSlideIndex} className="py-1 animate-in fade-in duration-300">
                     <div className="space-y-1">
                         <h3 className="text-sm sm:text-base font-semibold text-neutral-900 dark:text-neutral-100">
                             {announcements[activeSlideIndex].title}
@@ -169,16 +146,6 @@ export function DashboardView({
                             {announcements[activeSlideIndex].description}
                         </p>
                     </div>
-
-                    {announcements[activeSlideIndex].actionText && (
-                        <button
-                            type="button"
-                            onClick={announcements[activeSlideIndex].onAction}
-                            className="self-start sm:self-auto inline-flex items-center justify-center px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white shadow-xs transition cursor-pointer shrink-0"
-                        >
-                            {announcements[activeSlideIndex].actionText}
-                        </button>
-                    )}
                 </div>
 
                 {/* Bottom row: Dot Indicators */}
