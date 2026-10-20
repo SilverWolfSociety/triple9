@@ -57,6 +57,7 @@ export interface LeaderboardItem {
     name: string;
     initials: string;
     avatarBg: string;
+    avatar?: string;
     gmails: number;
     earnings: number;
 }

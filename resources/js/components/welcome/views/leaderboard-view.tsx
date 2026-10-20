@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import type { User } from '@/types';
 import type { LeaderboardPeriod } from '../types';
 import { leaderboardData } from '../constants';
@@ -64,9 +65,12 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
                         {/* Member Details */}
                         <div className="flex flex-col items-center mb-2">
                             <img src="/images/icon/2nd.png" alt="Juara 2" className="h-6 w-6 sm:h-7 sm:w-7 object-contain mb-1 drop-shadow-xs" />
-                            <div className={`flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-gradient-to-tr ${top2.avatarBg} text-white font-extrabold text-xs sm:text-sm shadow-md ring-2 ring-neutral-400/40 mb-1 group-hover:scale-105 transition duration-200`}>
-                                {top2.initials}
-                            </div>
+                            <Avatar className="h-10 w-10 sm:h-12 sm:w-12 rounded-full shadow-md ring-2 ring-neutral-400/40 mb-1 group-hover:scale-105 transition duration-200 bg-white dark:bg-neutral-800">
+                                <AvatarImage src={top2.avatar} alt={top2.name} className="object-contain p-0.5 size-full" />
+                                <AvatarFallback className={`bg-gradient-to-tr ${top2.avatarBg} text-white font-extrabold text-xs sm:text-sm`}>
+                                    {top2.initials}
+                                </AvatarFallback>
+                            </Avatar>
                             <h3 className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-100 truncate max-w-[105px] sm:max-w-[180px]">
                                 {top2.name}
                             </h3>
@@ -91,9 +95,12 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
                         {/* Member Details */}
                         <div className="flex flex-col items-center mb-2">
                             <img src="/images/icon/1st.png" alt="Juara 1" className="h-7 w-7 sm:h-8 sm:w-8 object-contain mb-1 drop-shadow-sm" />
-                            <div className={`flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-gradient-to-tr ${top1.avatarBg} text-neutral-950 font-black text-sm sm:text-base shadow-lg ring-3 ring-amber-400/50 mb-1 group-hover:scale-105 transition duration-200`}>
-                                {top1.initials}
-                            </div>
+                            <Avatar className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg ring-3 ring-amber-400/50 mb-1 group-hover:scale-105 transition duration-200 bg-white dark:bg-neutral-800">
+                                <AvatarImage src={top1.avatar} alt={top1.name} className="object-contain p-0.5 size-full" />
+                                <AvatarFallback className={`bg-gradient-to-tr ${top1.avatarBg} text-neutral-950 font-black text-sm sm:text-base`}>
+                                    {top1.initials}
+                                </AvatarFallback>
+                            </Avatar>
                             <h3 className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-neutral-100 truncate max-w-[115px] sm:max-w-[200px]">
                                 {top1.name}
                             </h3>
@@ -118,9 +125,12 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
                         {/* Member Details */}
                         <div className="flex flex-col items-center mb-2">
                             <img src="/images/icon/3rd.png" alt="Juara 3" className="h-6 w-6 sm:h-7 sm:w-7 object-contain mb-1 drop-shadow-xs" />
-                            <div className={`flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-gradient-to-tr ${top3.avatarBg} text-amber-100 font-extrabold text-xs sm:text-sm shadow-md ring-2 ring-amber-700/40 mb-1 group-hover:scale-105 transition duration-200`}>
-                                {top3.initials}
-                            </div>
+                            <Avatar className="h-10 w-10 sm:h-12 sm:w-12 rounded-full shadow-md ring-2 ring-amber-700/40 mb-1 group-hover:scale-105 transition duration-200 bg-white dark:bg-neutral-800">
+                                <AvatarImage src={top3.avatar} alt={top3.name} className="object-contain p-0.5 size-full" />
+                                <AvatarFallback className={`bg-gradient-to-tr ${top3.avatarBg} text-amber-100 font-extrabold text-xs sm:text-sm`}>
+                                    {top3.initials}
+                                </AvatarFallback>
+                            </Avatar>
                             <h3 className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-100 truncate max-w-[105px] sm:max-w-[180px]">
                                 {top3.name}
                             </h3>
@@ -164,9 +174,12 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
                                 <span className="flex h-6 w-6 shrink-0 items-center justify-center text-xs font-bold text-neutral-400 dark:text-neutral-500 font-tabular-nums">
                                     #{item.rank}
                                 </span>
-                                <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr ${item.avatarBg} text-white font-bold text-xs shadow-2xs`}>
-                                    {item.initials}
-                                </div>
+                                <Avatar className="h-8 w-8 shrink-0 rounded-full shadow-2xs border border-neutral-200/80 dark:border-neutral-700/80 bg-white dark:bg-neutral-800">
+                                    <AvatarImage src={item.avatar} alt={item.name} className="object-contain p-0.5 size-full" />
+                                    <AvatarFallback className={`bg-gradient-to-tr ${item.avatarBg} text-white font-bold text-xs`}>
+                                        {item.initials}
+                                    </AvatarFallback>
+                                </Avatar>
                                 <div className="min-w-0">
                                     <p className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-100 truncate">
                                         {item.name}
@@ -197,9 +210,16 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
                     <span className="flex h-6 w-6 shrink-0 items-center justify-center text-xs font-bold text-blue-500 dark:text-blue-400 font-tabular-nums">
                         #14
                     </span>
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white font-bold text-xs shadow-2xs">
-                        {user ? user.name.charAt(0).toUpperCase() : 'U'}
-                    </div>
+                    <Avatar className="h-8 w-8 shrink-0 rounded-full shadow-2xs border border-blue-500/40 bg-white dark:bg-neutral-800">
+                        <AvatarImage
+                            src={user?.avatar || '/images/avatar/kucing.png'}
+                            alt={user?.name || 'Anda'}
+                            className="object-contain p-0.5 size-full"
+                        />
+                        <AvatarFallback className="bg-blue-600 text-white font-bold text-xs">
+                            {user ? user.name.charAt(0).toUpperCase() : 'U'}
+                        </AvatarFallback>
+                    </Avatar>
                     <div className="min-w-0">
                         <div className="flex items-center gap-2">
                             <p className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-100 truncate">

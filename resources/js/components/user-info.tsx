@@ -13,8 +13,8 @@ export function UserInfo({
 
     return (
         <>
-            <Avatar className="h-8 w-8 overflow-hidden rounded-full ring-1 ring-border/20 bg-muted/30">
-                <AvatarImage src={user.avatar} alt={user.name} className="object-cover size-full" />
+            <Avatar className="h-8 w-8 overflow-hidden rounded-full ring-1 ring-border/20 bg-white dark:bg-neutral-800">
+                <AvatarImage src={user.avatar || '/images/avatar/kucing.png'} alt={user.name} className="object-contain p-0.5 size-full" />
                 <AvatarFallback className="rounded-full bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
                     {getInitials(user.name)}
                 </AvatarFallback>
