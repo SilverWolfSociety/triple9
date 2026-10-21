@@ -27,13 +27,27 @@ export type RiwayatFilter = 'all' | 'diterima' | 'pending' | 'ditolak' | 'dicek'
 export type JalurFilter = 'all' | StorRoom;
 export type DayFilter = 'all' | 'today' | '7days' | '30days';
 
+export interface TicketReply {
+    id: string;
+    sender: 'user' | 'admin';
+    name: string;
+    message: string;
+    time: string;
+}
+
 export interface TicketRecord {
     id: string;
+    ticketNumber: string;
     title: string;
     category: string;
+    priority: 'biasa' | 'penting' | 'mendesak';
     message: string;
     date: string;
     status: 'menunggu' | 'diproses' | 'selesai';
+    whatsapp?: string;
+    relatedId?: string;
+    adminReply?: string;
+    replies?: TicketReply[];
 }
 
 export interface TransactionRecord {

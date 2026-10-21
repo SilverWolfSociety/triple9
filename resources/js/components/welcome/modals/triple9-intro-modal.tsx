@@ -124,7 +124,7 @@ export function Triple9IntroModal({
                                     Mengenal Platform
                                 </h3>
                                 <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                                    <strong>Triple9</strong> adalah ekosistem digital resmi untuk penyetoran, verifikasi, dan pertukaran akun Gmail yang dibuat sesuai standar kualitas. Setiap akun yang disetor dan berhasil lolos verifikasi akan langsung dikonversi menjadi saldo reward rupiah tunai.
+                                    <strong>Triple9</strong> adalah ekosistem digital resmi untuk penyetoran dan pertukaran akun Gmail yang dibuat sesuai standar kualitas. Setiap akun yang disetor dan berhasil lolos verifikasi akan langsung dikonversi menjadi saldo reward rupiah tunai.
                                 </p>
                             </div>
 
@@ -194,7 +194,7 @@ export function Triple9IntroModal({
                                             Buat Akun Gmail Sesuai Format
                                         </h4>
                                         <p className="text-[11px] text-neutral-600 dark:text-neutral-400 mt-0.5 leading-relaxed">
-                                            Gunakan format password room yang tersedia. Manfaatkan fitur Generator Gmail Cepat untuk inspirasi nama email.
+                                            Gunakan format password dari room yang tersedia. Manfaatkan fitur Generator Gmail Cepat untuk inspirasi nama email.
                                         </p>
                                     </div>
                                 </div>
@@ -222,7 +222,7 @@ export function Triple9IntroModal({
                                             Audit &amp; Verifikasi Transparan
                                         </h4>
                                         <p className="text-[11px] text-neutral-600 dark:text-neutral-400 mt-0.5 leading-relaxed">
-                                            Sistem dan tim pemeriksa mengecek validitas akun secara akurat. Pantau status akun Anda secara realtime di menu <strong>Riwayat Setor</strong>.
+                                            Sistem dan tim pemeriksa akan mengecek validitas akun secara akurat. Pantau status akun Anda di menu <strong>Riwayat Setor</strong>.
                                         </p>
                                     </div>
                                 </div>
@@ -236,7 +236,7 @@ export function Triple9IntroModal({
                                             Reward Masuk &amp; Tarik ke E-Wallet
                                         </h4>
                                         <p className="text-[11px] text-neutral-600 dark:text-neutral-400 mt-0.5 leading-relaxed">
-                                            Reward otomatis menambah Saldo Anda begitu akun berstatus <strong>Diterima</strong>. Tarik saldo kapan pun ke e-wallet tanpa biaya admin!
+                                            Reward otomatis menambah Saldo ke akun anda yang berstatus <strong>Diterima</strong>. Tarik saldo kapan pun ke e-wallet tanpa biaya admin!
                                         </p>
                                     </div>
                                 </div>
@@ -277,7 +277,7 @@ export function Triple9IntroModal({
                                         <span>Bantuan CS 24 Jam</span>
                                     </h5>
                                     <p className="text-[11px] text-neutral-500 dark:text-neutral-400 leading-snug">
-                                        Kirimkan kendala melalui menu Laporan Saya.
+                                        Kirimkan kendala melalui menu Triple9 Support.
                                     </p>
                                 </div>
                             </div>
@@ -304,7 +304,7 @@ export function Triple9IntroModal({
                             onClick={() => handleAction('stor')}
                             className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-600/20 transition cursor-pointer"
                         >
-                            <span>Mulai Stor Akun</span>
+                            <span>Mulai Setor Akun</span>
                         </button>
                     </div>
                 </div>

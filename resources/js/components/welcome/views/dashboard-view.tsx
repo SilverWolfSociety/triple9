@@ -49,10 +49,10 @@ export function DashboardView({
 
     const announcements: AnnouncementItem[] = [
         {
-            badge: 'Pengumuman Storan',
+            badge: 'Pengumuman Setoran',
             badgeColor: 'text-emerald-600 dark:text-emerald-400',
             icon: AnnouncementIcon,
-            title: 'Storan OPEN setiap hari Senin s/d Jumat',
+            title: 'Setoran OPEN setiap hari Senin s/d Jumat',
             description: 'Jam operasional: 08:00 - 16:00 WIB',
         },
         {
@@ -74,7 +74,7 @@ export function DashboardView({
             badgeColor: 'text-blue-600 dark:text-blue-400',
             icon: WhatIcon,
             title: 'Apa itu Triple9 & Cara Kerjanya?',
-            description: 'Pelajari pengenalan, alur penyetoran Gmail, hingga pencairan reward.',
+            description: 'Pelajari pengenalan, alur penyetoran Gmail, hingga pencairan reward, klik di menu panduan Triple9',
         },
     ];
 
@@ -373,19 +373,34 @@ export function DashboardView({
                                         <td className="px-5 py-3 text-[11px] text-neutral-500 dark:text-neutral-400">PW: {item.room}</td>
                                         <td className="px-5 py-3 text-neutral-500 dark:text-neutral-400">{item.date}</td>
                                         <td className="px-5 py-3 text-center align-middle">
-                                            {item.status === 'pending' ? (
-                                                <div className="flex items-center justify-center" title="Pending">
-                                                    <img src="/images/icon/pending.png" alt="Pending" className="h-4 w-4 object-contain" />
+                                            {item.status === 'ditolak' ? (
+                                                <div className="inline-flex items-center justify-center gap-1.5" title="Ditolak">
+                                                    <img src="/images/icon/reject.png" alt="Ditolak" className="h-4 w-4 object-contain shrink-0" />
+                                                    <span className="text-[11px] font-medium text-rose-600 dark:text-rose-400">
+                                                        Ditolak
+                                                    </span>
+                                                </div>
+                                            ) : item.status === 'pending' ? (
+                                                <div className="inline-flex items-center justify-center gap-1.5" title="Menunggu">
+                                                    <img src="/images/icon/pending.png" alt="Menunggu" className="h-4 w-4 object-contain shrink-0" />
+                                                    <span className="text-[11px] font-medium text-amber-600 dark:text-amber-400">
+                                                        Menunggu
+                                                    </span>
+                                                </div>
+                                            ) : item.status === 'dicek' ? (
+                                                <div className="inline-flex items-center justify-center gap-1.5" title="Di Cek">
+                                                    <img src="/images/icon/pending.png" alt="Di Cek" className="h-4 w-4 object-contain shrink-0" />
+                                                    <span className="text-[11px] font-medium text-blue-600 dark:text-blue-400">
+                                                        Di Cek
+                                                    </span>
                                                 </div>
                                             ) : (
-                                                <span className={`inline-block text-[11px] font-semibold uppercase ${item.status === 'diterima'
-                                                    ? 'text-emerald-600 dark:text-emerald-400'
-                                                    : item.status === 'ditolak'
-                                                        ? 'text-rose-600 dark:text-rose-400'
-                                                        : 'text-amber-600 dark:text-amber-400'
-                                                    }`}>
-                                                    {item.status === 'dicek' ? 'Di Cek' : item.status}
-                                                </span>
+                                                <div className="inline-flex items-center justify-center gap-1.5" title="Diterima">
+                                                    <img src="/images/icon/checklist.png" alt="Diterima" className="h-4 w-4 object-contain shrink-0" />
+                                                    <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+                                                        Diterima
+                                                    </span>
+                                                </div>
                                             )}
                                         </td>
                                         <td className="px-5 py-3 text-right font-semibold text-neutral-900 dark:text-neutral-100 font-tabular-nums">

@@ -127,18 +127,18 @@ export function SaldoView({
                                                         Ditolak
                                                     </span>
                                                 </div>
-                                            ) : item.status === 'pending' ? (
-                                                <div className="inline-flex items-center justify-center gap-1.5" title="Pending">
-                                                    <img src="/images/icon/pending.png" alt="Pending" className="h-4 w-4 object-contain shrink-0" />
+                                            ) : item.status === 'pending' || item.status === 'menunggu' ? (
+                                                <div className="inline-flex items-center justify-center gap-1.5" title="Menunggu">
+                                                    <img src="/images/icon/pending.png" alt="Menunggu" className="h-4 w-4 object-contain shrink-0" />
                                                     <span className="text-[11px] font-medium text-amber-600 dark:text-amber-400">
-                                                        Pending
+                                                        Menunggu
                                                     </span>
                                                 </div>
                                             ) : (
-                                                <div className="inline-flex items-center justify-center gap-1.5" title="Complete">
-                                                    <img src="/images/icon/checklist.png" alt="Complete" className="h-4 w-4 object-contain shrink-0" />
+                                                <div className="inline-flex items-center justify-center gap-1.5" title="Selesai">
+                                                    <img src="/images/icon/checklist.png" alt="Selesai" className="h-4 w-4 object-contain shrink-0" />
                                                     <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
-                                                        Complete
+                                                        Selesai
                                                     </span>
                                                 </div>
                                             )}

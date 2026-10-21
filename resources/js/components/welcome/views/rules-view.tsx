@@ -62,10 +62,10 @@ export function RulesView({ onNavigateToStor }: RulesViewProps) {
                         </span>
                         <div className="pt-0.5">
                             <strong className="text-neutral-900 dark:text-neutral-100 font-semibold">
-                                Password Gmail wajib menggunakan: <code className="font-mono font-semibold text-neutral-900 dark:text-neutral-100">triple9</code> ATAU <code className="font-mono font-semibold text-neutral-900 dark:text-neutral-100">9triple</code>
+                                Password Gmail wajib menggunakan: <span className="font-bold text-neutral-900 dark:text-neutral-100">triple9</span> ATAU <span className="font-bold text-neutral-900 dark:text-neutral-100">9triple</span>
                             </strong>
                             <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
-                                (Pilih salah satu pasword)
+                                (Pilih salah satu password)
                             </p>
                         </div>
                     </li>

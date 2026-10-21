@@ -5,9 +5,9 @@ interface GenerateGmailModalProps {
     isOpen: boolean;
     onClose: () => void;
     generatedGmails: string[];
-    generateCount: number;
-    isGenerating: boolean;
-    onRegenerate: (count: number) => void;
+    generateCount?: number;
+    isGenerating?: boolean;
+    onRegenerate?: (count: number) => void;
     onInsertToForm: () => void;
 }
 
@@ -51,33 +51,10 @@ export function GenerateGmailModal({
                     <button
                         type="button"
                         onClick={onClose}
-                        className="flex h-7 w-7 items-center justify-center rounded-lg text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+                        className="flex h-7 w-7 items-center justify-center rounded-lg text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition cursor-pointer"
                     >
                         <X className="h-4 w-4" />
                     </button>
-                </div>
-
-                {/* Quantity selector */}
-                <div className="flex items-center justify-between text-xs">
-                    <span className="text-neutral-500 dark:text-neutral-400 font-medium">
-                        Jumlah Generate:
-                    </span>
-                    <div className="flex items-center gap-1.5">
-                        {[5, 10, 20, 50].map((num) => (
-                            <button
-                                key={num}
-                                type="button"
-                                disabled={isGenerating}
-                                onClick={() => onRegenerate(num)}
-                                className={`px-2.5 py-1 rounded-md text-xs font-semibold transition ${generateCount === num
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700'
-                                    }`}
-                            >
-                                {num}
-                            </button>
-                        ))}
-                    </div>
                 </div>
 
                 {/* List of generated Gmails */}
@@ -93,13 +70,11 @@ export function GenerateGmailModal({
                             <button
                                 type="button"
                                 onClick={() => copyToClipboard(email, idx)}
-                                className="flex items-center gap-1 px-2 py-1 rounded text-[11px] font-medium text-neutral-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition cursor-pointer"
+                                title="Salin Email"
+                                className="h-6 w-6 inline-flex items-center justify-center rounded-md text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition cursor-pointer"
                             >
                                 {copiedIndex === idx ? (
-                                    <>
-                                        <Check className="h-3 w-3 text-emerald-600" />
-                                        <span className="text-emerald-600">Disalin</span>
-                                    </>
+                                    <Check className="h-3.5 w-3.5 text-emerald-500" />
                                 ) : (
                                     <img
                                         src="/images/icon/copy.png"
@@ -117,13 +92,10 @@ export function GenerateGmailModal({
                     <button
                         type="button"
                         onClick={() => copyToClipboard(generatedGmails.join('\n'))}
-                        className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-medium border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 transition cursor-pointer"
+                        className="w-full sm:w-auto sm:min-w-[110px] inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-medium border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 transition cursor-pointer"
                     >
                         {copiedAll ? (
-                            <>
-                                <Check className="h-3.5 w-3.5 text-emerald-600" />
-                                <span className="text-emerald-600">Semua Disalin!</span>
-                            </>
+                            <Check className="h-4 w-4 text-emerald-500" />
                         ) : (
                             <>
                                 <img

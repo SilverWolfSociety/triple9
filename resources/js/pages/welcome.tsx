@@ -13,7 +13,6 @@ import {
     CheckerView,
     RiwayatView,
     RulesView,
-    LaporanView,
     LeaderboardView,
     KomunitasView,
     ReferralView,
@@ -219,10 +218,7 @@ export default function Welcome() {
                             <RulesView onNavigateToStor={() => handleSelectNav('stor')} />
                         )}
 
-                        {/* 7. LAPORAN / TIKET VIEW */}
-                        {activeNav === 'laporan' && <LaporanView userName={user?.name} />}
-
-                        {/* 8. LEADERBOARD VIEW */}
+                        {/* 7. LEADERBOARD VIEW */}
                         {activeNav === 'leaderboard' && <LeaderboardView user={user} />}
 
                         {/* 9. KOMUNITAS VIEW */}
@@ -232,7 +228,9 @@ export default function Welcome() {
                         {activeNav === 'referral' && <ReferralView />}
 
                         {/* 11. SUPPORT VIEW */}
-                        {activeNav === 'support' && <SupportView />}
+                        {activeNav === 'support' && (
+                            <SupportView userName={user?.name} userEmail={user?.email} />
+                        )}
                         </div>
                     </div>
                 </SidebarInset>

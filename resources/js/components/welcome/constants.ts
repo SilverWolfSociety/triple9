@@ -5,7 +5,6 @@ import {
     SearchCheck,
     History,
     FileText,
-    Ticket,
     Trophy,
     Users,
     Gift,
@@ -33,7 +32,6 @@ export const navGroups: NavGroupConfig[] = [
         items: [
             { id: 'riwayat', label: 'Riwayat Setor', icon: History },
             { id: 'rules', label: 'Ketentuan & Rules', icon: FileText },
-            { id: 'laporan', label: 'Laporan Saya', icon: Ticket },
         ],
     },
     {

@@ -13,11 +13,11 @@ export default function AuthSimpleLayout({
 
             {/* Main Outer Container */}
             <div className="w-full max-w-4xl lg:max-w-5xl relative z-10 flex flex-col items-center">
-                
+
                 {/* The Split Card (Flush 50/50 layout) */}
                 <div className="w-full overflow-hidden rounded-[24px] sm:rounded-[28px] border border-slate-200/90 dark:border-zinc-800 bg-white dark:bg-[#09090b] shadow-2xl shadow-blue-950/10 dark:shadow-2xl dark:shadow-black/90">
                     <div className="grid grid-cols-1 md:grid-cols-2 items-stretch min-h-[560px]">
-                        
+
                         {/* LEFT COLUMN: Pure Solid Blue Branding Panel (Clean minimalist) */}
                         <div className="hidden md:flex flex-col justify-end p-8 sm:p-10 lg:p-12 relative overflow-hidden bg-blue-600 dark:bg-blue-600 text-white shadow-inner">
                             {/* Ambient internal glows (pure blue) */}
@@ -31,7 +31,7 @@ export default function AuthSimpleLayout({
                                         Welcome!
                                     </h2>
                                     <p className="text-xs sm:text-sm text-blue-100/90 leading-relaxed mt-1 max-w-xs">
-                                        Platform resmi storan &amp; verifikasi akun Gmail Triple9.
+                                        Platform resmi setoran akun Gmail Triple9.
                                     </p>
                                 </div>
 

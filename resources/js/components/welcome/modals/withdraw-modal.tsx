@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { X, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import type { EwalletType } from '../types';
 import { ewalletOptions } from '../constants';
@@ -30,14 +30,16 @@ export function WithdrawModal({
     const [currentWallet, setCurrentWallet] = useState<EwalletType>(selectedEwallet);
     const [accountInput, setAccountInput] = useState('');
     const [withdrawAmount, setWithdrawAmount] = useState('');
+    const [isSaved, setIsSaved] = useState(false);
 
     useEffect(() => {
         if (isOpen) {
             setCurrentWallet(selectedEwallet);
             setAccountInput(savedEwalletNumbers?.[selectedEwallet] || '');
             setWithdrawAmount('');
+            setIsSaved(false);
         }
-    }, [isOpen, selectedEwallet, savedEwalletNumbers]);
+    }, [isOpen]);
 
     if (!isOpen) return null;
 
@@ -45,12 +47,15 @@ export function WithdrawModal({
         setCurrentWallet(wallet);
         onChangeEwallet?.(wallet);
         setAccountInput(savedEwalletNumbers?.[wallet] || '');
+        setIsSaved(false);
     };
 
     const handleSaveEwallet = () => {
         if (accountInput.length >= 10) {
             onSaveEwalletNumber?.(currentWallet, accountInput);
+            setIsSaved(true);
             toast.info('Nomor telah tersimpan.');
+            setTimeout(() => setIsSaved(false), 2000);
         } else {
             toast.error('Nomor e-wallet harus terdiri dari 10-15 digit angka.');
         }
@@ -184,11 +189,20 @@ export function WithdrawModal({
                             <button
                                 type="button"
                                 onClick={handleSaveEwallet}
-                                title="Simpan nomor"
+                                title={isSaved ? 'Nomor Tersimpan' : 'Simpan nomor'}
                                 aria-label="Simpan nomor"
-                                className="inline-flex items-center justify-center p-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white shadow-xs transition cursor-pointer shrink-0"
+                                className="inline-flex items-center justify-center p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 active:scale-95 transition cursor-pointer shrink-0"
                             >
-                                <img src="/images/icon/save.png" alt="Simpan" className="h-4 w-4 object-contain shrink-0" />
+                                {isSaved ? (
+                                    <Check
+                                        className="h-5 w-5"
+                                        style={{ color: '#22c55e' }}
+                                        stroke="#22c55e"
+                                        strokeWidth={2.5}
+                                    />
+                                ) : (
+                                    <img src="/images/icon/save.png" alt="Simpan" className="h-5 w-5 object-contain shrink-0" />
+                                )}
                             </button>
                         </div>
                     </div>

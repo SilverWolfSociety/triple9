@@ -52,11 +52,11 @@ const initialNotifications: NotificationItem[] = [
     {
         id: 'notif-5',
         title: 'Tiket Bantuan Dibalas',
-        message: 'Admin telah membalas tiket kendala verifikasi Anda di menu Laporan Saya.',
+        message: 'Admin telah membalas tiket kendala verifikasi Anda di Triple9 Support.',
         time: '1 hari lalu',
         type: 'ticket',
         read: true,
-        actionNav: 'laporan',
+        actionNav: 'support',
     },
 ];
 

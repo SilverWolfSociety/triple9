@@ -69,7 +69,7 @@ export function RiwayatView({
                     <div className="flex flex-wrap items-center gap-1.5">
                         {[
                             { id: 'all' as const, label: 'Semua' },
-                            { id: 'pending' as const, label: `Pending (${pendingCount})` },
+                            { id: 'pending' as const, label: `Menunggu (${pendingCount})` },
                             { id: 'dicek' as const, label: `Di Cek (${dicekCount})` },
                             { id: 'diterima' as const, label: `Diterima (${diterimaCount})` },
                             { id: 'ditolak' as const, label: `Ditolak (${ditolakCount})` },
@@ -187,20 +187,34 @@ export function RiwayatView({
                                         </td>
                                         <td className="px-4 py-3 text-neutral-500">{item.date}</td>
                                         <td className="px-4 py-3 text-center align-middle">
-                                            {item.status === 'pending' ? (
-                                                <div className="flex items-center justify-center" title="Pending">
-                                                    <img src="/images/icon/pending.png" alt="Pending" className="h-4 w-4 object-contain" />
+                                            {item.status === 'ditolak' ? (
+                                                <div className="inline-flex items-center justify-center gap-1.5" title="Ditolak">
+                                                    <img src="/images/icon/reject.png" alt="Ditolak" className="h-4 w-4 object-contain shrink-0" />
+                                                    <span className="text-[11px] font-medium text-rose-600 dark:text-rose-400">
+                                                        Ditolak
+                                                    </span>
+                                                </div>
+                                            ) : item.status === 'pending' ? (
+                                                <div className="inline-flex items-center justify-center gap-1.5" title="Menunggu">
+                                                    <img src="/images/icon/pending.png" alt="Menunggu" className="h-4 w-4 object-contain shrink-0" />
+                                                    <span className="text-[11px] font-medium text-amber-600 dark:text-amber-400">
+                                                        Menunggu
+                                                    </span>
+                                                </div>
+                                            ) : item.status === 'dicek' ? (
+                                                <div className="inline-flex items-center justify-center gap-1.5" title="Di Cek">
+                                                    <img src="/images/icon/pending.png" alt="Di Cek" className="h-4 w-4 object-contain shrink-0" />
+                                                    <span className="text-[11px] font-medium text-blue-600 dark:text-blue-400">
+                                                        Di Cek
+                                                    </span>
                                                 </div>
                                             ) : (
-                                                <span className={`inline-block text-[11px] font-semibold uppercase ${
-                                                    item.status === 'diterima'
-                                                        ? 'text-emerald-600 dark:text-emerald-400'
-                                                        : item.status === 'ditolak'
-                                                        ? 'text-rose-600 dark:text-rose-400'
-                                                        : 'text-amber-600 dark:text-amber-400'
-                                                }`}>
-                                                    {item.status === 'dicek' ? 'Di Cek' : item.status}
-                                                </span>
+                                                <div className="inline-flex items-center justify-center gap-1.5" title="Diterima">
+                                                    <img src="/images/icon/checklist.png" alt="Diterima" className="h-4 w-4 object-contain shrink-0" />
+                                                    <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+                                                        Diterima
+                                                    </span>
+                                                </div>
                                             )}
                                         </td>
                                         <td className="px-4 py-3 text-right font-semibold text-slate-900 dark:text-slate-100">
