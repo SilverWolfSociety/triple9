@@ -1,4 +1,5 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import { LogIn } from 'lucide-react';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import { Button } from '@/components/ui/button';
@@ -20,14 +21,14 @@ export default function AdminLogin({ status }: Props) {
                 action="/admin"
                 method="post"
                 resetOnSuccess={['password']}
-                className="flex flex-col gap-5"
+                className="flex flex-col gap-4"
             >
                 {({ processing, errors }) => (
                     <>
-                        <div className="grid gap-4">
+                        <div className="grid gap-3.5">
                             <div className="grid gap-1.5">
-                                <Label htmlFor="email" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
-                                    Email address
+                                <Label htmlFor="email" className="text-xs font-black uppercase tracking-wider text-black">
+                                    Alamat Email
                                 </Label>
                                 <Input
                                     id="email"
@@ -38,13 +39,13 @@ export default function AdminLogin({ status }: Props) {
                                     tabIndex={1}
                                     autoComplete="email"
                                     placeholder="admin@example.com"
-                                    className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
+                                    className="rounded-none border-2 border-black bg-white text-black placeholder:text-black/40 focus:border-black focus:ring-0 shadow-[2px_2px_0px_0px_#000000] focus:shadow-[4px_4px_0px_0px_#000000] text-xs py-2.5 font-medium"
                                 />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div className="grid gap-1.5">
-                                <Label htmlFor="password" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
+                                <Label htmlFor="password" className="text-xs font-black uppercase tracking-wider text-black">
                                     Password
                                 </Label>
                                 <PasswordInput
@@ -54,7 +55,7 @@ export default function AdminLogin({ status }: Props) {
                                     tabIndex={2}
                                     autoComplete="current-password"
                                     placeholder="••••••••"
-                                    className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
+                                    className="rounded-none border-2 border-black bg-white text-black placeholder:text-black/40 focus:border-black focus:ring-0 shadow-[2px_2px_0px_0px_#000000] focus:shadow-[4px_4px_0px_0px_#000000] text-xs py-2.5 font-medium"
                                 />
                                 <InputError message={errors.password} />
                             </div>
@@ -64,30 +65,31 @@ export default function AdminLogin({ status }: Props) {
                                     id="remember"
                                     name="remember"
                                     tabIndex={3}
-                                    className="rounded-md border-neutral-300 dark:border-neutral-700 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
+                                    className="rounded-none border-2 border-black data-[state=checked]:bg-[#00C2CB] data-[state=checked]:text-black"
                                 />
-                                <Label htmlFor="remember" className="text-xs font-medium text-neutral-600 dark:text-neutral-400 cursor-pointer">
+                                <Label htmlFor="remember" className="text-xs font-bold text-black cursor-pointer">
                                     Ingat saya di perangkat ini
                                 </Label>
                             </div>
 
                             <Button
                                 type="submit"
-                                className="mt-2 w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 text-xs shadow-md shadow-blue-600/25 transition-all hover:scale-[1.01] active:scale-95 cursor-pointer"
+                                className="mt-2 w-full rounded-none bg-[#00C2CB] hover:bg-[#00a8b0] text-black font-black uppercase py-2.5 text-xs border-2 border-black shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all cursor-pointer"
                                 tabIndex={4}
                                 disabled={processing}
                             >
-                                {processing && <Spinner />}
+                                {processing ? <Spinner /> : <LogIn className="h-4 w-4 mr-1.5" />}
                                 Masuk ke Dashboard Admin
                             </Button>
                         </div>
 
-                        <div className="flex flex-col gap-2 text-center text-xs text-neutral-500 dark:text-neutral-400 pt-1">
+                        <div className="flex flex-col gap-3 text-center text-xs font-bold text-black pt-2">
                             <div>
                                 Belum memiliki akun admin?{' '}
                                 <Link
                                     href="/admin/register"
-                                    className="font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline"
+                                    tabIndex={5}
+                                    className="font-black text-black underline hover:text-[#00C2CB]"
                                 >
                                     Daftar Admin
                                 </Link>
@@ -98,7 +100,7 @@ export default function AdminLogin({ status }: Props) {
             </Form>
 
             {status && (
-                <div className="mt-4 text-center text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/40 rounded-xl p-2.5">
+                <div className="mt-4 text-center text-xs font-black text-black bg-[#00C2CB] border-2 border-black shadow-[2px_2px_0px_0px_#000000] p-2.5">
                     {status}
                 </div>
             )}

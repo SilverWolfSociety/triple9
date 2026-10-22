@@ -26,9 +26,9 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
                 resetOnSuccess={['password', 'password_confirmation']}
             >
                 {({ processing, errors }) => (
-                    <div className="grid gap-4">
+                    <div className="grid gap-3.5">
                         <div className="grid gap-1.5">
-                            <Label htmlFor="email" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
+                            <Label htmlFor="email" className="text-xs font-black uppercase tracking-wider text-black">
                                 Alamat Email
                             </Label>
                             <Input
@@ -37,7 +37,7 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
                                 name="email"
                                 autoComplete="email"
                                 value={email}
-                                className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-[#121215] text-xs py-2.5 text-neutral-500 dark:text-neutral-400"
+                                className="rounded-none border-2 border-black bg-neutral-100 text-xs py-2.5 text-black font-medium"
                                 readOnly
                             />
                             <InputError
@@ -47,14 +47,14 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
                         </div>
 
                         <div className="grid gap-1.5">
-                            <Label htmlFor="password" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
+                            <Label htmlFor="password" className="text-xs font-black uppercase tracking-wider text-black">
                                 Password Baru
                             </Label>
                             <PasswordInput
                                 id="password"
                                 name="password"
                                 autoComplete="new-password"
-                                className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
+                                className="rounded-none border-2 border-black bg-white text-black placeholder:text-black/40 focus:border-black focus:ring-0 shadow-[2px_2px_0px_0px_#000000] focus:shadow-[4px_4px_0px_0px_#000000] text-xs py-2.5 font-medium"
                                 autoFocus
                                 placeholder="Minimal 8 karakter"
                                 passwordrules={passwordRules}
@@ -63,14 +63,14 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
                         </div>
 
                         <div className="grid gap-1.5">
-                            <Label htmlFor="password_confirmation" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
+                            <Label htmlFor="password_confirmation" className="text-xs font-black uppercase tracking-wider text-black">
                                 Konfirmasi Password Baru
                             </Label>
                             <PasswordInput
                                 id="password_confirmation"
                                 name="password_confirmation"
                                 autoComplete="new-password"
-                                className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
+                                className="rounded-none border-2 border-black bg-white text-black placeholder:text-black/40 focus:border-black focus:ring-0 shadow-[2px_2px_0px_0px_#000000] focus:shadow-[4px_4px_0px_0px_#000000] text-xs py-2.5 font-medium"
                                 placeholder="Ulangi password baru"
                                 passwordrules={passwordRules}
                             />
@@ -82,7 +82,7 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
 
                         <Button
                             type="submit"
-                            className="mt-2 w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 text-xs shadow-md shadow-blue-600/25 transition-all hover:scale-[1.01] active:scale-95 cursor-pointer"
+                            className="mt-2 w-full rounded-none bg-[#00C2CB] hover:bg-[#00a8b0] text-black font-black uppercase py-2.5 text-xs border-2 border-black shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all cursor-pointer"
                             disabled={processing}
                             data-test="reset-password-button"
                         >
@@ -90,12 +90,12 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
                             Simpan Password Baru
                         </Button>
 
-                        <div className="flex flex-col gap-2.5 text-center text-xs text-neutral-600 dark:text-neutral-400 pt-2">
+                        <div className="flex flex-col gap-2.5 text-center text-xs font-bold text-black pt-2">
                             <div>
                                 Sudah ingat password?{' '}
                                 <Link
                                     href={login()}
-                                    className="font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline"
+                                    className="font-black text-black underline hover:text-[#00C2CB]"
                                 >
                                     Masuk di sini
                                 </Link>

@@ -1,4 +1,5 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import { UserPlus } from 'lucide-react';
 import { Spinner } from '@/components/ui/spinner';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
@@ -21,7 +22,7 @@ export default function AdminRegister() {
                     <>
                         <div className="grid gap-3.5">
                             <div className="grid gap-1.5">
-                                <Label htmlFor="name" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
+                                <Label htmlFor="name" className="text-xs font-black uppercase tracking-wider text-black">
                                     Nama Lengkap
                                 </Label>
                                 <Input
@@ -33,14 +34,14 @@ export default function AdminRegister() {
                                     tabIndex={1}
                                     autoComplete="name"
                                     placeholder="Nama Administrator"
-                                    className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
+                                    className="rounded-none border-2 border-black bg-white text-black placeholder:text-black/40 focus:border-black focus:ring-0 shadow-[2px_2px_0px_0px_#000000] focus:shadow-[4px_4px_0px_0px_#000000] text-xs py-2.5 font-medium"
                                 />
                                 <InputError message={errors.name} className="mt-1" />
                             </div>
 
                             <div className="grid gap-1.5">
-                                <Label htmlFor="email" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
-                                    Email address
+                                <Label htmlFor="email" className="text-xs font-black uppercase tracking-wider text-black">
+                                    Alamat Email
                                 </Label>
                                 <Input
                                     id="email"
@@ -50,13 +51,13 @@ export default function AdminRegister() {
                                     tabIndex={2}
                                     autoComplete="email"
                                     placeholder="admin@example.com"
-                                    className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
+                                    className="rounded-none border-2 border-black bg-white text-black placeholder:text-black/40 focus:border-black focus:ring-0 shadow-[2px_2px_0px_0px_#000000] focus:shadow-[4px_4px_0px_0px_#000000] text-xs py-2.5 font-medium"
                                 />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div className="grid gap-1.5">
-                                <Label htmlFor="password" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
+                                <Label htmlFor="password" className="text-xs font-black uppercase tracking-wider text-black">
                                     Password
                                 </Label>
                                 <PasswordInput
@@ -66,14 +67,14 @@ export default function AdminRegister() {
                                     tabIndex={3}
                                     autoComplete="new-password"
                                     placeholder="••••••••"
-                                    className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
+                                    className="rounded-none border-2 border-black bg-white text-black placeholder:text-black/40 focus:border-black focus:ring-0 shadow-[2px_2px_0px_0px_#000000] focus:shadow-[4px_4px_0px_0px_#000000] text-xs py-2.5 font-medium"
                                 />
                                 <InputError message={errors.password} />
                             </div>
 
                             <div className="grid gap-1.5">
-                                <Label htmlFor="password_confirmation" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
-                                    Confirm password
+                                <Label htmlFor="password_confirmation" className="text-xs font-black uppercase tracking-wider text-black">
+                                    Konfirmasi Password
                                 </Label>
                                 <PasswordInput
                                     id="password_confirmation"
@@ -82,29 +83,29 @@ export default function AdminRegister() {
                                     tabIndex={4}
                                     autoComplete="new-password"
                                     placeholder="••••••••"
-                                    className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
+                                    className="rounded-none border-2 border-black bg-white text-black placeholder:text-black/40 focus:border-black focus:ring-0 shadow-[2px_2px_0px_0px_#000000] focus:shadow-[4px_4px_0px_0px_#000000] text-xs py-2.5 font-medium"
                                 />
                                 <InputError message={errors.password_confirmation} className="mt-1" />
                             </div>
 
                             <Button
                                 type="submit"
-                                className="mt-1 w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 text-xs shadow-md shadow-blue-600/25 transition-all hover:scale-[1.01] active:scale-95 cursor-pointer"
+                                className="mt-2 w-full rounded-none bg-[#00C2CB] hover:bg-[#00a8b0] text-black font-black uppercase py-2.5 text-xs border-2 border-black shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all cursor-pointer"
                                 tabIndex={5}
                                 disabled={processing}
                             >
-                                {processing && <Spinner />}
+                                {processing ? <Spinner /> : <UserPlus className="h-4 w-4 mr-1.5" />}
                                 Daftar Akun Admin
                             </Button>
                         </div>
 
-                        <div className="flex flex-col gap-2 text-center text-xs text-neutral-500 dark:text-neutral-400 pt-1">
+                        <div className="flex flex-col gap-3 text-center text-xs font-bold text-black pt-2">
                             <div>
                                 Sudah memiliki akun admin?{' '}
                                 <Link
                                     href="/admin"
                                     tabIndex={6}
-                                    className="font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline"
+                                    className="font-black text-black underline hover:text-[#00C2CB]"
                                 >
                                     Masuk di sini
                                 </Link>

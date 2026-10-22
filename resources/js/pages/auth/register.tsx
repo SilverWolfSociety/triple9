@@ -29,7 +29,7 @@ export default function Register({ passwordRules }: Props) {
                     <>
                         <div className="grid gap-3.5">
                             <div className="grid gap-1.5">
-                                <Label htmlFor="name" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
+                                <Label htmlFor="name" className="text-xs font-black uppercase tracking-wider text-black">
                                     Nama Lengkap
                                 </Label>
                                 <Input
@@ -41,7 +41,7 @@ export default function Register({ passwordRules }: Props) {
                                     autoComplete="name"
                                     name="name"
                                     placeholder="Contoh: Hawwin Ramadhan"
-                                    className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:bg-white dark:focus:bg-[#121215] focus:ring-blue-600/20 text-xs py-2.5"
+                                    className="rounded-none border-2 border-black bg-white text-black placeholder:text-black/40 focus:border-black focus:ring-0 shadow-[2px_2px_0px_0px_#000000] focus:shadow-[4px_4px_0px_0px_#000000] text-xs py-2.5 font-medium"
                                 />
                                 <InputError
                                     message={errors.name}
@@ -50,7 +50,7 @@ export default function Register({ passwordRules }: Props) {
                             </div>
 
                             <div className="grid gap-1.5">
-                                <Label htmlFor="email" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
+                                <Label htmlFor="email" className="text-xs font-black uppercase tracking-wider text-black">
                                     Alamat Email
                                 </Label>
                                 <Input
@@ -61,7 +61,7 @@ export default function Register({ passwordRules }: Props) {
                                     autoComplete="email"
                                     name="email"
                                     placeholder="nama@email.com"
-                                    className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:bg-white dark:focus:bg-[#121215] focus:ring-blue-600/20 text-xs py-2.5"
+                                    className="rounded-none border-2 border-black bg-white text-black placeholder:text-black/40 focus:border-black focus:ring-0 shadow-[2px_2px_0px_0px_#000000] focus:shadow-[4px_4px_0px_0px_#000000] text-xs py-2.5 font-medium"
                                 />
                                 <InputError
                                     message={errors.email}
@@ -70,7 +70,7 @@ export default function Register({ passwordRules }: Props) {
                             </div>
 
                             <div className="grid gap-1.5">
-                                <Label htmlFor="password" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
+                                <Label htmlFor="password" className="text-xs font-black uppercase tracking-wider text-black">
                                     Password
                                 </Label>
                                 <PasswordInput
@@ -80,7 +80,7 @@ export default function Register({ passwordRules }: Props) {
                                     tabIndex={3}
                                     autoComplete="new-password"
                                     placeholder="••••••••"
-                                    className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:bg-white dark:focus:bg-[#121215] focus:ring-blue-600/20 text-xs py-2.5"
+                                    className="rounded-none border-2 border-black bg-white text-black placeholder:text-black/40 focus:border-black focus:ring-0 shadow-[2px_2px_0px_0px_#000000] focus:shadow-[4px_4px_0px_0px_#000000] text-xs py-2.5 font-medium"
                                 />
                                 <InputError
                                     message={errors.password}
@@ -89,7 +89,7 @@ export default function Register({ passwordRules }: Props) {
                             </div>
 
                             <div className="grid gap-1.5">
-                                <Label htmlFor="password_confirmation" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
+                                <Label htmlFor="password_confirmation" className="text-xs font-black uppercase tracking-wider text-black">
                                     Konfirmasi Password
                                 </Label>
                                 <PasswordInput
@@ -99,7 +99,7 @@ export default function Register({ passwordRules }: Props) {
                                     tabIndex={4}
                                     autoComplete="new-password"
                                     placeholder="••••••••"
-                                    className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:bg-white dark:focus:bg-[#121215] focus:ring-blue-600/20 text-xs py-2.5"
+                                    className="rounded-none border-2 border-black bg-white text-black placeholder:text-black/40 focus:border-black focus:ring-0 shadow-[2px_2px_0px_0px_#000000] focus:shadow-[4px_4px_0px_0px_#000000] text-xs py-2.5 font-medium"
                                 />
                                 <InputError
                                     message={errors.password_confirmation}
@@ -108,22 +108,22 @@ export default function Register({ passwordRules }: Props) {
 
                             <Button
                                 type="submit"
-                                className="mt-1 w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 text-xs shadow-md shadow-blue-600/25 transition-all hover:scale-[1.01] active:scale-95 cursor-pointer"
+                                className="mt-2 w-full rounded-none bg-[#00C2CB] hover:bg-[#00a8b0] text-black font-black uppercase py-2.5 text-xs border-2 border-black shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all cursor-pointer"
                                 tabIndex={5}
                                 disabled={processing}
                                 data-test="register-user-button"
                             >
                                 {processing ? <Spinner /> : <UserPlus className="h-4 w-4 mr-1.5" />}
-                                Daftar Akun
+                                Daftarkan Akun Sekarang
                             </Button>
 
                             {/* Divider */}
-                            <div className="relative my-1">
+                            <div className="relative my-2">
                                 <div className="absolute inset-0 flex items-center">
-                                    <span className="w-full border-t border-neutral-100 dark:border-neutral-800" />
+                                    <span className="w-full border-t-2 border-black" />
                                 </div>
                                 <div className="relative flex justify-center text-[10px] uppercase tracking-wider">
-                                    <span className="bg-white dark:bg-[#09090b] px-3 text-neutral-400 dark:text-neutral-500 font-medium">
+                                    <span className="bg-white px-3 text-black font-black">
                                         atau daftar dengan
                                     </span>
                                 </div>
@@ -134,7 +134,7 @@ export default function Register({ passwordRules }: Props) {
                                 <button
                                     type="button"
                                     onClick={() => toast.info('Fitur daftar dengan Google sedang dalam proses integrasi.')}
-                                    className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] hover:bg-neutral-50 dark:hover:bg-neutral-800/60 text-xs font-semibold text-neutral-700 dark:text-neutral-200 shadow-2xs transition-all hover:scale-[1.01] active:scale-95 cursor-pointer"
+                                    className="flex items-center justify-center gap-2 py-2 px-3 rounded-none border-2 border-black bg-white hover:bg-[#FFD700] text-xs font-black text-black shadow-[3px_3px_0px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_#000000] transition-all cursor-pointer"
                                 >
                                     <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24">
                                         <path
@@ -160,7 +160,7 @@ export default function Register({ passwordRules }: Props) {
                                 <button
                                     type="button"
                                     onClick={() => toast.info('Fitur daftar dengan Facebook sedang dalam proses integrasi.')}
-                                    className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] hover:bg-neutral-50 dark:hover:bg-neutral-800/60 text-xs font-semibold text-neutral-700 dark:text-neutral-200 shadow-2xs transition-all hover:scale-[1.01] active:scale-95 cursor-pointer"
+                                    className="flex items-center justify-center gap-2 py-2 px-3 rounded-none border-2 border-black bg-white hover:bg-[#00C2CB] text-xs font-black text-black shadow-[3px_3px_0px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_#000000] transition-all cursor-pointer"
                                 >
                                     <svg className="h-4 w-4 shrink-0 fill-[#1877F2]" viewBox="0 0 24 24">
                                         <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
@@ -170,21 +170,21 @@ export default function Register({ passwordRules }: Props) {
                             </div>
 
                             {/* Bottom Links: Login Redirect */}
-                            <div className="flex flex-col gap-3 text-center text-xs text-neutral-500 dark:text-neutral-400 pt-2">
-                                <div>
-                                    Sudah memiliki akun?{' '}
-                                    <Link
-                                        href={login()}
-                                        tabIndex={6}
-                                        className="font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline"
-                                    >
-                                        Masuk di sini
-                                    </Link>
+                            <div className="flex flex-col gap-3 text-center text-xs font-bold text-black pt-2">
+                                    <div>
+                                        Sudah memiliki akun?{' '}
+                                        <Link
+                                            href={login()}
+                                            tabIndex={6}
+                                            className="font-black text-black underline hover:text-[#00C2CB]"
+                                        >
+                                            Masuk di sini
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </>
-                )}
+                        </>
+                    )}
             </Form>
         </>
     );

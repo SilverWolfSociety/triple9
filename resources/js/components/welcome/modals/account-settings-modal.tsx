@@ -149,14 +149,14 @@ export function AccountSettingsModal({
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs animate-in fade-in duration-200"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 animate-in fade-in duration-150"
             onClick={(e) => {
                 if (e.target === e.currentTarget) onClose();
             }}
         >
-            <div className="relative w-full max-w-2xl max-h-[92vh] flex flex-col rounded-3xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="relative w-full max-w-2xl max-h-[92vh] flex flex-col rounded-md bg-white border-[3px] border-black shadow-[10px_10px_0px_0px_#000000] overflow-hidden">
                 {/* Header Banner */}
-                <div className="relative p-6 pb-5 bg-neutral-50 dark:bg-neutral-900/90 border-b border-neutral-200/80 dark:border-neutral-800 shrink-0">
+                <div className="relative p-6 pb-5 bg-[#F5F5DC] border-b-2 border-black shrink-0">
                     {/* Close Button */}
                     <button
                         type="button"
@@ -164,35 +164,36 @@ export function AccountSettingsModal({
                             e.stopPropagation();
                             onClose();
                         }}
-                        className="absolute top-4 right-4 z-30 flex h-9 w-9 items-center justify-center rounded-xl text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition cursor-pointer"
+                        className="absolute top-4 right-4 z-30 flex h-8 w-8 items-center justify-center rounded-sm border-2 border-black bg-white hover:bg-[#FF00FF] shadow-[2px_2px_0px_0px_#000000] text-black transition cursor-pointer"
                         aria-label="Tutup pengaturan akun"
                     >
-                        <X className="h-4 w-4" />
+                        <X className="h-4 w-4 stroke-[3]" />
                     </button>
 
                     <div className="relative z-10 flex items-start gap-3.5 pr-12">
-                        <div className="flex shrink-0 items-center justify-center mt-1">
-                            <img src="/images/icon/person_yellow.png" alt="Profil" className="h-7 w-7 object-contain shrink-0" />
+                        <div className="size-9 rounded-sm border-2 border-black bg-[#FFD700] shadow-[2px_2px_0px_0px_#000000] flex items-center justify-center shrink-0">
+                            <img src="/images/icon/person_yellow.png" alt="Profil" className="h-5 w-5 object-contain" />
                         </div>
                         <div>
-                            <h2 className="text-lg sm:text-xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100 leading-snug">
+                            <h2 className="text-lg sm:text-xl font-black uppercase tracking-wider text-black">
                                 Pengaturan Akun
                             </h2>
-                            <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed mt-1">
+                            <p className="text-xs font-bold text-neutral-700 mt-1">
                                 Kelola identitas profil dan keamanan kata sandi akun Triple9 Anda.
                             </p>
                         </div>
                     </div>
 
                     {/* Navigation Tabs */}
-                    <div className="relative z-10 grid grid-cols-2 gap-1.5 mt-5 bg-neutral-100 dark:bg-neutral-800/70 p-1 rounded-xl text-xs font-semibold">
+                    <div className="relative z-10 grid grid-cols-2 gap-2 mt-5">
                         <button
                             type="button"
                             onClick={() => setActiveTab('profile')}
-                            className={`py-2 px-3 rounded-lg transition cursor-pointer flex items-center justify-center gap-2 ${activeTab === 'profile'
-                                ? 'bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 shadow-2xs font-bold border border-neutral-200/80 dark:border-neutral-700/60'
-                                : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-white/50 dark:hover:bg-neutral-800/50'
-                                }`}
+                            className={`py-2 px-3 rounded-sm text-xs font-black uppercase tracking-wider border-2 border-black transition cursor-pointer flex items-center justify-center gap-2 ${
+                                activeTab === 'profile'
+                                    ? 'bg-[#00C2CB] text-black shadow-[2px_2px_0px_0px_#000000]'
+                                    : 'bg-white text-black hover:bg-neutral-100'
+                            }`}
                         >
                             <img src="/images/icon/person_yellow.png" alt="Profil" className="h-4 w-4 object-contain shrink-0" />
                             <span>Profil</span>
@@ -200,10 +201,11 @@ export function AccountSettingsModal({
                         <button
                             type="button"
                             onClick={() => setActiveTab('security')}
-                            className={`py-2 px-3 rounded-lg transition cursor-pointer flex items-center justify-center gap-2 ${activeTab === 'security'
-                                ? 'bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 shadow-2xs font-bold border border-neutral-200/80 dark:border-neutral-700/60'
-                                : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-white/50 dark:hover:bg-neutral-800/50'
-                                }`}
+                            className={`py-2 px-3 rounded-sm text-xs font-black uppercase tracking-wider border-2 border-black transition cursor-pointer flex items-center justify-center gap-2 ${
+                                activeTab === 'security'
+                                    ? 'bg-[#00C2CB] text-black shadow-[2px_2px_0px_0px_#000000]'
+                                    : 'bg-white text-black hover:bg-neutral-100'
+                            }`}
                         >
                             <img src="/images/icon/key.png" alt="Keamanan" className="h-4 w-4 object-contain shrink-0" />
                             <span>Keamanan</span>
@@ -212,35 +214,34 @@ export function AccountSettingsModal({
                 </div>
 
                 {/* Body Content (Scrollable) */}
-                <div className="flex-1 overflow-y-auto p-6 space-y-4 text-slate-700 dark:text-slate-300 text-xs sm:text-sm leading-relaxed no-scrollbar">
+                <div className="flex-1 overflow-y-auto p-6 space-y-4 text-black text-xs sm:text-sm leading-relaxed no-scrollbar bg-white">
                     {/* TAB 1: PROFIL & DATA DIRI */}
                     {activeTab === 'profile' && (
                         <div className="space-y-4 animate-in fade-in duration-150">
                             {/* Member ID Card */}
-                            <div className="flex items-center gap-3.5 p-4 rounded-2xl bg-slate-50 dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800">
-                                <Avatar className="h-12 w-12 shrink-0 overflow-hidden rounded-full border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800">
+                            <div className="flex items-center gap-3.5 p-4 rounded-sm bg-[#F5F5DC] border-2 border-black shadow-[4px_4px_0px_0px_#000000]">
+                                <Avatar className="h-12 w-12 shrink-0 rounded-sm border-2 border-black bg-[#FFD700] shadow-[2px_2px_0px_0px_#000000]">
                                     <AvatarImage src={selectedAvatar || user?.avatar} alt={user?.name} className="object-cover size-full" />
-                                    <AvatarFallback className="rounded-full bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white font-semibold text-base">
+                                    <AvatarFallback className="rounded-sm bg-[#FFD700] text-black font-black text-base">
                                         {user?.name ? getInitials(user.name) : 'TR'}
                                     </AvatarFallback>
                                 </Avatar>
                                 <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-2">
-                                        <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 truncate">
+                                        <h3 className="text-sm font-black uppercase text-black truncate">
                                             {user?.name || 'Member Triple9'}
                                         </h3>
-                                        <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
-                                            <img src="/images/icon/checklist.png" alt="Aktif" className="h-3.5 w-3.5 object-contain shrink-0" />
+                                        <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase px-1.5 py-0.2 rounded-xs border border-black bg-[#00C2CB] text-black">
                                             <span>Aktif</span>
                                         </span>
                                     </div>
-                                    <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                                    <p className="text-xs font-mono font-bold text-neutral-800 truncate mt-0.5">
                                         {user?.email || 'member@triple9.id'}
                                     </p>
                                 </div>
                                 <div className="text-right shrink-0">
-                                    <div className="text-[10px] text-slate-400 dark:text-slate-500">ID Member</div>
-                                    <div className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                                    <div className="text-[10px] font-black uppercase text-neutral-600">ID Member</div>
+                                    <div className="text-xs font-mono font-black text-black">
                                         #TRP-{user?.id ? String(user.id).padStart(4, '0') : '9999'}
                                     </div>
                                 </div>
@@ -249,7 +250,7 @@ export function AccountSettingsModal({
                             {/* Form Edit Profile */}
                             <form onSubmit={handleUpdateProfile} className="space-y-4">
                                 <div className="space-y-2">
-                                    <label className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                                    <label className="text-xs font-black uppercase tracking-wider text-black">
                                         Pilih Avatar Profil
                                     </label>
                                     <div className="grid grid-cols-6 gap-2">
@@ -260,10 +261,10 @@ export function AccountSettingsModal({
                                                     key={item.id}
                                                     type="button"
                                                     onClick={() => setSelectedAvatar(item.path)}
-                                                    className={`relative aspect-square rounded-2xl p-1.5 transition-all flex items-center justify-center cursor-pointer ${
+                                                    className={`relative aspect-square rounded-sm p-1.5 transition-all flex items-center justify-center cursor-pointer ${
                                                         isSelected
-                                                            ? 'border-2 border-blue-600 bg-transparent scale-105 shadow-xs'
-                                                            : 'border border-slate-200 dark:border-zinc-800 hover:border-slate-300 dark:hover:border-zinc-700 bg-transparent hover:scale-102'
+                                                            ? 'border-2 border-black bg-[#00C2CB] shadow-[3px_3px_0px_0px_#000000] scale-105'
+                                                            : 'border-2 border-black bg-white hover:bg-[#F5F5DC]'
                                                     }`}
                                                     title={item.name}
                                                 >
@@ -273,8 +274,8 @@ export function AccountSettingsModal({
                                                         className="h-full w-full object-contain"
                                                     />
                                                     {isSelected && (
-                                                        <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-white shadow-xs">
-                                                            <Check className="h-2.5 w-2.5 stroke-[3]" />
+                                                        <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-xs bg-[#FFD700] border border-black text-black shadow-xs">
+                                                            <Check className="h-2.5 w-2.5 stroke-[4]" />
                                                         </span>
                                                     )}
                                                 </button>
@@ -283,7 +284,7 @@ export function AccountSettingsModal({
                                     </div>
                                 </div>
                                 <div className="space-y-1.5">
-                                    <label htmlFor="settings-name" className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                                    <label htmlFor="settings-name" className="text-xs font-black uppercase tracking-wider text-black">
                                         Nama Lengkap
                                     </label>
                                     <input
@@ -293,12 +294,12 @@ export function AccountSettingsModal({
                                         onChange={(e) => setName(e.target.value)}
                                         required
                                         placeholder="Nama lengkap Anda"
-                                        className="w-full rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] px-3.5 py-2.5 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none transition"
+                                        className="w-full rounded-sm border-2 border-black bg-white px-3.5 py-2.5 text-xs font-bold text-black placeholder:text-neutral-500 shadow-[2px_2px_0px_0px_#000000] focus:outline-none focus:bg-[#F5F5DC] transition"
                                     />
                                 </div>
 
                                 <div className="space-y-1.5">
-                                    <label htmlFor="settings-email" className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                                    <label htmlFor="settings-email" className="text-xs font-black uppercase tracking-wider text-black">
                                         Alamat Email
                                     </label>
                                     <input
@@ -308,7 +309,7 @@ export function AccountSettingsModal({
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
                                         placeholder="email@example.com"
-                                        className="w-full rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] px-3.5 py-2.5 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none transition"
+                                        className="w-full rounded-sm border-2 border-black bg-white px-3.5 py-2.5 text-xs font-bold text-black placeholder:text-neutral-500 shadow-[2px_2px_0px_0px_#000000] focus:outline-none focus:bg-[#F5F5DC] transition"
                                     />
                                 </div>
 
@@ -316,7 +317,7 @@ export function AccountSettingsModal({
                                     <button
                                         type="submit"
                                         disabled={isSavingProfile}
-                                        className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-600/20 transition cursor-pointer disabled:opacity-50"
+                                        className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-md text-xs font-black uppercase tracking-wider bg-[#00C2CB] text-black border-2 border-black shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition cursor-pointer disabled:opacity-50"
                                     >
                                         <span>{isSavingProfile ? 'Menyimpan...' : 'Simpan Profil'}</span>
                                     </button>
@@ -325,17 +326,12 @@ export function AccountSettingsModal({
                         </div>
                     )}
 
-
-
-                    {/* TAB 3: KEAMANAN & KATA SANDI */}
+                    {/* TAB 2: KEAMANAN & KATA SANDI */}
                     {activeTab === 'security' && (
                         <div className="space-y-4 animate-in fade-in duration-150">
-
-
-
                             <form onSubmit={handleUpdatePassword} className="space-y-3.5">
                                 <div className="space-y-1.5">
-                                    <label htmlFor="settings-current-pw" className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                                    <label htmlFor="settings-current-pw" className="text-xs font-black uppercase tracking-wider text-black">
                                         Kata Sandi Saat Ini
                                     </label>
                                     <div className="relative">
@@ -346,12 +342,12 @@ export function AccountSettingsModal({
                                             onChange={(e) => setCurrentPassword(e.target.value)}
                                             required
                                             placeholder="Masukkan kata sandi saat ini"
-                                            className="w-full rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] px-3.5 py-2.5 pr-10 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none transition"
+                                            className="w-full rounded-sm border-2 border-black bg-white px-3.5 py-2.5 pr-10 text-xs font-bold text-black placeholder:text-neutral-500 shadow-[2px_2px_0px_0px_#000000] focus:outline-none focus:bg-[#F5F5DC] transition"
                                         />
                                         <button
                                             type="button"
                                             onClick={() => setShowCurrentPw(!showCurrentPw)}
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-black cursor-pointer"
                                         >
                                             {showCurrentPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                         </button>
@@ -360,7 +356,7 @@ export function AccountSettingsModal({
 
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     <div className="space-y-1.5">
-                                        <label htmlFor="settings-new-pw" className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                                        <label htmlFor="settings-new-pw" className="text-xs font-black uppercase tracking-wider text-black">
                                             Kata Sandi Baru
                                         </label>
                                         <div className="relative">
@@ -371,12 +367,12 @@ export function AccountSettingsModal({
                                                 onChange={(e) => setNewPassword(e.target.value)}
                                                 required
                                                 placeholder="Minimal 8 karakter"
-                                                className="w-full rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] px-3.5 py-2.5 pr-10 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none transition"
+                                                className="w-full rounded-sm border-2 border-black bg-white px-3.5 py-2.5 pr-10 text-xs font-bold text-black placeholder:text-neutral-500 shadow-[2px_2px_0px_0px_#000000] focus:outline-none focus:bg-[#F5F5DC] transition"
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => setShowNewPw(!showNewPw)}
-                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-black cursor-pointer"
                                             >
                                                 {showNewPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                             </button>
@@ -384,7 +380,7 @@ export function AccountSettingsModal({
                                     </div>
 
                                     <div className="space-y-1.5">
-                                        <label htmlFor="settings-confirm-pw" className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                                        <label htmlFor="settings-confirm-pw" className="text-xs font-black uppercase tracking-wider text-black">
                                             Konfirmasi Kata Sandi Baru
                                         </label>
                                         <div className="relative">
@@ -395,12 +391,12 @@ export function AccountSettingsModal({
                                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                                 required
                                                 placeholder="Ketik ulang kata sandi baru"
-                                                className="w-full rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#121215] px-3.5 py-2.5 pr-10 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none transition"
+                                                className="w-full rounded-sm border-2 border-black bg-white px-3.5 py-2.5 pr-10 text-xs font-bold text-black placeholder:text-neutral-500 shadow-[2px_2px_0px_0px_#000000] focus:outline-none focus:bg-[#F5F5DC] transition"
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => setShowConfirmPw(!showConfirmPw)}
-                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer"
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-black cursor-pointer"
                                             >
                                                 {showConfirmPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                             </button>
@@ -412,7 +408,7 @@ export function AccountSettingsModal({
                                     <button
                                         type="submit"
                                         disabled={isSavingPassword}
-                                        className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-600/20 transition cursor-pointer disabled:opacity-50"
+                                        className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-md text-xs font-black uppercase tracking-wider bg-[#00C2CB] text-black border-2 border-black shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition cursor-pointer disabled:opacity-50"
                                     >
                                         <span>{isSavingPassword ? 'Menyimpan...' : 'Perbarui Kata Sandi'}</span>
                                     </button>
@@ -420,8 +416,6 @@ export function AccountSettingsModal({
                             </form>
                         </div>
                     )}
-
-
                 </div>
             </div>
         </div>

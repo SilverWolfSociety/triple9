@@ -85,17 +85,19 @@ export function SupportView({ userName = 'Pengguna' }: SupportViewProps) {
     };
 
     return (
-        <div className="w-full space-y-4 sm:space-y-5">
+        <div className="w-full space-y-5">
             {/* Header Card */}
-            <div className="rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 px-5 min-h-[68px] sm:h-18 shadow-xs flex items-center justify-between gap-3 sm:gap-4 py-3.5 sm:py-0">
+            <div className="rounded-md bg-white border-[3px] border-black px-6 min-h-[70px] shadow-[8px_8px_0px_0px_#000000] flex items-center justify-between gap-4 py-4">
                 <div className="flex items-center gap-3">
-                    <img
-                        src="/images/icon/headphone.png"
-                        alt="Support"
-                        className="h-6 w-6 object-contain shrink-0"
-                    />
+                    <div className="size-9 rounded-sm border-2 border-black bg-[#FFD700] shadow-[2px_2px_0px_0px_#000000] flex items-center justify-center shrink-0">
+                        <img
+                            src="/images/icon/headphone.png"
+                            alt="Support"
+                            className="h-5 w-5 object-contain"
+                        />
+                    </div>
                     <div>
-                        <h2 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">
+                        <h2 className="text-base sm:text-lg font-black uppercase tracking-wider text-black">
                             Triple9 Support
                         </h2>
                     </div>
@@ -103,44 +105,40 @@ export function SupportView({ userName = 'Pengguna' }: SupportViewProps) {
             </div>
 
             {/* Grid 2 Kolom: Form Keluhan & Riwayat / Kontak */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
                 {/* Kolom Kiri: Form Isi Keluhan */}
-                <div className="lg:col-span-7 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 p-5 sm:p-6 shadow-xs space-y-4">
-                    <div className="pb-3 border-b border-neutral-100 dark:border-neutral-800">
-                        <h3 className="text-sm font-bold text-neutral-900 dark:text-neutral-100">
+                <div className="lg:col-span-7 rounded-md bg-white border-[3px] border-black p-5 sm:p-6 shadow-[8px_8px_0px_0px_#000000] space-y-4">
+                    <div className="pb-3 border-b-2 border-black">
+                        <h3 className="text-sm font-black uppercase tracking-wider text-black">
                             Kirim Keluhan atau Pertanyaan
                         </h3>
-                        <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
+                        <p className="text-xs font-bold text-neutral-600 mt-1">
                             Isi formulir di bawah ini untuk melaporkan kendala yang Anda alami.
                         </p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
+                    <form onSubmit={handleSubmit} className="space-y-4 text-xs">
                         {/* Kategori Kendala */}
                         <div>
-                            <label className="block font-semibold text-neutral-900 dark:text-neutral-100 mb-1.5">
-                                Kategori Kendala <span className="text-rose-500">*</span>
+                            <label className="block font-black uppercase tracking-wider text-black mb-1.5">
+                                Kategori Kendala <span className="text-[#FF00FF]">*</span>
                             </label>
                             <div className="relative" ref={dropdownRef}>
                                 <button
                                     type="button"
                                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                    className={`w-full flex items-center justify-between rounded-xl border px-3.5 py-2.5 text-xs text-neutral-900 dark:text-neutral-100 bg-white dark:bg-neutral-950 transition cursor-pointer ${
-                                        isDropdownOpen
-                                            ? 'border-blue-600 ring-1 ring-blue-600'
-                                            : 'border-neutral-200/80 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700'
-                                    }`}
+                                    className="w-full flex items-center justify-between rounded-sm border-2 border-black px-3.5 py-2.5 text-xs text-black font-bold bg-white shadow-[2px_2px_0px_0px_#000000] transition cursor-pointer"
                                 >
-                                    <span className="font-medium">{category}</span>
+                                    <span>{category}</span>
                                     <ChevronDown
-                                        className={`h-4 w-4 text-neutral-400 transition-transform duration-200 ${
-                                            isDropdownOpen ? 'rotate-180 text-blue-600' : ''
+                                        className={`h-4 w-4 text-black stroke-[3] transition-transform duration-200 ${
+                                            isDropdownOpen ? 'rotate-180' : ''
                                         }`}
                                     />
                                 </button>
 
                                 {isDropdownOpen && (
-                                    <div className="absolute left-0 right-0 mt-1.5 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/90 dark:border-neutral-800 p-1.5 shadow-xl z-20 space-y-0.5 text-xs">
+                                    <div className="absolute left-0 right-0 mt-1.5 rounded-sm bg-white border-2 border-black p-1 shadow-[4px_4px_0px_0px_#000000] z-20 space-y-1 text-xs">
                                         {CATEGORIES.map((cat) => {
                                             const isSelected = category === cat;
                                             return (
@@ -151,14 +149,14 @@ export function SupportView({ userName = 'Pengguna' }: SupportViewProps) {
                                                         setCategory(cat);
                                                         setIsDropdownOpen(false);
                                                     }}
-                                                    className={`w-full flex items-center justify-between px-3 py-2 rounded-lg font-medium transition cursor-pointer text-left ${
+                                                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xs font-black transition cursor-pointer text-left ${
                                                         isSelected
-                                                            ? 'bg-blue-600 text-white font-semibold shadow-xs'
-                                                            : 'text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+                                                            ? 'bg-[#00C2CB] text-black'
+                                                            : 'text-black hover:bg-[#F5F5DC]'
                                                     }`}
                                                 >
                                                     <span>{cat}</span>
-                                                    {isSelected && <Check className="h-3.5 w-3.5 shrink-0" />}
+                                                    {isSelected && <Check className="h-3.5 w-3.5 stroke-[3] shrink-0" />}
                                                 </button>
                                             );
                                         })}
@@ -169,44 +167,44 @@ export function SupportView({ userName = 'Pengguna' }: SupportViewProps) {
 
                         {/* Judul Keluhan */}
                         <div>
-                            <label className="block font-semibold text-neutral-900 dark:text-neutral-100 mb-1.5">
-                                Judul Keluhan <span className="text-rose-500">*</span>
+                            <label className="block font-black uppercase tracking-wider text-black mb-1.5">
+                                Judul Keluhan <span className="text-[#FF00FF]">*</span>
                             </label>
                             <input
                                 type="text"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                                 placeholder="Contoh: Akun storan belum masuk verifikasi"
-                                className="w-full rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-950 px-3.5 py-2.5 text-xs text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none transition"
+                                className="w-full rounded-sm border-2 border-black bg-white px-3.5 py-2.5 text-xs font-bold text-black placeholder:text-neutral-500 shadow-[2px_2px_0px_0px_#000000] focus:outline-none focus:bg-[#F5F5DC] transition"
                                 required
                             />
                         </div>
 
                         {/* Nomor WhatsApp */}
                         <div>
-                            <label className="block font-semibold text-neutral-900 dark:text-neutral-100 mb-1.5">
-                                No. WhatsApp <span className="text-neutral-400 font-normal">(opsional)</span>
+                            <label className="block font-black uppercase tracking-wider text-black mb-1.5">
+                                No. WhatsApp <span className="text-neutral-600 font-bold lowercase">(opsional)</span>
                             </label>
                             <input
                                 type="text"
                                 value={whatsapp}
                                 onChange={(e) => setWhatsapp(e.target.value)}
                                 placeholder="Contoh: 081234567890"
-                                className="w-full rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-950 px-3.5 py-2.5 text-xs text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none transition"
+                                className="w-full rounded-sm border-2 border-black bg-white px-3.5 py-2.5 text-xs font-bold text-black placeholder:text-neutral-500 shadow-[2px_2px_0px_0px_#000000] focus:outline-none focus:bg-[#F5F5DC] transition"
                             />
                         </div>
 
                         {/* Detail Keluhan */}
                         <div>
-                            <label className="block font-semibold text-neutral-900 dark:text-neutral-100 mb-1.5">
-                                Rincian Keluhan <span className="text-rose-500">*</span>
+                            <label className="block font-black uppercase tracking-wider text-black mb-1.5">
+                                Rincian Keluhan <span className="text-[#FF00FF]">*</span>
                             </label>
                             <textarea
                                 rows={4}
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
                                 placeholder="Jelaskan detail kendala Anda secara lengkap..."
-                                className="w-full rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-950 p-3 text-xs text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none transition leading-relaxed resize-none"
+                                className="w-full rounded-sm border-2 border-black bg-white p-3 text-xs font-bold text-black placeholder:text-neutral-500 shadow-[2px_2px_0px_0px_#000000] focus:outline-none focus:bg-[#F5F5DC] transition leading-relaxed resize-none"
                                 required
                             />
                         </div>
@@ -216,7 +214,7 @@ export function SupportView({ userName = 'Pengguna' }: SupportViewProps) {
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white px-5 py-2.5 text-xs font-semibold shadow-xs transition cursor-pointer disabled:opacity-50"
+                                className="inline-flex items-center justify-center gap-2 rounded-md bg-[#00C2CB] text-black border-2 border-black px-6 py-3 text-xs font-black uppercase tracking-wider shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition cursor-pointer disabled:opacity-50"
                             >
                                 <span>{isSubmitting ? 'Mengirim...' : 'Kirim Keluhan'}</span>
                             </button>
@@ -225,26 +223,21 @@ export function SupportView({ userName = 'Pengguna' }: SupportViewProps) {
                 </div>
 
                 {/* Kolom Kanan: Riwayat Keluhan & CS WhatsApp */}
-                <div className="lg:col-span-5 space-y-4">
+                <div className="lg:col-span-5 space-y-5">
                     {/* Riwayat Keluhan */}
-                    <div className="rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 p-5 shadow-xs space-y-3">
-                        <div className="flex items-center justify-between pb-3 border-b border-neutral-100 dark:border-neutral-800">
-                            <span className="text-xs font-bold text-neutral-900 dark:text-neutral-100 uppercase tracking-wider">
+                    <div className="rounded-md bg-white border-[3px] border-black p-5 shadow-[8px_8px_0px_0px_#000000] space-y-3">
+                        <div className="flex items-center justify-between pb-3 border-b-2 border-black">
+                            <span className="text-xs font-black text-black uppercase tracking-wider">
                                 Riwayat Keluhan Saya
                             </span>
-                            <span className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
+                            <span className="text-xs font-mono font-black text-black bg-[#FFD700] px-2 py-0.5 rounded-xs border border-black">
                                 {tickets.length} Tiket
                             </span>
                         </div>
 
                         {tickets.length === 0 ? (
-                            <div className="py-8 text-center space-y-2">
-                                <img
-                                    src="/images/icon/headphone.png"
-                                    alt="Belum ada keluhan"
-                                    className="h-8 w-8 mx-auto object-contain opacity-40"
-                                />
-                                <p className="text-xs text-neutral-400 dark:text-neutral-500">
+                            <div className="py-8 text-center space-y-2 bg-[#F5F5DC]/40 border-2 border-dashed border-black rounded-sm p-4">
+                                <p className="text-xs font-black uppercase tracking-wider text-black">
                                     Belum ada keluhan yang dikirim.
                                 </p>
                             </div>
@@ -253,27 +246,22 @@ export function SupportView({ userName = 'Pengguna' }: SupportViewProps) {
                                 {tickets.map((t) => (
                                     <div
                                         key={t.id}
-                                        className="p-3 rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-950/50 text-xs space-y-1.5"
+                                        className="p-3 rounded-sm border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000000] text-xs space-y-1.5"
                                     >
                                         <div className="flex items-center justify-between">
-                                            <span className="font-bold text-neutral-900 dark:text-neutral-100 truncate mr-2">
+                                            <span className="font-black text-black truncate mr-2">
                                                 {t.title}
                                             </span>
-                                            <span className="text-[10px] text-neutral-400 shrink-0">
+                                            <span className="text-[10px] font-mono font-bold text-neutral-600 shrink-0">
                                                 {t.date}
                                             </span>
                                         </div>
-                                        <p className="text-[11px] text-neutral-500 dark:text-neutral-400 line-clamp-2 leading-relaxed">
+                                        <p className="text-[11px] font-bold text-neutral-700 line-clamp-2 leading-relaxed">
                                             {t.message}
                                         </p>
-                                        <div className="flex items-center justify-between pt-1 border-t border-neutral-100 dark:border-neutral-800/60 text-[10px]">
-                                            <span className="text-neutral-400">{t.category}</span>
-                                            <span className="inline-flex items-center gap-1 font-semibold text-amber-600 dark:text-amber-400">
-                                                <img
-                                                    src="/images/icon/pending.png"
-                                                    alt="Menunggu"
-                                                    className="h-3 w-3 object-contain"
-                                                />
+                                        <div className="flex items-center justify-between pt-1 border-t-2 border-black text-[10px]">
+                                            <span className="font-bold text-neutral-700">{t.category}</span>
+                                            <span className="inline-flex items-center gap-1 font-black bg-[#FFD700] px-1.5 py-0.5 border border-black rounded-xs text-black">
                                                 Menunggu Respon
                                             </span>
                                         </div>
@@ -284,18 +272,20 @@ export function SupportView({ userName = 'Pengguna' }: SupportViewProps) {
                     </div>
 
                     {/* Bantuan Langsung via WhatsApp CS */}
-                    <div className="rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 p-5 shadow-xs space-y-3">
+                    <div className="rounded-md bg-white border-[3px] border-black p-5 shadow-[8px_8px_0px_0px_#000000] space-y-4">
                         <div className="flex items-start gap-3">
-                            <img
-                                src="/images/icon/whatsapp.png"
-                                alt="WhatsApp"
-                                className="h-8 w-8 object-contain shrink-0"
-                            />
+                            <div className="size-10 rounded-sm border-2 border-black bg-[#00C2CB] shadow-[2px_2px_0px_0px_#000000] flex items-center justify-center shrink-0">
+                                <img
+                                    src="/images/icon/whatsapp.png"
+                                    alt="WhatsApp"
+                                    className="h-6 w-6 object-contain"
+                                />
+                            </div>
                             <div>
-                                <h4 className="text-xs font-bold text-neutral-900 dark:text-neutral-100">
+                                <h4 className="text-xs font-black uppercase tracking-wider text-black">
                                     Butuh Bantuan Cepat?
                                 </h4>
-                                <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-0.5 leading-relaxed">
+                                <p className="text-[11px] font-bold text-neutral-700 mt-0.5 leading-relaxed">
                                     Hubungi CS WhatsApp kami untuk respon instan seputar kendala akun atau transaksi.
                                 </p>
                             </div>
@@ -305,10 +295,10 @@ export function SupportView({ userName = 'Pengguna' }: SupportViewProps) {
                             href="https://wa.me/6281234567890?text=Halo%20Admin%20Triple9,%20saya%20butuh%20bantuan%20terkait%20layanan%20Triple9."
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white px-4 py-2.5 text-xs font-semibold shadow-xs transition cursor-pointer"
+                            className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-[#00C2CB] text-black border-2 border-black px-4 py-3 text-xs font-black uppercase tracking-wider shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition cursor-pointer"
                         >
                             <span>Chat CS WhatsApp (+62 812-3456-7890)</span>
-                            <ExternalLink className="h-3.5 w-3.5" />
+                            <ExternalLink className="h-3.5 w-3.5 stroke-[2.5]" />
                         </a>
                     </div>
                 </div>

@@ -25,18 +25,20 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
     ];
 
     return (
-        <div className="w-full space-y-4 sm:space-y-5">
+        <div className="w-full space-y-5">
             {/* Header & Filter Controls Card */}
-            <div className="rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 px-5 min-h-[68px] sm:h-18 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 py-3.5 sm:py-0">
+            <div className="rounded-md bg-white border-[3px] border-black px-6 min-h-[70px] shadow-[8px_8px_0px_0px_#000000] flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4">
                 <div className="flex items-center gap-3">
-                    <img src="/images/icon/trophy.png" alt="Leaderboard" className="h-6 w-6 object-contain shrink-0" />
-                    <h2 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">
+                    <div className="size-9 rounded-sm border-2 border-black bg-[#FFD700] shadow-[2px_2px_0px_0px_#000000] flex items-center justify-center shrink-0">
+                        <img src="/images/icon/trophy.png" alt="Leaderboard" className="h-5 w-5 object-contain" />
+                    </div>
+                    <h2 className="text-base sm:text-lg font-black uppercase tracking-wider text-black">
                         Leaderboard Storer
                     </h2>
                 </div>
 
                 {/* Period Tabs */}
-                <div className="inline-flex flex-wrap items-center gap-1.5 self-start sm:self-auto">
+                <div className="inline-flex flex-wrap items-center gap-2 self-start sm:self-auto">
                     {periodLabels.map((p) => {
                         const isActive = leaderboardPeriod === p.id;
                         return (
@@ -44,10 +46,10 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
                                 key={p.id}
                                 type="button"
                                 onClick={() => setLeaderboardPeriod(p.id)}
-                                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                                className={`px-3 py-1.5 rounded-sm text-xs font-black uppercase tracking-wider border-2 border-black transition cursor-pointer ${
                                     isActive
-                                        ? 'bg-blue-600 text-white shadow-xs'
-                                        : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 border border-neutral-200/80 dark:border-neutral-700'
+                                        ? 'bg-[#00C2CB] text-black shadow-[2px_2px_0px_0px_#000000]'
+                                        : 'bg-white text-black hover:bg-[#F5F5DC] shadow-[1px_1px_0px_0px_#000000]'
                                 }`}
                             >
                                 {p.label}
@@ -64,27 +66,27 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
                     <div className="flex flex-col items-center justify-end text-center group">
                         {/* Member Details */}
                         <div className="flex flex-col items-center mb-2">
-                            <img src="/images/icon/2nd.png" alt="Juara 2" className="h-6 w-6 sm:h-7 sm:w-7 object-contain mb-1 drop-shadow-xs" />
-                            <Avatar className="h-10 w-10 sm:h-12 sm:w-12 rounded-full shadow-md ring-2 ring-neutral-400/40 mb-1 group-hover:scale-105 transition duration-200 bg-white dark:bg-neutral-800">
+                            <img src="/images/icon/2nd.png" alt="Juara 2" className="h-6 w-6 sm:h-7 sm:w-7 object-contain mb-1" />
+                            <Avatar className="h-10 w-10 sm:h-12 sm:w-12 rounded-sm border-2 border-black shadow-[3px_3px_0px_0px_#000000] mb-1 bg-white">
                                 <AvatarImage src={top2.avatar} alt={top2.name} className="object-contain p-0.5 size-full" />
-                                <AvatarFallback className={`bg-gradient-to-tr ${top2.avatarBg} text-white font-extrabold text-xs sm:text-sm`}>
+                                <AvatarFallback className="bg-white text-black font-black text-xs sm:text-sm">
                                     {top2.initials}
                                 </AvatarFallback>
                             </Avatar>
-                            <h3 className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-100 truncate max-w-[105px] sm:max-w-[180px]">
+                            <h3 className="text-xs sm:text-sm font-black uppercase text-black truncate max-w-[105px] sm:max-w-[180px]">
                                 {top2.name}
                             </h3>
-                            <p className="text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
+                            <p className="text-[10px] sm:text-xs font-bold text-neutral-700 mt-0.5">
                                 {top2.gmails.toLocaleString('id-ID')} Gmail
                             </p>
-                            <p className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-neutral-100 mt-0.5 font-tabular-nums">
+                            <p className="text-xs sm:text-sm font-black font-mono text-black mt-0.5">
                                 Rp{top2.earnings.toLocaleString('id-ID')}
                             </p>
                         </div>
 
                         {/* Pedestal Bar #2 */}
-                        <div className="w-full h-18 sm:h-24 rounded-t-xl sm:rounded-t-2xl bg-gradient-to-b from-neutral-200 via-neutral-100 to-white dark:from-neutral-800 dark:via-neutral-900/90 dark:to-neutral-900 border-t-2 border-x border-neutral-300 dark:border-neutral-700/80 flex flex-col items-center justify-center p-2 relative shadow-md">
-                            <span className="text-lg sm:text-2xl font-extrabold text-neutral-400 dark:text-neutral-500 font-mono">
+                        <div className="w-full h-20 sm:h-28 rounded-t-sm bg-white border-3 border-black flex flex-col items-center justify-center p-2 relative shadow-[4px_4px_0px_0px_#000000]">
+                            <span className="text-2xl sm:text-3xl font-black text-black font-mono">
                                 2
                             </span>
                         </div>
@@ -94,27 +96,27 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
                     <div className="flex flex-col items-center justify-end text-center group">
                         {/* Member Details */}
                         <div className="flex flex-col items-center mb-2">
-                            <img src="/images/icon/1st.png" alt="Juara 1" className="h-7 w-7 sm:h-8 sm:w-8 object-contain mb-1 drop-shadow-sm" />
-                            <Avatar className="h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg ring-3 ring-amber-400/50 mb-1 group-hover:scale-105 transition duration-200 bg-white dark:bg-neutral-800">
+                            <img src="/images/icon/1st.png" alt="Juara 1" className="h-7 w-7 sm:h-8 sm:w-8 object-contain mb-1" />
+                            <Avatar className="h-12 w-12 sm:h-14 sm:w-14 rounded-sm border-3 border-black shadow-[4px_4px_0px_0px_#000000] mb-1 bg-[#FFD700]">
                                 <AvatarImage src={top1.avatar} alt={top1.name} className="object-contain p-0.5 size-full" />
-                                <AvatarFallback className={`bg-gradient-to-tr ${top1.avatarBg} text-neutral-950 font-black text-sm sm:text-base`}>
+                                <AvatarFallback className="bg-[#FFD700] text-black font-black text-sm sm:text-base">
                                     {top1.initials}
                                 </AvatarFallback>
                             </Avatar>
-                            <h3 className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-neutral-100 truncate max-w-[115px] sm:max-w-[200px]">
+                            <h3 className="text-xs sm:text-sm font-black uppercase text-black truncate max-w-[115px] sm:max-w-[200px]">
                                 {top1.name}
                             </h3>
-                            <p className="text-[10px] sm:text-xs font-medium text-amber-600 dark:text-amber-400 mt-0.5">
+                            <p className="text-[10px] sm:text-xs font-black text-black mt-0.5 bg-[#FFD700] px-1 border border-black rounded-xs">
                                 {top1.gmails.toLocaleString('id-ID')} Gmail
                             </p>
-                            <p className="text-xs sm:text-sm font-black text-neutral-900 dark:text-neutral-100 mt-0.5 font-tabular-nums">
+                            <p className="text-xs sm:text-sm font-black font-mono text-black mt-0.5">
                                 Rp{top1.earnings.toLocaleString('id-ID')}
                             </p>
                         </div>
 
                         {/* Pedestal Bar #1 */}
-                        <div className="w-full h-24 sm:h-32 rounded-t-xl sm:rounded-t-2xl bg-gradient-to-b from-amber-400/30 via-amber-500/10 to-amber-950/20 dark:from-amber-500/25 dark:via-amber-950/30 dark:to-neutral-900 border-t-2 border-x border-amber-400 dark:border-amber-500/70 flex flex-col items-center justify-center p-2 relative shadow-lg shadow-amber-500/10">
-                            <span className="text-xl sm:text-3xl font-extrabold text-amber-500 dark:text-amber-400 font-mono drop-shadow-[0_0_10px_rgba(245,158,11,0.3)]">
+                        <div className="w-full h-28 sm:h-36 rounded-t-sm bg-[#FFD700] border-3 border-black flex flex-col items-center justify-center p-2 relative shadow-[4px_4px_0px_0px_#000000]">
+                            <span className="text-3xl sm:text-4xl font-black text-black font-mono">
                                 1
                             </span>
                         </div>
@@ -124,27 +126,27 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
                     <div className="flex flex-col items-center justify-end text-center group">
                         {/* Member Details */}
                         <div className="flex flex-col items-center mb-2">
-                            <img src="/images/icon/3rd.png" alt="Juara 3" className="h-6 w-6 sm:h-7 sm:w-7 object-contain mb-1 drop-shadow-xs" />
-                            <Avatar className="h-10 w-10 sm:h-12 sm:w-12 rounded-full shadow-md ring-2 ring-amber-700/40 mb-1 group-hover:scale-105 transition duration-200 bg-white dark:bg-neutral-800">
+                            <img src="/images/icon/3rd.png" alt="Juara 3" className="h-6 w-6 sm:h-7 sm:w-7 object-contain mb-1" />
+                            <Avatar className="h-10 w-10 sm:h-12 sm:w-12 rounded-sm border-2 border-black shadow-[3px_3px_0px_0px_#000000] mb-1 bg-[#00C2CB]">
                                 <AvatarImage src={top3.avatar} alt={top3.name} className="object-contain p-0.5 size-full" />
-                                <AvatarFallback className={`bg-gradient-to-tr ${top3.avatarBg} text-amber-100 font-extrabold text-xs sm:text-sm`}>
+                                <AvatarFallback className="bg-[#00C2CB] text-black font-black text-xs sm:text-sm">
                                     {top3.initials}
                                 </AvatarFallback>
                             </Avatar>
-                            <h3 className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-100 truncate max-w-[105px] sm:max-w-[180px]">
+                            <h3 className="text-xs sm:text-sm font-black uppercase text-black truncate max-w-[105px] sm:max-w-[180px]">
                                 {top3.name}
                             </h3>
-                            <p className="text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
+                            <p className="text-[10px] sm:text-xs font-bold text-neutral-700 mt-0.5">
                                 {top3.gmails.toLocaleString('id-ID')} Gmail
                             </p>
-                            <p className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-neutral-100 mt-0.5 font-tabular-nums">
+                            <p className="text-xs sm:text-sm font-black font-mono text-black mt-0.5">
                                 Rp{top3.earnings.toLocaleString('id-ID')}
                             </p>
                         </div>
 
                         {/* Pedestal Bar #3 */}
-                        <div className="w-full h-14 sm:h-18 rounded-t-xl sm:rounded-t-2xl bg-gradient-to-b from-amber-700/20 via-amber-800/10 to-transparent dark:from-amber-900/30 dark:via-neutral-900/90 dark:to-neutral-900 border-t-2 border-x border-amber-700/50 dark:border-amber-800/60 flex flex-col items-center justify-center p-2 relative shadow-md">
-                            <span className="text-lg sm:text-2xl font-extrabold text-amber-700 dark:text-amber-600 font-mono">
+                        <div className="w-full h-16 sm:h-22 rounded-t-sm bg-[#00C2CB] border-3 border-black flex flex-col items-center justify-center p-2 relative shadow-[4px_4px_0px_0px_#000000]">
+                            <span className="text-2xl sm:text-3xl font-black text-black font-mono">
                                 3
                             </span>
                         </div>
@@ -153,9 +155,9 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
             </div>
 
             {/* LIST TABLE: RANKS #4 TO #10 */}
-            <div className="rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 shadow-xs overflow-hidden">
+            <div className="rounded-md bg-white border-[3px] border-black shadow-[8px_8px_0px_0px_#000000] overflow-hidden">
                 {/* Table Header */}
-                <div className="px-4 sm:px-5 py-3 border-b border-neutral-100 dark:border-neutral-800 flex items-center justify-between text-[11px] font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">
+                <div className="px-4 sm:px-5 py-3 bg-black text-white border-b-2 border-black flex items-center justify-between text-xs font-black uppercase tracking-wider">
                     <span className="flex-1 min-w-0">Peringkat & Member</span>
                     <div className="flex items-center shrink-0">
                         <span className="hidden sm:inline-block w-32 sm:w-40 text-left">Gmail Diterima</span>
@@ -164,38 +166,38 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
                 </div>
 
                 {/* Rows */}
-                <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
+                <div className="divide-y-2 divide-black">
                     {restRanks.map((item) => (
                         <div
                             key={item.rank}
-                            className="px-4 sm:px-5 py-3 flex items-center justify-between hover:bg-neutral-50/80 dark:hover:bg-neutral-800/50 transition"
+                            className="px-4 sm:px-5 py-3 flex items-center justify-between hover:bg-[#F5F5DC] transition"
                         >
                             <div className="flex items-center gap-3 min-w-0 flex-1">
-                                <span className="flex h-6 w-6 shrink-0 items-center justify-center text-xs font-bold text-neutral-400 dark:text-neutral-500 font-tabular-nums">
+                                <span className="flex h-6 w-6 shrink-0 items-center justify-center text-xs font-black font-mono text-black">
                                     #{item.rank}
                                 </span>
-                                <Avatar className="h-8 w-8 shrink-0 rounded-full shadow-2xs border border-neutral-200/80 dark:border-neutral-700/80 bg-white dark:bg-neutral-800">
+                                <Avatar className="h-8 w-8 shrink-0 rounded-sm border-2 border-black shadow-[2px_2px_0px_0px_#000000] bg-white">
                                     <AvatarImage src={item.avatar} alt={item.name} className="object-contain p-0.5 size-full" />
-                                    <AvatarFallback className={`bg-gradient-to-tr ${item.avatarBg} text-white font-bold text-xs`}>
+                                    <AvatarFallback className="bg-white text-black font-black text-xs">
                                         {item.initials}
                                     </AvatarFallback>
                                 </Avatar>
                                 <div className="min-w-0">
-                                    <p className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-100 truncate">
+                                    <p className="text-xs sm:text-sm font-bold text-black truncate">
                                         {item.name}
                                     </p>
-                                    <p className="text-[11px] text-neutral-400 dark:text-neutral-500 sm:hidden">
+                                    <p className="text-[11px] font-bold text-neutral-600 sm:hidden">
                                         {item.gmails.toLocaleString('id-ID')} Gmail diterima
                                     </p>
                                 </div>
                             </div>
 
                             <div className="flex items-center shrink-0">
-                                <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-neutral-500 dark:text-neutral-400 w-32 sm:w-40 text-left">
+                                <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-black w-32 sm:w-40 text-left">
                                     <img src="/images/icon/checklist.png" alt="Diterima" className="h-3.5 w-3.5 object-contain shrink-0" />
-                                    <span className="font-tabular-nums">{item.gmails.toLocaleString('id-ID')} Gmail</span>
+                                    <span className="font-mono">{item.gmails.toLocaleString('id-ID')} Gmail</span>
                                 </span>
-                                <span className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-neutral-100 font-tabular-nums w-28 sm:w-36 text-right">
+                                <span className="text-xs sm:text-sm font-black font-mono text-black w-28 sm:w-36 text-right">
                                     Rp{item.earnings.toLocaleString('id-ID')}
                                 </span>
                             </div>
@@ -205,42 +207,42 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
             </div>
 
             {/* User Rank Row */}
-            <div className="rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-4 sm:px-5 py-3 shadow-xs flex items-center justify-between transition">
+            <div className="rounded-md border-[3px] border-black bg-[#FFD700] px-4 sm:px-5 py-3.5 shadow-[4px_4px_0px_0px_#000000] flex items-center justify-between transition">
                 <div className="flex items-center gap-3 min-w-0 flex-1">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center text-xs font-bold text-blue-500 dark:text-blue-400 font-tabular-nums">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center text-xs font-black font-mono text-black bg-white border-2 border-black shadow-[1px_1px_0px_0px_#000000] rounded-xs">
                         #14
                     </span>
-                    <Avatar className="h-8 w-8 shrink-0 rounded-full shadow-2xs border border-blue-500/40 bg-white dark:bg-neutral-800">
+                    <Avatar className="h-8 w-8 shrink-0 rounded-sm border-2 border-black shadow-[2px_2px_0px_0px_#000000] bg-white">
                         <AvatarImage
                             src={user?.avatar || '/images/avatar/kucing.png'}
                             alt={user?.name || 'Anda'}
                             className="object-contain p-0.5 size-full"
                         />
-                        <AvatarFallback className="bg-blue-600 text-white font-bold text-xs">
+                        <AvatarFallback className="bg-white text-black font-black text-xs">
                             {user ? user.name.charAt(0).toUpperCase() : 'U'}
                         </AvatarFallback>
                     </Avatar>
                     <div className="min-w-0">
                         <div className="flex items-center gap-2">
-                            <p className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-100 truncate">
+                            <p className="text-xs sm:text-sm font-black uppercase text-black truncate">
                                 {user ? user.name : 'Anda'}
                             </p>
-                            <span className="text-[10px] text-blue-600 dark:text-blue-400 font-medium">
-                                (Anda)
+                            <span className="text-[10px] bg-black text-white px-1.5 py-0.2 rounded-xs font-black uppercase">
+                                Anda
                             </span>
                         </div>
-                        <p className="text-[11px] text-neutral-400 dark:text-neutral-500 sm:hidden">
+                        <p className="text-[11px] font-bold text-black sm:hidden">
                             140 Gmail diterima
                         </p>
                     </div>
                 </div>
 
                 <div className="flex items-center shrink-0">
-                    <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-neutral-500 dark:text-neutral-400 w-32 sm:w-40 text-left">
+                    <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-black text-black w-32 sm:w-40 text-left">
                         <img src="/images/icon/checklist.png" alt="Diterima" className="h-3.5 w-3.5 object-contain shrink-0" />
-                        <span className="font-tabular-nums">140 Gmail</span>
+                        <span className="font-mono">140 Gmail</span>
                     </span>
-                    <span className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-neutral-100 font-tabular-nums w-28 sm:w-36 text-right">
+                    <span className="text-xs sm:text-sm font-black font-mono text-black w-28 sm:w-36 text-right">
                         Rp630.000
                     </span>
                 </div>

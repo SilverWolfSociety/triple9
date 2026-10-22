@@ -67,25 +67,27 @@ export function CheckerView() {
 
     return (
         <div className="w-full space-y-4">
-            <div className="rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 p-5 sm:p-7 lg:p-8 shadow-xs space-y-5">
-                <div className="pb-3 border-b border-neutral-100 dark:border-neutral-800">
-                    <div className="flex items-center gap-2.5">
-                        <img
-                            src="/images/icon/find_checker.png"
-                            alt="Email Checker"
-                            className="h-6 w-6 object-contain shrink-0"
-                        />
-                        <h2 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-neutral-100">
+            <div className="rounded-md bg-white border-[3px] border-black p-5 sm:p-7 lg:p-8 shadow-[8px_8px_0px_0px_#000000] space-y-5">
+                <div className="pb-4 border-b-2 border-black">
+                    <div className="flex items-center gap-3">
+                        <div className="size-9 rounded-sm border-2 border-black bg-[#00C2CB] shadow-[2px_2px_0px_0px_#000000] flex items-center justify-center shrink-0">
+                            <img
+                                src="/images/icon/find_checker.png"
+                                alt="Email Checker"
+                                className="h-5 w-5 object-contain"
+                            />
+                        </div>
+                        <h2 className="text-base sm:text-lg font-black uppercase tracking-wider text-black">
                             Email Checker
                         </h2>
                     </div>
-                    <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+                    <p className="text-xs font-bold text-neutral-700 mt-2">
                         Periksa status Gmail hasil Generate milik Anda sebelum disetor.
                     </p>
                 </div>
 
                 <div className="space-y-2">
-                    <label className="block text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                    <label className="block text-xs sm:text-sm font-black uppercase tracking-wider text-black">
                         Daftar Email
                     </label>
 
@@ -96,22 +98,22 @@ export function CheckerView() {
                             setCheckerInput(e.target.value);
                             if (checkerResults) setCheckerResults(null);
                         }}
-                        placeholder="Masukkan daftar email di sini..."
-                        className="w-full min-h-[260px] rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-950 p-4 text-xs sm:text-sm text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition leading-relaxed shadow-2xs"
+                        placeholder="Masukkan daftar email di sini (1 per baris)..."
+                        className="w-full min-h-[260px] rounded-sm border-2 border-black bg-white p-4 text-xs sm:text-sm font-mono font-bold text-black placeholder:text-neutral-500 shadow-[4px_4px_0px_0px_#000000] focus:outline-none focus:bg-[#F5F5DC] transition leading-relaxed"
                     />
 
-                    <p className="text-[11px] text-neutral-500 dark:text-neutral-400">
+                    <p className="text-[11px] font-bold text-neutral-700">
                         {emailCount} email terdeteksi • 1 per baris • maks 100 per cek. Hanya email hasil Generate Gmail milik Anda yang diproses.
                     </p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2 pt-1">
+                <div className="flex flex-wrap items-center gap-2.5 pt-1">
                     {/* Mulai Checker Button */}
                     <button
                         type="button"
                         onClick={handleRunChecker}
                         disabled={isChecking}
-                        className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white px-4 py-2 text-xs font-semibold shadow-xs transition cursor-pointer disabled:opacity-60"
+                        className="inline-flex items-center gap-2 rounded-md bg-[#00C2CB] text-black border-2 border-black px-5 py-2.5 text-xs font-black uppercase tracking-wider shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition cursor-pointer disabled:opacity-60"
                     >
                         <img
                             src="/images/icon/find_checker.png"
@@ -126,28 +128,29 @@ export function CheckerView() {
                         <button
                             type="button"
                             onClick={() => setIsSalinDropdownOpen(!isSalinDropdownOpen)}
-                            className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-3.5 py-2 text-xs font-medium transition cursor-pointer shadow-2xs"
+                            title="Salin"
+                            className="inline-flex items-center gap-1.5 rounded-md border-2 border-black bg-white hover:bg-[#F5F5DC] text-black px-3 py-2.5 text-xs font-black shadow-[4px_4px_0px_0px_#000000] cursor-pointer transition"
                         >
                             <img
                                 src="/images/icon/copy.png"
                                 alt="Salin"
                                 className="h-4 w-4 object-contain shrink-0"
                             />
-                            <ChevronDown className="h-3 w-3 text-neutral-400" />
+                            <ChevronDown className="h-3.5 w-3.5 text-black stroke-[3]" />
                         </button>
                         {isSalinDropdownOpen && (
-                            <div className="absolute left-0 mt-1.5 w-40 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-1 shadow-lg z-20 text-xs">
+                            <div className="absolute left-0 mt-2 w-44 rounded-sm bg-white border-2 border-black p-1 shadow-[4px_4px_0px_0px_#000000] z-20 text-xs">
                                 <button
                                     type="button"
                                     onClick={handleCopyAll}
-                                    className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-200 font-medium cursor-pointer"
+                                    className="w-full text-left px-3 py-2 rounded-xs font-black text-black hover:bg-[#F5F5DC] cursor-pointer"
                                 >
                                     Salin Semua
                                 </button>
                                 <button
                                     type="button"
                                     onClick={handleCopyValidOnly}
-                                    className="w-full text-left px-3 py-1.5 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-200 font-medium cursor-pointer"
+                                    className="w-full text-left px-3 py-2 rounded-xs font-black text-black hover:bg-[#F5F5DC] cursor-pointer"
                                 >
                                     Salin Valid Saja
                                 </button>
@@ -160,7 +163,7 @@ export function CheckerView() {
                         type="button"
                         onClick={handleClear}
                         title="Hapus"
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 dark:hover:bg-rose-950/30 text-neutral-700 dark:text-neutral-300 px-3.5 py-2 text-xs font-medium transition cursor-pointer shadow-2xs"
+                        className="inline-flex items-center gap-1.5 rounded-md border-2 border-black bg-white hover:bg-[#FF00FF] text-black px-4 py-2.5 text-xs font-black shadow-[4px_4px_0px_0px_#000000] cursor-pointer transition"
                     >
                         <img
                             src="/images/icon/trash.png"
@@ -172,13 +175,13 @@ export function CheckerView() {
 
                 {/* Checker Results Table if checked */}
                 {checkerResults && (
-                    <div className="pt-3 border-t border-neutral-100 dark:border-neutral-800 space-y-3">
+                    <div className="pt-4 border-t-2 border-black space-y-3">
                         <div className="flex items-center justify-between">
-                            <h4 className="text-xs sm:text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                            <h4 className="text-xs sm:text-sm font-black uppercase tracking-wider text-black">
                                 Hasil Pengecekan ({checkerResults.length} akun)
                             </h4>
-                            <div className="flex items-center gap-2 text-xs">
-                                <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-semibold">
+                            <div className="flex items-center gap-3 text-xs">
+                                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm border border-black bg-[#00C2CB] text-black font-black">
                                     <img
                                         src="/images/icon/checklist.png"
                                         alt="Valid"
@@ -186,8 +189,7 @@ export function CheckerView() {
                                     />
                                     <span>{checkerResults.filter((r) => r.status === 'valid').length} Valid</span>
                                 </span>
-                                <span className="text-neutral-300 dark:text-neutral-600">•</span>
-                                <span className="flex items-center gap-1 text-rose-600 dark:text-rose-400 font-semibold">
+                                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm border border-black bg-[#FF00FF] text-black font-black">
                                     <img
                                         src="/images/icon/reject.png"
                                         alt="Tidak Valid"
@@ -197,29 +199,23 @@ export function CheckerView() {
                                 </span>
                             </div>
                         </div>
-                        <div className="max-h-60 overflow-y-auto no-scrollbar space-y-1.5 rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/40 p-2 text-xs">
+                        <div className="max-h-60 overflow-y-auto no-scrollbar space-y-2 rounded-sm border-2 border-black bg-[#F5F5DC] p-3 text-xs">
                             {checkerResults.map((item, idx) => (
                                 <div
                                     key={idx}
-                                    className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800"
+                                    className="flex items-center justify-between p-2.5 rounded-sm bg-white border-2 border-black shadow-[2px_2px_0px_0px_#000000]"
                                 >
-                                    <span className="text-neutral-800 dark:text-neutral-200 truncate mr-2 font-medium">
+                                    <span className="text-black font-mono font-bold truncate mr-2">
                                         {item.email}
                                     </span>
                                     {item.status === 'valid' ? (
-                                        <img
-                                            src="/images/icon/checklist.png"
-                                            alt="Valid"
-                                            title="Valid"
-                                            className="h-4.5 w-4.5 object-contain shrink-0"
-                                        />
+                                        <span className="shrink-0 px-2 py-0.5 rounded-xs border border-black bg-[#00C2CB] text-black font-black text-[10px] uppercase">
+                                            Valid
+                                        </span>
                                     ) : (
-                                        <img
-                                            src="/images/icon/reject.png"
-                                            alt="Tidak Valid"
-                                            title="Tidak Valid"
-                                            className="h-4.5 w-4.5 object-contain shrink-0"
-                                        />
+                                        <span className="shrink-0 px-2 py-0.5 rounded-xs border border-black bg-[#FF00FF] text-black font-black text-[10px] uppercase">
+                                            Invalid
+                                        </span>
                                     )}
                                 </div>
                             ))}

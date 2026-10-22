@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Head, usePage } from '@inertiajs/react';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
-import { useAppearance } from '@/hooks/use-appearance';
 import type { Auth } from '@/types';
 import {
     allNavItems,
@@ -29,8 +28,16 @@ import type {
 
 export default function Welcome() {
     const { auth } = usePage<{ auth: Auth }>().props;
-    const user = auth?.user;
-    const { resolvedAppearance, updateAppearance } = useAppearance();
+    const user = auth?.user || {
+        id: 10,
+        name: 'Hawwin Ramadhan',
+        email: 'firstxyz0@gmail.com',
+        avatar: '/images/avatar/kucing.png',
+        role: 'user' as const,
+        email_verified_at: null,
+        created_at: '2026-10-22T00:00:00.000000Z',
+        updated_at: '2026-10-22T00:00:00.000000Z',
+    };
 
     // Navigation state
     const [activeNav, setActiveNav] = useState('dashboard');
@@ -69,18 +76,23 @@ export default function Welcome() {
         }
     }, []);
 
-    // Stor Akun History
-    const [storHistory, setStorHistory] = useState<StorRecord[]>([]);
+    // Stor Akun History with demo item matching Neo-Brutalist specification
+    const [storHistory, setStorHistory] = useState<StorRecord[]>([
+        {
+            id: 'stor-demo-1',
+            email: 'frt12@gmail.com',
+            room: 'triple9',
+            date: '2026-10-22',
+            status: 'pending',
+            reward: 5000,
+        },
+    ]);
     const [riwayatFilter, setRiwayatFilter] = useState<RiwayatFilter>('all');
 
     const activeItemLabel = allNavItems.find((n) => n.id === activeNav)?.label || 'Dashboard';
 
     const handleSelectNav = (id: string) => {
         setActiveNav(id);
-    };
-
-    const handleToggleTheme = () => {
-        updateAppearance(resolvedAppearance === 'dark' ? 'light' : 'dark');
     };
 
     const handleAddStorRecords = (newRecords: StorRecord[]) => {
@@ -136,8 +148,8 @@ export default function Welcome() {
         <>
             <Head title={`${activeItemLabel} — Triple9`} />
 
-            {/* Main Application Shell using shadcn SidebarProvider & SidebarInset */}
-            <SidebarProvider defaultOpen={true} className="bg-sidebar">
+            {/* Main Application Shell using Paper Beige Neo-Brutalist Canvas */}
+            <SidebarProvider defaultOpen={true} className="bg-[#F5F5DC] min-h-screen text-black font-sans">
                 {/* SIDEBAR */}
                 <WelcomeSidebar
                     user={user}
@@ -146,22 +158,20 @@ export default function Welcome() {
                     onOpenAccountSettings={() => setIsAccountSettingsModalOpen(true)}
                 />
 
-                {/* INSET MAIN CONTENT AREA WITH ROUNDED CORNERS & BORDER */}
-                <SidebarInset className="min-w-0 overflow-hidden m-2 md:m-2 md:ml-0 rounded-xl border border-sidebar-border/70 shadow-sm bg-background flex flex-col h-[calc(100vh-1rem)]">
+                {/* INSET MAIN CONTENT AREA */}
+                <SidebarInset className="min-w-0 overflow-x-clip bg-[#F5F5DC] flex flex-col flex-1 min-h-screen">
                     {/* TOP HEADER */}
                     <WelcomeHeader
                         user={user}
                         activeItemLabel={activeItemLabel}
-                        resolvedAppearance={resolvedAppearance}
-                        onToggleTheme={handleToggleTheme}
                         onNavigate={handleSelectNav}
                         onOpenAccountSettings={() => setIsAccountSettingsModalOpen(true)}
                         onOpenIntroModal={() => setIsIntroModalOpen(true)}
                     />
 
-                    {/* DASHBOARD PAGE CONTENT */}
-                    <div className="flex-1 overflow-y-auto no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden p-4 sm:p-6 lg:p-6">
-                        <div className="max-w-7xl w-full mx-auto">
+                    {/* DASHBOARD PAGE CONTENT CANVAS */}
+                    <div className="flex-1 p-4 sm:p-6 lg:p-7 bg-[#F5F5DC]">
+                        <div className="max-w-7xl w-full mx-auto space-y-6 pb-12">
                         {/* 1. DASHBOARD VIEW */}
                         {activeNav === 'dashboard' && (
                             <DashboardView

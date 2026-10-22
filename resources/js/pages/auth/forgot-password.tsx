@@ -13,17 +13,17 @@ export default function ForgotPassword({ status }: { status?: string }) {
             <Head title="Lupa Password - Triple9" />
 
             {status && (
-                <div className="mb-4 text-center text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/40 rounded-xl p-2.5">
+                <div className="mb-4 text-center text-xs font-black text-black bg-[#00C2CB] border-2 border-black shadow-[2px_2px_0px_0px_#000000] p-2.5">
                     {status}
                 </div>
             )}
 
-            <div className="space-y-5">
+            <div className="space-y-4">
                 <Form {...email.form()}>
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-1.5">
-                                <Label htmlFor="email" className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
+                                <Label htmlFor="email" className="text-xs font-black uppercase tracking-wider text-black">
                                     Alamat Email
                                 </Label>
                                 <Input
@@ -33,7 +33,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                                     autoComplete="off"
                                     autoFocus
                                     placeholder="nama@email.com"
-                                    className="rounded-xl border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121215] text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-blue-600 focus:ring-blue-600/20 text-xs py-2.5"
+                                    className="rounded-none border-2 border-black bg-white text-black placeholder:text-black/40 focus:border-black focus:ring-0 shadow-[2px_2px_0px_0px_#000000] focus:shadow-[4px_4px_0px_0px_#000000] text-xs py-2.5 font-medium"
                                 />
 
                                 <InputError message={errors.email} />
@@ -42,7 +42,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                             <div className="pt-2">
                                 <Button
                                     type="submit"
-                                    className="w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 text-xs shadow-md shadow-blue-600/25 transition-all hover:scale-[1.01] active:scale-95 cursor-pointer"
+                                    className="w-full rounded-none bg-[#00C2CB] hover:bg-[#00a8b0] text-black font-black uppercase py-2.5 text-xs border-2 border-black shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all cursor-pointer"
                                     disabled={processing}
                                     data-test="email-password-reset-link-button"
                                 >
@@ -56,12 +56,12 @@ export default function ForgotPassword({ status }: { status?: string }) {
                     )}
                 </Form>
 
-                <div className="flex flex-col gap-2.5 text-center text-xs text-neutral-600 dark:text-neutral-400 pt-1">
+                <div className="flex flex-col gap-2.5 text-center text-xs font-bold text-black pt-1">
                     <div>
                         Atau kembali ke{' '}
                         <Link
                             href={login()}
-                            className="font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline"
+                            className="font-black text-black underline hover:text-[#00C2CB]"
                         >
                             Masuk ke Akun
                         </Link>

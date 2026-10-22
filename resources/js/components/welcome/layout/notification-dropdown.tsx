@@ -133,39 +133,38 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
     };
 
     const renderIcon = (type: NotificationItem['type']) => {
-        switch (type) {
-            case 'reward':
-                return (
-                    <div className="flex shrink-0 items-center justify-center pt-0.5">
-                        <img src="/images/icon/checklist.png" alt="Reward" className="h-5 w-5 object-contain shrink-0" />
-                    </div>
-                );
-            case 'wallet':
-                return (
-                    <div className="flex shrink-0 items-center justify-center pt-0.5">
-                        <img src="/images/icon/wallet.png" alt="Wallet" className="h-5 w-5 object-contain shrink-0" />
-                    </div>
-                );
-            case 'bonus':
-                return (
-                    <div className="flex shrink-0 items-center justify-center pt-0.5">
-                        <img src="/images/icon/fire.png" alt="Bonus" className="h-5 w-5 object-contain shrink-0" />
-                    </div>
-                );
-            case 'ticket':
-                return (
-                    <div className="flex shrink-0 items-center justify-center pt-0.5">
-                        <img src="/images/icon/ticket.png" alt="Ticket" className="h-5 w-5 object-contain shrink-0" />
-                    </div>
-                );
-            case 'system':
-            default:
-                return (
-                    <div className="flex shrink-0 items-center justify-center pt-0.5">
-                        <img src="/images/icon/find.png" alt="System" className="h-5 w-5 object-contain shrink-0" />
-                    </div>
-                );
+        const iconBg =
+            type === 'reward'
+                ? 'bg-[#00C2CB]'
+                : type === 'bonus'
+                  ? 'bg-[#FFD700]'
+                  : type === 'ticket'
+                    ? 'bg-[#FF00FF]'
+                    : type === 'wallet'
+                      ? 'bg-[#00C2CB]'
+                      : 'bg-[#F5F5DC]';
+
+        let iconSrc = '/images/icon/find.png';
+        let altText = 'System';
+        if (type === 'reward') {
+            iconSrc = '/images/icon/checklist.png';
+            altText = 'Reward';
+        } else if (type === 'wallet') {
+            iconSrc = '/images/icon/wallet.png';
+            altText = 'Wallet';
+        } else if (type === 'bonus') {
+            iconSrc = '/images/icon/fire.png';
+            altText = 'Bonus';
+        } else if (type === 'ticket') {
+            iconSrc = '/images/icon/ticket.png';
+            altText = 'Ticket';
         }
+
+        return (
+            <div className={`flex shrink-0 size-8 items-center justify-center rounded-sm border-2 border-black ${iconBg} shadow-[2px_2px_0px_0px_#000000]`}>
+                <img src={iconSrc} alt={altText} className="h-4.5 w-4.5 object-contain shrink-0" />
+            </div>
+        );
     };
 
     return (
@@ -174,44 +173,47 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="relative flex h-8 w-8 items-center justify-center rounded-lg text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition border border-neutral-200/80 dark:border-neutral-800 cursor-pointer"
+                className="relative flex h-9 w-9 items-center justify-center rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all cursor-pointer text-black"
                 title="Notifikasi"
                 aria-label="Notifikasi sistem"
                 aria-expanded={isOpen}
             >
-                <Bell className="h-4 w-4" />
+                <Bell className="h-4.5 w-4.5 text-black stroke-[2.5]" />
                 {unreadCount > 0 && (
-                    <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-neutral-900" />
+                    <span
+                        className="absolute -top-1 -right-1 h-3.5 w-3.5 rounded-full bg-[#FF00FF] border-2 border-black shadow-[1px_1px_0px_0px_#000000]"
+                        title={`${unreadCount} notifikasi baru`}
+                    />
                 )}
             </button>
 
             {/* Dropdown Menu Modal */}
             {isOpen && (
-                <div className="fixed left-3 right-3 top-16 sm:left-auto sm:right-0 sm:top-10 sm:w-[380px] z-50 rounded-xl bg-white dark:bg-neutral-900 shadow-xl border border-neutral-200/80 dark:border-neutral-800 animate-in fade-in zoom-in-95 overflow-hidden">
+                <div className="fixed left-3 right-3 top-20 sm:left-auto sm:right-0 sm:top-12 sm:w-[390px] z-50 rounded-md bg-white shadow-[8px_8px_0px_0px_#000000] border-[3px] border-black animate-in fade-in zoom-in-95 overflow-hidden text-black">
                     {/* Header */}
-                    <div className="p-3.5 border-b border-neutral-100 dark:border-neutral-800">
-                        <div className="flex items-center justify-between mb-2.5">
+                    <div className="p-3.5 border-b-[3px] border-black bg-[#F5F5DC]">
+                        <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
-                                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                                <h3 className="text-sm font-black uppercase tracking-wider text-black">
                                     Notifikasi
                                 </h3>
                                 {unreadCount > 0 ? (
-                                    <span className="text-xs font-medium text-red-600 dark:text-red-400">
+                                    <span className="text-[10px] font-black uppercase px-2 py-0.5 bg-[#FF00FF] text-white border-2 border-black shadow-[2px_2px_0px_0px_#000000] rounded-sm">
                                         {unreadCount} baru
                                     </span>
                                 ) : (
-                                    <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
-                                        Semua terbaca
+                                    <span className="text-[10px] font-black uppercase px-2 py-0.5 bg-[#00C2CB] text-black border-2 border-black shadow-[2px_2px_0px_0px_#000000] rounded-sm">
+                                        Terbaca
                                     </span>
                                 )}
                             </div>
 
-                            <div className="flex items-center gap-1">
+                            <div className="flex items-center gap-1.5">
                                 {unreadCount > 0 && (
                                     <button
                                         type="button"
                                         onClick={markAllAsRead}
-                                        className="text-[11px] font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 inline-flex items-center gap-1.5 px-1.5 py-1 rounded-md hover:bg-slate-100 dark:hover:bg-zinc-800 transition cursor-pointer"
+                                        className="text-[10px] font-black uppercase tracking-wider bg-[#00C2CB] hover:bg-[#00a8b0] text-black inline-flex items-center gap-1 px-2 py-1 rounded-sm border-2 border-black shadow-[2px_2px_0px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer"
                                         title="Tandai semua telah dibaca"
                                     >
                                         <img
@@ -227,7 +229,7 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
                                     <button
                                         type="button"
                                         onClick={clearAll}
-                                        className="p-1 rounded-md hover:bg-slate-100 dark:hover:bg-zinc-800 transition cursor-pointer"
+                                        className="p-1 rounded-sm border-2 border-black bg-white text-black shadow-[2px_2px_0px_0px_#000000] hover:bg-[#FF00FF] hover:text-white transition-all cursor-pointer"
                                         title="Hapus semua notifikasi"
                                     >
                                         <img
@@ -240,7 +242,7 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
                                     <button
                                         type="button"
                                         onClick={resetNotifications}
-                                        className="p-1 rounded-md text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition cursor-pointer"
+                                        className="p-1 rounded-sm border-2 border-black bg-white text-black shadow-[2px_2px_0px_0px_#000000] hover:bg-[#00C2CB] hover:text-black transition-all cursor-pointer"
                                         title="Muat ulang notifikasi demo"
                                     >
                                         <RotateCcw className="h-3.5 w-3.5" />
@@ -249,25 +251,27 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
                             </div>
                         </div>
 
-                        {/* Segmented Filter Tabs */}
-                        <div className="flex items-center rounded-lg bg-slate-100 dark:bg-zinc-800/60 p-0.5 text-xs">
+                        {/* Segmented Filter Tabs in Neo-Brutalist 2-button row */}
+                        <div className="grid grid-cols-2 gap-2 pt-1">
                             <button
                                 type="button"
                                 onClick={() => setActiveTab('all')}
-                                className={`flex-1 py-1 px-2.5 rounded-md font-medium transition cursor-pointer ${activeTab === 'all'
-                                    ? 'bg-white dark:bg-zinc-700 text-slate-900 dark:text-slate-100 shadow-xs'
-                                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-                                    }`}
+                                className={`py-1.5 px-3 rounded-sm text-xs font-black uppercase tracking-wide border-2 border-black transition-all cursor-pointer ${
+                                    activeTab === 'all'
+                                        ? 'bg-[#FFD700] text-black shadow-[3px_3px_0px_0px_#000000] translate-x-[1px]'
+                                        : 'bg-white text-black hover:bg-[#F5F5DC] shadow-[2px_2px_0px_0px_#000000]'
+                                }`}
                             >
                                 Semua ({notifications.length})
                             </button>
                             <button
                                 type="button"
                                 onClick={() => setActiveTab('unread')}
-                                className={`flex-1 py-1 px-2.5 rounded-md font-medium transition cursor-pointer ${activeTab === 'unread'
-                                    ? 'bg-white dark:bg-zinc-700 text-slate-900 dark:text-slate-100 shadow-xs'
-                                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-                                    }`}
+                                className={`py-1.5 px-3 rounded-sm text-xs font-black uppercase tracking-wide border-2 border-black transition-all cursor-pointer ${
+                                    activeTab === 'unread'
+                                        ? 'bg-[#FFD700] text-black shadow-[3px_3px_0px_0px_#000000] translate-x-[1px]'
+                                        : 'bg-white text-black hover:bg-[#F5F5DC] shadow-[2px_2px_0px_0px_#000000]'
+                                }`}
                             >
                                 Belum Dibaca ({unreadCount})
                             </button>
@@ -275,18 +279,18 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
                     </div>
 
                     {/* Notification List Body */}
-                    <div className="max-h-[340px] overflow-y-auto divide-y divide-slate-100 dark:divide-zinc-800/60 no-scrollbar">
+                    <div className="max-h-[340px] overflow-y-auto divide-y-2 divide-black no-scrollbar bg-white">
                         {filteredNotifications.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-10 px-4 text-center">
-                                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-slate-100 dark:bg-zinc-800/80 text-slate-400 dark:text-slate-500 mb-2.5">
-                                    <BellOff className="h-5 w-5" />
+                                <div className="flex h-12 w-12 items-center justify-center rounded-sm border-2 border-black bg-[#F5F5DC] text-black shadow-[3px_3px_0px_0px_#000000] mb-2.5">
+                                    <BellOff className="h-6 w-6 stroke-[2.5]" />
                                 </div>
-                                <p className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                                <p className="text-xs font-black uppercase text-black">
                                     {activeTab === 'unread'
                                         ? 'Tidak ada notifikasi belum dibaca'
                                         : 'Tidak ada notifikasi'}
                                 </p>
-                                <p className="text-[11px] text-slate-400 dark:text-slate-500 max-w-[220px] mt-1 leading-relaxed">
+                                <p className="text-[11px] font-bold text-neutral-600 max-w-[220px] mt-1 leading-relaxed">
                                     {activeTab === 'unread'
                                         ? 'Semua notifikasi Anda sudah dibaca.'
                                         : 'Update reward stor, penarikan, dan bonus akan tampil di sini.'}
@@ -295,10 +299,10 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
                                     <button
                                         type="button"
                                         onClick={resetNotifications}
-                                        className="mt-3 text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1 cursor-pointer"
+                                        className="mt-3 text-xs font-black uppercase bg-[#00C2CB] text-black border-2 border-black px-2.5 py-1 rounded-sm shadow-[2px_2px_0px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] inline-flex items-center gap-1 cursor-pointer"
                                     >
-                                        <RotateCcw className="h-3 w-3" />
-                                        <span>Muat Contoh Notifikasi</span>
+                                        <RotateCcw className="h-3 w-3 stroke-[2.5]" />
+                                        <span>Muat Notifikasi</span>
                                     </button>
                                 )}
                             </div>
@@ -307,35 +311,34 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
                                 <div
                                     key={item.id}
                                     onClick={() => handleItemClick(item)}
-                                    className="group relative flex items-start gap-3 p-3.5 transition cursor-pointer hover:bg-slate-50 dark:hover:bg-zinc-800/40"
+                                    className={`group relative flex items-start gap-3 p-3.5 transition-all cursor-pointer ${
+                                        !item.read
+                                            ? 'bg-amber-50/70 hover:bg-[#FFD700]/15'
+                                            : 'bg-white hover:bg-[#F5F5DC]/60'
+                                    }`}
                                 >
                                     {renderIcon(item.type)}
 
                                     <div className="flex-1 min-w-0 pr-4">
                                         <div className="flex items-center gap-1.5 mb-0.5">
-                                            <p
-                                                className={`text-xs truncate ${!item.read
-                                                    ? 'font-semibold text-slate-900 dark:text-slate-100'
-                                                    : 'font-medium text-slate-700 dark:text-slate-300'
-                                                    }`}
-                                            >
+                                            <p className="text-xs truncate font-black uppercase tracking-wide text-black">
                                                 {item.title}
                                             </p>
                                             {!item.read && (
-                                                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-blue-600 dark:bg-blue-400" />
+                                                <span className="h-2 w-2 shrink-0 rounded-full bg-[#FF00FF] border border-black shadow-[1px_1px_0px_0px_#000000]" />
                                             )}
                                         </div>
 
-                                        <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">
+                                        <p className="text-[11px] font-bold text-neutral-700 leading-snug line-clamp-2">
                                             {item.message}
                                         </p>
 
                                         <div className="flex items-center gap-2 mt-1.5">
-                                            <span className="text-[10px] text-slate-400 dark:text-slate-500">
+                                            <span className="text-[10px] font-mono font-bold text-neutral-500">
                                                 {item.time}
                                             </span>
                                             {item.actionNav && (
-                                                <span className="text-[10px] font-medium text-blue-600 dark:text-blue-400 group-hover:underline">
+                                                <span className="text-[9px] font-black uppercase px-1.5 py-0.5 bg-[#00C2CB] text-black border border-black shadow-[1px_1px_0px_0px_#000000] group-hover:translate-x-[1px] transition-all">
                                                     Buka
                                                 </span>
                                             )}
@@ -346,10 +349,10 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
                                     <button
                                         type="button"
                                         onClick={(e) => deleteNotification(e, item.id)}
-                                        className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 p-1 rounded transition absolute top-2.5 right-2.5 cursor-pointer"
+                                        className="opacity-0 group-hover:opacity-100 size-6 flex items-center justify-center rounded-sm border border-black bg-white text-black hover:bg-[#FF00FF] hover:text-white shadow-[1px_1px_0px_0px_#000000] transition-all absolute top-2.5 right-2.5 cursor-pointer"
                                         title="Hapus notifikasi"
                                     >
-                                        <X className="h-3.5 w-3.5" />
+                                        <X className="h-3.5 w-3.5 stroke-[2.5]" />
                                     </button>
                                 </div>
                             ))
@@ -357,16 +360,16 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
                     </div>
 
                     {/* Footer */}
-                    <div className="border-t border-slate-100 dark:border-zinc-800/80 bg-slate-50/60 dark:bg-zinc-900/40">
+                    <div className="border-t-[3px] border-black bg-[#00C2CB] hover:bg-[#00a8b0] transition-colors">
                         <button
                             type="button"
                             onClick={() => {
                                 onNavigate?.('riwayat');
                                 setIsOpen(false);
                             }}
-                            className="w-full py-2.5 px-4 text-center text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-slate-100/60 dark:hover:bg-zinc-800/50 transition flex items-center justify-center gap-1 cursor-pointer"
+                            className="w-full py-2.5 px-4 text-center text-xs font-black uppercase tracking-wider text-black flex items-center justify-center gap-1.5 cursor-pointer active:translate-y-[1px]"
                         >
-                            <span>Lihat Semua Riwayat Aktivitas</span>
+                            <span>Lihat Semua Riwayat Aktivitas &gt;</span>
                         </button>
                     </div>
                 </div>

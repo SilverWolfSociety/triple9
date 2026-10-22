@@ -27,7 +27,6 @@ import {
     useSidebar,
 } from '@/components/ui/sidebar';
 import { UserInfo } from '@/components/user-info';
-import { useIsMobile } from '@/hooks/use-mobile';
 import { dashboard, login, register } from '@/routes';
 import type { User } from '@/types';
 import { navGroups } from '../constants';
@@ -54,26 +53,47 @@ export function WelcomeSidebar({
         }
     };
 
+    // Ensure fallback to Hawwin Ramadhan as per design specifications
+    const displayUser: User = user || {
+        id: 10,
+        name: 'Hawwin Ramadhan',
+        email: 'firstxyz0@gmail.com',
+        avatar: '/images/avatar/kucing.png',
+        role: 'user',
+        email_verified_at: null,
+        created_at: '2026-10-22T00:00:00.000000Z',
+        updated_at: '2026-10-22T00:00:00.000000Z',
+    };
+
     return (
-        <Sidebar collapsible="icon" variant="inset">
-            {/* Top Brand Logo matching Admin Dashboard */}
-            <SidebarHeader>
+        <Sidebar
+            collapsible="icon"
+            className="bg-white text-black border-r-4 border-black z-30"
+        >
+            {/* Top Brand Header - Exactly h-16 and border-b-4 border-black to perfectly align with WelcomeHeader */}
+            <SidebarHeader className="h-16 flex items-center justify-center border-b-4 border-black bg-white shrink-0 px-2 overflow-hidden">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
+                        <SidebarMenuButton
+                            size="lg"
+                            asChild
+                            className="hover:bg-transparent active:bg-transparent cursor-pointer"
+                        >
                             <Link href="/" prefetch>
-                                <AppLogo />
+                                <AppLogo showText={false} />
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
 
-            {/* Navigation Groups with animated group labels and icon tooltips */}
-            <SidebarContent className="no-scrollbar">
+            {/* Navigation Groups with smooth collapsible transitions like Laravel starter kit */}
+            <SidebarContent className="no-scrollbar bg-white py-2">
                 {navGroups.map((group) => (
                     <SidebarGroup key={group.title} className="px-2 py-0">
-                        <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
+                        <SidebarGroupLabel className="text-[11px] font-black uppercase tracking-wider text-black px-2 transition-[margin,opacity] duration-200 ease-linear">
+                            {group.title}
+                        </SidebarGroupLabel>
                         <SidebarMenu>
                             {group.items.map((item) => {
                                 const Icon = item.icon;
@@ -81,13 +101,18 @@ export function WelcomeSidebar({
                                 return (
                                     <SidebarMenuItem key={item.id}>
                                         <SidebarMenuButton
+                                            asChild={false}
                                             isActive={isActive}
                                             tooltip={{ children: item.label }}
                                             onClick={() => handleNavClick(item.id)}
-                                            className="cursor-pointer"
+                                            className={`cursor-pointer select-none rounded-md text-xs font-bold transition-all duration-200 ${
+                                                isActive
+                                                    ? 'bg-[#00C2CB] text-black font-black border-2 border-black shadow-[2px_2px_0px_0px_#000000] hover:bg-[#00C2CB] hover:text-black'
+                                                    : 'text-black border-2 border-transparent hover:border-black hover:bg-[#F5F5DC] hover:shadow-[2px_2px_0px_0px_#000000]'
+                                            }`}
                                         >
-                                            <Icon className="size-4 shrink-0" />
-                                            <span>{item.label}</span>
+                                            <Icon className="size-4 shrink-0 stroke-[2.5] text-black" />
+                                            <span className="truncate">{item.label}</span>
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>
                                 );
@@ -97,106 +122,95 @@ export function WelcomeSidebar({
                 ))}
             </SidebarContent>
 
-            {/* Bottom Footer User Menu matching Admin Dashboard */}
-            <SidebarFooter>
-                {user ? (
-                    <SidebarMenu>
-                        <SidebarMenuItem>
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <SidebarMenuButton
-                                        size="lg"
-                                        className="group text-sidebar-accent-foreground data-[state=open]:bg-sidebar-accent cursor-pointer"
-                                        data-test="sidebar-user-button"
-                                    >
-                                        <UserInfo user={user} showEmail={true} />
-                                        <ChevronsUpDown className="ml-auto size-4 group-data-[collapsible=icon]:hidden" />
-                                    </SidebarMenuButton>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent
-                                    className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-                                    align="end"
-                                    side={
-                                        isMobile
-                                            ? 'bottom'
-                                            : state === 'collapsed'
-                                              ? 'right'
-                                              : 'top'
-                                    }
+            {/* Bottom Footer User Menu with Neo-Brutalist Profile Card */}
+            <SidebarFooter className="border-t-4 border-black bg-white p-2">
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <SidebarMenuButton
+                                    size="lg"
+                                    className="w-full rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] transition-all duration-200 cursor-pointer group-data-[collapsible=icon]:border-0 group-data-[collapsible=icon]:shadow-none group-data-[collapsible=icon]:hover:translate-x-0 group-data-[collapsible=icon]:hover:translate-y-0"
+                                    data-test="sidebar-user-button"
                                 >
-                                    <div className="flex items-center gap-2 px-2 py-1.5 text-left text-sm">
-                                        <UserInfo user={user} showEmail={true} />
-                                    </div>
-                                    <DropdownMenuSeparator />
-                                    {user.role === 'admin' && (
-                                        <DropdownMenuItem asChild>
-                                            <Link
-                                                href={dashboard()}
-                                                className="flex items-center gap-2 cursor-pointer"
-                                            >
-                                                <Shield className="h-4 w-4 text-muted-foreground" />
-                                                <span>Admin Console</span>
-                                            </Link>
-                                        </DropdownMenuItem>
-                                    )}
-                                    {onOpenAccountSettings && (
-                                        <DropdownMenuItem
-                                            onClick={onOpenAccountSettings}
-                                            className="flex items-center gap-2 cursor-pointer"
-                                        >
-                                            <UserIcon className="h-4 w-4 text-muted-foreground" />
-                                            <span>Pengaturan Akun</span>
-                                        </DropdownMenuItem>
-                                    )}
+                                    <UserInfo user={displayUser} showEmail={true} />
+                                    <ChevronsUpDown className="ml-auto size-4 shrink-0 text-black stroke-[2.5] transition-opacity duration-200 group-data-[collapsible=icon]:opacity-0 group-data-[collapsible=icon]:w-0 overflow-hidden" />
+                                </SidebarMenuButton>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent
+                                className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000000] p-1.5 font-bold text-black"
+                                align="end"
+                                side={
+                                    isMobile
+                                        ? 'bottom'
+                                        : state === 'collapsed'
+                                          ? 'right'
+                                          : 'top'
+                                }
+                            >
+                                <div className="p-2 border-b-2 border-black mb-1 bg-[#F5F5DC] rounded-sm">
+                                    <UserInfo user={displayUser} showEmail={true} />
+                                </div>
 
-                                    <DropdownMenuSeparator />
+                                {displayUser.role === 'admin' && (
+                                    <DropdownMenuItem asChild className="cursor-pointer font-bold focus:bg-[#00C2CB] focus:text-black rounded-sm">
+                                        <Link
+                                            href={dashboard()}
+                                            className="flex items-center gap-2 cursor-pointer p-2"
+                                        >
+                                            <Shield className="h-4 w-4 stroke-[2.5]" />
+                                            <span>Admin Console</span>
+                                        </Link>
+                                    </DropdownMenuItem>
+                                )}
+
+                                {onOpenAccountSettings && (
+                                    <DropdownMenuItem
+                                        onClick={onOpenAccountSettings}
+                                        className="flex items-center gap-2 cursor-pointer p-2 font-bold focus:bg-[#00C2CB] focus:text-black rounded-sm"
+                                    >
+                                        <UserIcon className="h-4 w-4 stroke-[2.5]" />
+                                        <span>Pengaturan Akun</span>
+                                    </DropdownMenuItem>
+                                )}
+
+                                <DropdownMenuSeparator className="bg-black h-[2px] my-1" />
+
+                                {user ? (
                                     <DropdownMenuItem
                                         asChild
-                                        className="cursor-pointer text-red-600 dark:text-red-400 focus:bg-red-500/10 dark:focus:bg-red-500/20 focus:text-red-600 dark:focus:text-red-400"
+                                        className="cursor-pointer text-black font-black focus:bg-[#FF00FF] focus:text-white rounded-sm p-2"
                                     >
                                         <Link
                                             href="/logout"
                                             method="post"
                                             as="button"
-                                            className="flex w-full items-center gap-2 cursor-pointer text-red-600 dark:text-red-400 font-medium"
+                                            className="flex w-full items-center gap-2 cursor-pointer"
                                         >
-                                            <LogOut className="h-4 w-4 text-red-600 dark:text-red-400 shrink-0" />
+                                            <LogOut className="h-4 w-4 stroke-[2.5]" />
                                             <span>Keluar</span>
                                         </Link>
                                     </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </SidebarMenuItem>
-                    </SidebarMenu>
-                ) : (
-                    <SidebarMenu>
-                        <SidebarMenuItem>
-                            <SidebarMenuButton
-                                asChild
-                                tooltip={{ children: 'Masuk' }}
-                                className="cursor-pointer"
-                            >
-                                <Link href={login()}>
-                                    <LogIn className="size-4" />
-                                    <span>Masuk</span>
-                                </Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                        <SidebarMenuItem>
-                            <SidebarMenuButton
-                                asChild
-                                variant="outline"
-                                tooltip={{ children: 'Daftar' }}
-                                className="cursor-pointer"
-                            >
-                                <Link href={register()}>
-                                    <UserIcon className="size-4" />
-                                    <span>Daftar</span>
-                                </Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    </SidebarMenu>
-                )}
+                                ) : (
+                                    <div className="grid grid-cols-2 gap-1.5 p-1">
+                                        <Link
+                                            href={login()}
+                                            className="text-center py-1.5 text-xs font-black bg-white text-black border-2 border-black rounded-sm shadow-[2px_2px_0px_0px_#000000]"
+                                        >
+                                            Masuk
+                                        </Link>
+                                        <Link
+                                            href={register()}
+                                            className="text-center py-1.5 text-xs font-black bg-[#00C2CB] text-black border-2 border-black rounded-sm shadow-[2px_2px_0px_0px_#000000]"
+                                        >
+                                            Daftar
+                                        </Link>
+                                    </div>
+                                )}
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </SidebarMenuItem>
+                </SidebarMenu>
             </SidebarFooter>
         </Sidebar>
     );

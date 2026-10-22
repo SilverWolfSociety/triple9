@@ -50,23 +50,23 @@ export function RiwayatView({
 
     return (
         <div className="w-full space-y-4">
-            <div className="rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 p-5 sm:p-7 shadow-xs space-y-4">
+            <div className="rounded-md bg-white border-[3px] border-black p-5 sm:p-7 shadow-[8px_8px_0px_0px_#000000] space-y-5">
                 {/* 1. Search Bar */}
                 <div className="relative">
-                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-black stroke-[2.5]" />
                     <input
                         type="text"
                         value={searchGmailQuery}
                         onChange={(e) => setSearchGmailQuery(e.target.value)}
                         placeholder="Cari Gmail..."
-                        className="w-full rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-950 pl-10 pr-4 py-2.5 text-xs sm:text-sm text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-600 dark:focus:ring-blue-500 focus:outline-none transition shadow-2xs"
+                        className="w-full rounded-sm border-2 border-black bg-white pl-10 pr-4 py-2.5 text-xs sm:text-sm font-bold text-black placeholder:text-neutral-500 shadow-[4px_4px_0px_0px_#000000] focus:outline-none focus:bg-[#F5F5DC] transition"
                     />
                 </div>
 
                 {/* 2. Filter Controls: Status Pills, Dropdown Jalur, Day Pills */}
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pt-1">
                     {/* Status Group */}
-                    <div className="flex flex-wrap items-center gap-1.5">
+                    <div className="flex flex-wrap items-center gap-2">
                         {[
                             { id: 'all' as const, label: 'Semua' },
                             { id: 'pending' as const, label: `Menunggu (${pendingCount})` },
@@ -78,10 +78,10 @@ export function RiwayatView({
                                 key={tab.id}
                                 type="button"
                                 onClick={() => onChangeRiwayatFilter(tab.id)}
-                                className={`rounded-lg px-3 py-1.5 text-xs font-medium transition cursor-pointer ${
+                                className={`rounded-sm px-3 py-1.5 text-xs font-black uppercase tracking-wider border-2 border-black transition cursor-pointer ${
                                     riwayatFilter === tab.id
-                                        ? 'bg-blue-600 text-white shadow-xs'
-                                        : 'bg-white dark:bg-neutral-900 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800'
+                                        ? 'bg-[#00C2CB] text-black shadow-[4px_4px_0px_0px_#000000] translate-x-[-1px] translate-y-[-1px]'
+                                        : 'bg-white text-black hover:bg-[#F5F5DC] shadow-[2px_2px_0px_0px_#000000]'
                                 }`}
                             >
                                 {tab.label}
@@ -90,12 +90,12 @@ export function RiwayatView({
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2">
-                        {/* Dropdown Jalur (PW: triple999 / PW: 999triple) */}
+                        {/* Dropdown Jalur (PW: triple9 / PW: 9triple) */}
                         <div className="relative">
                             <button
                                 type="button"
                                 onClick={() => setIsJalurDropdownOpen(!isJalurDropdownOpen)}
-                                className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800 px-3.5 py-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-200 transition cursor-pointer shadow-2xs"
+                                className="inline-flex items-center gap-2 rounded-sm border-2 border-black bg-white hover:bg-[#F5F5DC] px-3.5 py-1.5 text-xs font-black uppercase tracking-wider text-black transition cursor-pointer shadow-[2px_2px_0px_0px_#000000]"
                             >
                                 <span>
                                     {jalurFilter === 'all'
@@ -104,11 +104,11 @@ export function RiwayatView({
                                         ? 'PW: triple9'
                                         : 'PW: 9triple'}
                                 </span>
-                                <ChevronDown className="h-3.5 w-3.5 text-neutral-400" />
+                                <ChevronDown className="h-3.5 w-3.5 text-black stroke-[3]" />
                             </button>
 
                             {isJalurDropdownOpen && (
-                                <div className="absolute left-0 sm:right-0 sm:left-auto mt-1.5 w-44 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-1 shadow-lg z-20 text-xs">
+                                <div className="absolute left-0 sm:right-0 sm:left-auto mt-2 w-44 rounded-sm bg-white border-2 border-black p-1 shadow-[4px_4px_0px_0px_#000000] z-20 text-xs">
                                     {[
                                         { id: 'all' as const, label: 'Semua Jalur' },
                                         { id: 'triple9' as const, label: 'PW: triple9' },
@@ -121,10 +121,10 @@ export function RiwayatView({
                                                 setJalurFilter(item.id);
                                                 setIsJalurDropdownOpen(false);
                                             }}
-                                            className={`w-full text-left px-3 py-1.5 rounded-lg font-medium transition cursor-pointer ${
+                                            className={`w-full text-left px-3 py-1.5 rounded-xs font-black transition cursor-pointer ${
                                                 jalurFilter === item.id
-                                                    ? 'bg-blue-600 text-white'
-                                                    : 'text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+                                                    ? 'bg-[#00C2CB] text-black'
+                                                    : 'text-black hover:bg-[#F5F5DC]'
                                             }`}
                                         >
                                             {item.label}
@@ -135,7 +135,7 @@ export function RiwayatView({
                         </div>
 
                         {/* Day Filter Pills */}
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1.5">
                             {[
                                 { id: 'all' as const, label: 'Semua' },
                                 { id: 'today' as const, label: 'Hari Ini' },
@@ -146,10 +146,10 @@ export function RiwayatView({
                                     key={d.id}
                                     type="button"
                                     onClick={() => setDayFilter(d.id)}
-                                    className={`rounded-lg px-2.5 py-1.5 text-xs font-medium transition cursor-pointer ${
+                                    className={`rounded-sm px-2.5 py-1.5 text-xs font-black uppercase tracking-wider border-2 border-black transition cursor-pointer ${
                                         dayFilter === d.id
-                                            ? 'bg-blue-600 text-white shadow-xs'
-                                            : 'bg-white dark:bg-neutral-900 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800'
+                                            ? 'bg-[#FFD700] text-black shadow-[2px_2px_0px_0px_#000000]'
+                                            : 'bg-white text-black hover:bg-[#F5F5DC] shadow-[1px_1px_0px_0px_#000000]'
                                     }`}
                                 >
                                     {d.label}
@@ -161,15 +161,15 @@ export function RiwayatView({
 
                 {/* Setoran Content Table / Empty State */}
                 {filteredStorHistory.length === 0 ? (
-                    <div className="rounded-xl border border-dashed border-neutral-200 dark:border-neutral-800 py-16 px-4 text-center">
-                        <p className="text-xs sm:text-sm text-neutral-400 dark:text-neutral-500">
+                    <div className="rounded-md border-2 border-dashed border-black py-16 px-4 text-center bg-[#F5F5DC]/40">
+                        <p className="text-xs sm:text-sm font-black text-black uppercase tracking-wider">
                             Belum ada setoran.
                         </p>
                     </div>
                 ) : (
-                    <div className="overflow-x-auto rounded-xl border border-neutral-200/80 dark:border-neutral-800">
+                    <div className="overflow-x-auto rounded-md border-2 border-black shadow-[4px_4px_0px_0px_#000000]">
                         <table className="w-full text-left text-xs">
-                            <thead className="bg-neutral-50 dark:bg-neutral-800/50 border-b border-neutral-200/80 dark:border-neutral-800 text-[11px] font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
+                            <thead className="bg-black border-b-2 border-black text-[11px] font-black text-white uppercase tracking-wider">
                                 <tr>
                                     <th className="px-4 py-3">Gmail</th>
                                     <th className="px-4 py-3">Jalur</th>
@@ -178,46 +178,38 @@ export function RiwayatView({
                                     <th className="px-4 py-3 text-right">Reward</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-neutral-100 dark:divide-neutral-800 text-neutral-700 dark:text-neutral-200">
+                            <tbody className="divide-y-2 divide-black bg-white text-black">
                                 {filteredStorHistory.map((item) => (
-                                    <tr key={item.id} className="hover:bg-neutral-50/50 dark:hover:bg-neutral-800/40 transition">
-                                        <td className="px-4 py-3 font-medium">{item.email}</td>
-                                        <td className="px-4 py-3 text-[11px] text-neutral-600 dark:text-neutral-400">
+                                    <tr key={item.id} className="hover:bg-[#F5F5DC] transition">
+                                        <td className="px-4 py-3 font-bold">{item.email}</td>
+                                        <td className="px-4 py-3 text-xs font-mono font-bold text-neutral-800">
                                             PW: {item.room}
                                         </td>
-                                        <td className="px-4 py-3 text-neutral-500">{item.date}</td>
+                                        <td className="px-4 py-3 font-mono font-bold text-xs text-neutral-800">{item.date}</td>
                                         <td className="px-4 py-3 text-center align-middle">
                                             {item.status === 'ditolak' ? (
-                                                <div className="inline-flex items-center justify-center gap-1.5" title="Ditolak">
-                                                    <img src="/images/icon/reject.png" alt="Ditolak" className="h-4 w-4 object-contain shrink-0" />
-                                                    <span className="text-[11px] font-medium text-rose-600 dark:text-rose-400">
-                                                        Ditolak
-                                                    </span>
-                                                </div>
+                                                <span className="inline-flex items-center justify-center gap-1.5 px-2.5 py-1 rounded-sm text-[11px] font-black border-2 border-black bg-[#FF00FF] text-black shadow-[2px_2px_0px_0px_#000000]">
+                                                    <img src="/images/icon/reject.png" alt="Ditolak" className="h-3.5 w-3.5 object-contain shrink-0" />
+                                                    Ditolak
+                                                </span>
                                             ) : item.status === 'pending' ? (
-                                                <div className="inline-flex items-center justify-center gap-1.5" title="Menunggu">
-                                                    <img src="/images/icon/pending.png" alt="Menunggu" className="h-4 w-4 object-contain shrink-0" />
-                                                    <span className="text-[11px] font-medium text-amber-600 dark:text-amber-400">
-                                                        Menunggu
-                                                    </span>
-                                                </div>
+                                                <span className="inline-flex items-center justify-center gap-1.5 px-2.5 py-1 rounded-sm text-[11px] font-black border-2 border-black bg-[#FFD700] text-black shadow-[2px_2px_0px_0px_#000000]">
+                                                    <img src="/images/icon/pending.png" alt="Menunggu" className="h-3.5 w-3.5 object-contain shrink-0" />
+                                                    Menunggu
+                                                </span>
                                             ) : item.status === 'dicek' ? (
-                                                <div className="inline-flex items-center justify-center gap-1.5" title="Di Cek">
-                                                    <img src="/images/icon/pending.png" alt="Di Cek" className="h-4 w-4 object-contain shrink-0" />
-                                                    <span className="text-[11px] font-medium text-blue-600 dark:text-blue-400">
-                                                        Di Cek
-                                                    </span>
-                                                </div>
+                                                <span className="inline-flex items-center justify-center gap-1.5 px-2.5 py-1 rounded-sm text-[11px] font-black border-2 border-black bg-[#F5F5DC] text-black shadow-[2px_2px_0px_0px_#000000]">
+                                                    <img src="/images/icon/pending.png" alt="Di Cek" className="h-3.5 w-3.5 object-contain shrink-0" />
+                                                    Di Cek
+                                                </span>
                                             ) : (
-                                                <div className="inline-flex items-center justify-center gap-1.5" title="Diterima">
-                                                    <img src="/images/icon/checklist.png" alt="Diterima" className="h-4 w-4 object-contain shrink-0" />
-                                                    <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
-                                                        Diterima
-                                                    </span>
-                                                </div>
+                                                <span className="inline-flex items-center justify-center gap-1.5 px-2.5 py-1 rounded-sm text-[11px] font-black border-2 border-black bg-[#00C2CB] text-black shadow-[2px_2px_0px_0px_#000000]">
+                                                    <img src="/images/icon/checklist.png" alt="Diterima" className="h-3.5 w-3.5 object-contain shrink-0" />
+                                                    Diterima
+                                                </span>
                                             )}
                                         </td>
-                                        <td className="px-4 py-3 text-right font-semibold text-slate-900 dark:text-slate-100">
+                                        <td className="px-4 py-3 text-right font-mono font-black text-xs text-black">
                                             Rp{item.reward.toLocaleString('id-ID')}
                                         </td>
                                     </tr>
