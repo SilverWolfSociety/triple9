@@ -76,16 +76,28 @@ export default function Welcome() {
         }
     }, []);
 
-    // Stor Akun History with demo item matching Neo-Brutalist specification
+    // Stor Akun History with 20 demo items
     const [storHistory, setStorHistory] = useState<StorRecord[]>([
-        {
-            id: 'stor-demo-1',
-            email: 'frt12@gmail.com',
-            room: 'triple9',
-            date: '2026-10-22',
-            status: 'pending',
-            reward: 5000,
-        },
+        { id: 'stor-1', email: 'frt12@gmail.com', room: 'triple9', date: '2026-10-22', status: 'pending', reward: 5000 },
+        { id: 'stor-2', email: 'dian.lestari92@gmail.com', room: 'triple9', date: '2026-10-22', status: 'pending', reward: 5000 },
+        { id: 'stor-3', email: 'rio.firmansyah01@gmail.com', room: '9triple', date: '2026-10-22', status: 'pending', reward: 5000 },
+        { id: 'stor-4', email: 'rizky.febrian77@gmail.com', room: 'triple9', date: '2026-10-22', status: 'pending', reward: 5000 },
+        { id: 'stor-5', email: 'fauzi.store22@gmail.com', room: '9triple', date: '2026-10-22', status: 'pending', reward: 5000 },
+        { id: 'stor-6', email: 'fauzi.akun33@gmail.com', room: 'triple9', date: '2026-10-22', status: 'ditolak', reward: 5000 },
+        { id: 'stor-7', email: 'reza.gmail101@gmail.com', room: '9triple', date: '2026-10-21', status: 'pending', reward: 5000 },
+        { id: 'stor-8', email: 'reza.gmail102@gmail.com', room: 'triple9', date: '2026-10-21', status: 'diterima', reward: 5000 },
+        { id: 'stor-9', email: 'dewi.acc55@gmail.com', room: 'triple9', date: '2026-10-21', status: 'pending', reward: 5000 },
+        { id: 'stor-10', email: 'dewi.acc56@gmail.com', room: '9triple', date: '2026-10-21', status: 'diterima', reward: 5000 },
+        { id: 'stor-11', email: 'fajar.gamer99@gmail.com', room: 'triple9', date: '2026-10-21', status: 'dicek', reward: 5000 },
+        { id: 'stor-12', email: 'fajar.gamer100@gmail.com', room: 'triple9', date: '2026-10-21', status: 'ditolak', reward: 5000 },
+        { id: 'stor-13', email: 'maya.office01@gmail.com', room: '9triple', date: '2026-10-21', status: 'pending', reward: 5000 },
+        { id: 'stor-14', email: 'maya.office02@gmail.com', room: 'triple9', date: '2026-10-21', status: 'diterima', reward: 5000 },
+        { id: 'stor-15', email: 'dimas.store88@gmail.com', room: 'triple9', date: '2026-10-21', status: 'dicek', reward: 5000 },
+        { id: 'stor-16', email: 'dimas.store89@gmail.com', room: '9triple', date: '2026-10-21', status: 'diterima', reward: 5000 },
+        { id: 'stor-17', email: 'rini.mail01@gmail.com', room: 'triple9', date: '2026-10-21', status: 'pending', reward: 5000 },
+        { id: 'stor-18', email: 'rini.mail02@gmail.com', room: 'triple9', date: '2026-10-21', status: 'diterima', reward: 5000 },
+        { id: 'stor-19', email: 'hawwin.sub01@gmail.com', room: '9triple', date: '2026-10-21', status: 'pending', reward: 5000 },
+        { id: 'stor-20', email: 'hawwin.sub02@gmail.com', room: 'triple9', date: '2026-10-21', status: 'ditolak', reward: 5000 },
     ]);
     const [riwayatFilter, setRiwayatFilter] = useState<RiwayatFilter>('all');
 

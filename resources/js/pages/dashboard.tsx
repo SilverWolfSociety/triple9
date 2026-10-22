@@ -1,36 +1,536 @@
-import { Head } from '@inertiajs/react';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
-import { dashboard } from '@/routes';
+import { useState, useEffect } from 'react';
+import { Head, usePage } from '@inertiajs/react';
+import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
+import type { Auth, User } from '@/types';
+import {
+    AdminSidebar,
+    AdminHeader,
+    AdminOverviewView,
+    AdminSetoranView,
+    AdminPayoutsView,
+    AdminUsersView,
+    AdminSupportView,
+    AdminSettingsView,
+    AdminBalanceModal,
+    AdminTicketModal,
+    initialSetoranData,
+    initialPayoutData,
+    initialUsersData,
+    initialTicketsData,
+    initialPlatformSettings,
+} from '@/components/admin';
+import type {
+    AdminNavId,
+    AdminSetoranItem,
+    AdminPayoutItem,
+    AdminUserItem,
+    AdminTicketItem,
+    PlatformSettings,
+} from '@/components/admin';
 
 export default function Dashboard() {
+    const { auth } = usePage<{ auth: Auth }>().props;
+    const user: User = auth?.user || {
+        id: 1,
+        name: 'Administrator',
+        email: 'admin@triple9.com',
+        avatar: '/images/avatar/rubah.png',
+        role: 'admin',
+        email_verified_at: null,
+        created_at: '2026-10-01T00:00:00.000000Z',
+        updated_at: '2026-10-01T00:00:00.000000Z',
+    };
+
+    // Active Tab Navigation
+    const [activeNav, setActiveNav] = useState<AdminNavId>('overview');
+
+    // Platform Settings State
+    const [settings, setSettings] = useState<PlatformSettings>(() => {
+        try {
+            const saved = localStorage.getItem('triple9_admin_settings');
+            if (saved) return JSON.parse(saved);
+        } catch {
+            // ignore
+        }
+        return initialPlatformSettings;
+    });
+
+    // Setoran List State
+    const [setoranList, setSetoranList] = useState<AdminSetoranItem[]>(() => {
+        try {
+            const saved = localStorage.getItem('triple9_admin_setoran');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                if (parsed.length >= 20) {
+                    return parsed.map((item: any) => {
+                        let status = item.status;
+                        if (status === 'valid') status = 'diterima';
+                        if (status === 'invalid') status = 'ditolak';
+                        return { ...item, status };
+                    });
+                }
+            }
+        } catch {
+            // ignore
+        }
+        return initialSetoranData;
+    });
+
+    // Payout List State
+    const [payoutList, setPayoutList] = useState<AdminPayoutItem[]>(() => {
+        try {
+            const saved = localStorage.getItem('triple9_admin_payouts');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                const allowed: Record<string, 'DANA' | 'OVO' | 'GoPay' | 'ShopeePay'> = {
+                    dana: 'DANA',
+                    ovo: 'OVO',
+                    gopay: 'GoPay',
+                    shopeepay: 'ShopeePay',
+                    bca: 'OVO',
+                    bri: 'GoPay',
+                    mandiri: 'DANA',
+                    qris: 'ShopeePay',
+                };
+                return parsed.map((item: any) => {
+                    const key = String(item.method || '').toLowerCase();
+                    const method = allowed[key] || 'DANA';
+                    return { ...item, method };
+                });
+            }
+        } catch {
+            // ignore
+        }
+        return initialPayoutData;
+    });
+
+    // Users List State
+    const [usersList, setUsersList] = useState<AdminUserItem[]>(() => {
+        try {
+            const saved = localStorage.getItem('triple9_admin_users');
+            if (saved) return JSON.parse(saved);
+        } catch {
+            // ignore
+        }
+        return initialUsersData;
+    });
+
+    // Tickets List State
+    const [ticketsList, setTicketsList] = useState<AdminTicketItem[]>(() => {
+        try {
+            const saved = localStorage.getItem('triple9_admin_tickets');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                return parsed.map((item: AdminTicketItem) => ({
+                    ...item,
+                    replies: (item.replies || []).filter(
+                        (r, idx) => !(idx === 0 && r.sender === 'user' && r.message.trim() === item.message.trim())
+                    ),
+                }));
+            }
+        } catch {
+            // ignore
+        }
+        return initialTicketsData;
+    });
+
+    // Modals State
+    const [balanceModalUser, setBalanceModalUser] = useState<AdminUserItem | null>(null);
+    const [isBalanceModalOpen, setIsBalanceModalOpen] = useState(false);
+
+    const [ticketModalItem, setTicketModalItem] = useState<AdminTicketItem | null>(null);
+    const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
+
+    // Sync to localStorage
+    useEffect(() => {
+        try {
+            localStorage.setItem('triple9_admin_settings', JSON.stringify(settings));
+        } catch { }
+    }, [settings]);
+
+    useEffect(() => {
+        try {
+            localStorage.setItem('triple9_admin_setoran', JSON.stringify(setoranList));
+        } catch { }
+    }, [setoranList]);
+
+    useEffect(() => {
+        try {
+            localStorage.setItem('triple9_admin_payouts', JSON.stringify(payoutList));
+        } catch { }
+    }, [payoutList]);
+
+    useEffect(() => {
+        try {
+            localStorage.setItem('triple9_admin_users', JSON.stringify(usersList));
+        } catch { }
+    }, [usersList]);
+
+    useEffect(() => {
+        try {
+            localStorage.setItem('triple9_admin_tickets', JSON.stringify(ticketsList));
+        } catch { }
+    }, [ticketsList]);
+
+    // Badges / Counters
+    const pendingSetoranCount = setoranList.filter((s) => s.status === 'pending').length;
+    const pendingPayoutCount = payoutList.filter((p) => p.status === 'pending').length;
+    const waitingTicketCount = ticketsList.filter((t) => t.status === 'waiting').length;
+
+    // Active item label mapping
+    const navTitles: Record<AdminNavId, string> = {
+        overview: 'Ringkasan Platform',
+        setoran: 'Kelola Setoran Akun',
+        payouts: 'Pencairan Saldo',
+        users: 'Data & Saldo Pengguna',
+        support: 'Tiket Bantuan & CS',
+        settings: 'Pengaturan Sistem',
+    };
+    const activeItemLabel = navTitles[activeNav] || 'Admin Panel';
+
+    // Handlers: Setoran
+    const handleApproveSetoran = (id: string) => {
+        const target = setoranList.find((s) => s.id === id);
+        if (!target) return;
+
+        setSetoranList((prev) =>
+            prev.map((s) => (s.id === id ? { ...s, status: 'diterima' as const } : s)),
+        );
+
+        // Update corresponding user balance and total setoran
+        setUsersList((prev) =>
+            prev.map((u) => {
+                if (u.id === target.userId) {
+                    return {
+                        ...u,
+                        totalSetoran: u.totalSetoran + 1,
+                        currentBalance: u.currentBalance + target.reward,
+                    };
+                }
+                return u;
+            }),
+        );
+    };
+
+    const handleRejectSetoran = (id: string, reason?: string) => {
+        setSetoranList((prev) =>
+            prev.map((s) =>
+                s.id === id
+                    ? { ...s, status: 'ditolak' as const, note: reason || 'Akun tidak valid / password salah' }
+                    : s,
+            ),
+        );
+    };
+
+    const handleBatchApprove = (ids: string[]) => {
+        setSetoranList((prev) =>
+            prev.map((s) => (ids.includes(s.id) ? { ...s, status: 'diterima' as const } : s)),
+        );
+
+        // Calculate rewards per user
+        const rewardMap: Record<number, number> = {};
+        setoranList.forEach((s) => {
+            if (ids.includes(s.id) && s.status !== 'diterima' && s.status !== 'valid') {
+                rewardMap[s.userId] = (rewardMap[s.userId] || 0) + s.reward;
+            }
+        });
+
+        setUsersList((prev) =>
+            prev.map((u) => {
+                if (rewardMap[u.id]) {
+                    return {
+                        ...u,
+                        totalSetoran: u.totalSetoran + 1,
+                        currentBalance: u.currentBalance + rewardMap[u.id],
+                    };
+                }
+                return u;
+            }),
+        );
+    };
+
+    const handleBatchReject = (ids: string[], reason?: string) => {
+        setSetoranList((prev) =>
+            prev.map((s) =>
+                ids.includes(s.id)
+                    ? { ...s, status: 'ditolak' as const, note: reason || 'Batch tolak verifikasi' }
+                    : s,
+            ),
+        );
+    };
+
+    // Handlers: Payouts
+    const handleApprovePayout = (id: string, note?: string) => {
+        setPayoutList((prev) =>
+            prev.map((p) =>
+                p.id === id
+                    ? {
+                        ...p,
+                        status: 'success' as const,
+                        note: note || `Transfer berhasil dikirim ke ${p.method} (${p.accountNumber})`,
+                    }
+                    : p,
+            ),
+        );
+    };
+
+    const handleRejectPayout = (id: string, reason?: string) => {
+        const target = payoutList.find((p) => p.id === id);
+        if (!target) return;
+
+        setPayoutList((prev) =>
+            prev.map((p) =>
+                p.id === id
+                    ? {
+                        ...p,
+                        status: 'rejected' as const,
+                        note: reason || 'Permintaan pencairan ditolak, saldo dikembalikan ke user',
+                    }
+                    : p,
+            ),
+        );
+
+        // Refund balance to user
+        setUsersList((prev) =>
+            prev.map((u) => {
+                if (u.id === target.userId) {
+                    return {
+                        ...u,
+                        currentBalance: u.currentBalance + target.amount,
+                    };
+                }
+                return u;
+            }),
+        );
+    };
+
+    // Handlers: Users
+    const handleUpdateBalance = (userId: number, delta: number) => {
+        setUsersList((prev) =>
+            prev.map((u) => {
+                if (u.id === userId) {
+                    return {
+                        ...u,
+                        currentBalance: Math.max(0, u.currentBalance + delta),
+                    };
+                }
+                return u;
+            }),
+        );
+    };
+
+    const handleToggleUserRole = (userId: number) => {
+        setUsersList((prev) =>
+            prev.map((u) => {
+                if (u.id === userId) {
+                    return {
+                        ...u,
+                        role: u.role === 'admin' ? ('user' as const) : ('admin' as const),
+                    };
+                }
+                return u;
+            }),
+        );
+    };
+
+    const handleToggleUserStatus = (userId: number) => {
+        setUsersList((prev) =>
+            prev.map((u) => {
+                if (u.id === userId) {
+                    return {
+                        ...u,
+                        status: u.status === 'active' ? ('suspended' as const) : ('active' as const),
+                    };
+                }
+                return u;
+            }),
+        );
+    };
+
+    // Handlers: Support Tickets
+    const handleSendTicketReply = (ticketId: string, replyMessage: string) => {
+        const now = new Date();
+        const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+        setTicketsList((prev) =>
+            prev.map((t) => {
+                if (t.id === ticketId) {
+                    const newReplies = [
+                        ...t.replies,
+                        {
+                            sender: 'admin' as const,
+                            name: user.name || 'Admin Triple9',
+                            message: replyMessage,
+                            time: timeStr,
+                        },
+                    ];
+                    return {
+                        ...t,
+                        status: 'in_progress' as const,
+                        replies: newReplies,
+                    };
+                }
+                return t;
+            }),
+        );
+
+        // Update modal item if open
+        if (ticketModalItem && ticketModalItem.id === ticketId) {
+            setTicketModalItem((prev) =>
+                prev
+                    ? {
+                        ...prev,
+                        status: 'in_progress',
+                        replies: [
+                            ...prev.replies,
+                            {
+                                sender: 'admin',
+                                name: user.name || 'Admin Triple9',
+                                message: replyMessage,
+                                time: timeStr,
+                            },
+                        ],
+                    }
+                    : null,
+            );
+        }
+    };
+
+    const handleCloseTicket = (ticketId: string) => {
+        setTicketsList((prev) =>
+            prev.map((t) => (t.id === ticketId ? { ...t, status: 'resolved' as const } : t)),
+        );
+
+        if (ticketModalItem && ticketModalItem.id === ticketId) {
+            setTicketModalItem((prev) => (prev ? { ...prev, status: 'resolved' } : null));
+        }
+    };
+
+    // Handlers: Settings
+    const handleSaveSettings = (newSettings: PlatformSettings) => {
+        setSettings(newSettings);
+    };
+
     return (
         <>
-            <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+            <Head title={`${activeItemLabel} — Triple9 Admin`} />
+
+            {/* Neo-brutalist Shell matching Welcome layout */}
+            <SidebarProvider defaultOpen={true} className="bg-[#F5F5DC] min-h-screen text-black font-sans">
+                {/* ADMIN SIDEBAR */}
+                <AdminSidebar
+                    user={user}
+                    activeNav={activeNav}
+                    onSelectNav={(id) => {
+                        setActiveNav(id);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    pendingSetoranCount={pendingSetoranCount}
+                    pendingPayoutCount={pendingPayoutCount}
+                    waitingTicketCount={waitingTicketCount}
+                />
+
+                {/* INSET MAIN CONTENT AREA */}
+                <SidebarInset className="min-w-0 overflow-x-clip bg-[#F5F5DC] flex flex-col flex-1 min-h-screen">
+                    {/* TOP HEADER */}
+                    <AdminHeader activeItemLabel={activeItemLabel} />
+
+                    {/* ADMIN DASHBOARD CONTENT CANVAS */}
+                    <div className="flex-1 p-4 sm:p-6 lg:p-7 bg-[#F5F5DC]">
+                        <div className="max-w-7xl w-full mx-auto space-y-6 pb-12">
+                            {/* 1. OVERVIEW VIEW */}
+                            {activeNav === 'overview' && (
+                                <AdminOverviewView
+                                    onNavigate={setActiveNav}
+                                    setoranList={setoranList}
+                                    payoutList={payoutList}
+                                    usersList={usersList}
+                                    ticketsList={ticketsList}
+                                    settings={settings}
+                                    onApproveSetoran={handleApproveSetoran}
+                                    onRejectSetoran={handleRejectSetoran}
+                                />
+                            )}
+
+                            {/* 2. SETORAN VIEW */}
+                            {activeNav === 'setoran' && (
+                                <AdminSetoranView
+                                    setoranList={setoranList}
+                                    onApproveSetoran={handleApproveSetoran}
+                                    onRejectSetoran={handleRejectSetoran}
+                                    onBatchApprove={handleBatchApprove}
+                                    onBatchReject={handleBatchReject}
+                                />
+                            )}
+
+                            {/* 3. PAYOUTS VIEW */}
+                            {activeNav === 'payouts' && (
+                                <AdminPayoutsView
+                                    payoutList={payoutList}
+                                    onApprovePayout={handleApprovePayout}
+                                    onRejectPayout={handleRejectPayout}
+                                />
+                            )}
+
+                            {/* 4. USERS VIEW */}
+                            {activeNav === 'users' && (
+                                <AdminUsersView
+                                    usersList={usersList}
+                                    onOpenBalanceModal={(userItem) => {
+                                        setBalanceModalUser(userItem);
+                                        setIsBalanceModalOpen(true);
+                                    }}
+                                    onToggleUserRole={handleToggleUserRole}
+                                    onToggleUserStatus={handleToggleUserStatus}
+                                />
+                            )}
+
+                            {/* 5. SUPPORT VIEW */}
+                            {activeNav === 'support' && (
+                                <AdminSupportView
+                                    ticketsList={ticketsList}
+                                    onOpenReplyModal={(ticketItem) => {
+                                        setTicketModalItem(ticketItem);
+                                        setIsTicketModalOpen(true);
+                                    }}
+                                    onCloseTicket={handleCloseTicket}
+                                />
+                            )}
+
+                            {/* 6. SETTINGS VIEW */}
+                            {activeNav === 'settings' && (
+                                <AdminSettingsView
+                                    settings={settings}
+                                    onSaveSettings={handleSaveSettings}
+                                />
+                            )}
+                        </div>
                     </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                </div>
-                <div className="relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                </div>
-            </div>
+                </SidebarInset>
+
+                {/* MODAL: Sesuaikan Saldo User */}
+                <AdminBalanceModal
+                    isOpen={isBalanceModalOpen}
+                    onClose={() => {
+                        setIsBalanceModalOpen(false);
+                        setBalanceModalUser(null);
+                    }}
+                    user={balanceModalUser}
+                    onUpdateBalance={handleUpdateBalance}
+                />
+
+                {/* MODAL: Balas Tiket Bantuan */}
+                <AdminTicketModal
+                    isOpen={isTicketModalOpen}
+                    onClose={() => {
+                        setIsTicketModalOpen(false);
+                        setTicketModalItem(null);
+                    }}
+                    ticket={ticketModalItem}
+                    onSendReply={handleSendTicketReply}
+                    onCloseTicket={handleCloseTicket}
+                />
+            </SidebarProvider>
         </>
     );
 }
-
-Dashboard.layout = {
-    breadcrumbs: [
-        {
-            title: 'Dashboard',
-            href: dashboard(),
-        },
-    ],
-};

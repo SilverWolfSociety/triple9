@@ -27,7 +27,7 @@ import {
     useSidebar,
 } from '@/components/ui/sidebar';
 import { UserInfo } from '@/components/user-info';
-import { dashboard, login, register } from '@/routes';
+import { dashboard, login, logout, register } from '@/routes';
 import type { User } from '@/types';
 import { navGroups } from '../constants';
 
@@ -177,15 +177,12 @@ export function WelcomeSidebar({
                                 <DropdownMenuSeparator className="bg-black h-[2px] my-1" />
 
                                 {user ? (
-                                    <DropdownMenuItem
-                                        asChild
-                                        className="cursor-pointer text-black font-black focus:bg-[#FF00FF] focus:text-white rounded-sm p-2"
-                                    >
+                                    <DropdownMenuItem asChild className="cursor-pointer font-bold text-rose-600 focus:bg-rose-100 focus:text-rose-700 rounded-sm">
                                         <Link
-                                            href="/logout"
+                                            href={logout()}
                                             method="post"
                                             as="button"
-                                            className="flex w-full items-center gap-2 cursor-pointer"
+                                            className="flex w-full items-center gap-2 cursor-pointer p-2"
                                         >
                                             <LogOut className="h-4 w-4 stroke-[2.5]" />
                                             <span>Keluar</span>

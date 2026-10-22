@@ -157,11 +157,10 @@ export function DashboardView({
                             key={idx}
                             type="button"
                             onClick={() => setActiveSlideIndex(idx)}
-                            className={`h-2.5 rounded-xs border-2 border-black transition-all cursor-pointer ${
-                                idx === activeSlideIndex
+                            className={`h-2.5 rounded-xs border-2 border-black transition-all cursor-pointer ${idx === activeSlideIndex
                                     ? 'w-7 bg-black'
                                     : 'w-2.5 bg-white hover:bg-neutral-100'
-                            }`}
+                                }`}
                             aria-label={`Ke slide ${idx + 1}`}
                         />
                     ))}
@@ -340,7 +339,6 @@ export function DashboardView({
                         className="inline-flex items-center gap-1 px-3 py-1.5 rounded-sm bg-[#00C2CB] text-black font-black text-xs border-2 border-black shadow-[2px_2px_0px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all cursor-pointer uppercase tracking-wider"
                     >
                         <span>Lihat Semua</span>
-                        <ChevronRight className="h-3.5 w-3.5 stroke-[2.5]" />
                     </button>
                 </div>
 
@@ -394,24 +392,20 @@ export function DashboardView({
                                         {/* STATUS: Badge kotak berbingkai hitam 2px */}
                                         <td className="px-5 py-3.5 text-center align-middle">
                                             {item.status === 'ditolak' ? (
-                                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xs border-2 border-black bg-[#FF00FF] text-white font-black text-xs shadow-[2px_2px_0px_0px_#000000]">
-                                                    <img src="/images/icon/reject.png" alt="Ditolak" className="h-3.5 w-3.5 object-contain" />
-                                                    <span>Ditolak</span>
+                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#FF00FF] shadow-[2px_2px_0px_0px_#000000]" title="Ditolak">
+                                                    <img src="/images/icon/reject.png" alt="Ditolak" className="size-5 object-contain shrink-0" />
                                                 </span>
                                             ) : item.status === 'pending' ? (
-                                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xs border-2 border-black bg-[#FFD700] text-black font-black text-xs shadow-[2px_2px_0px_0px_#000000]">
-                                                    <span>⏳</span>
-                                                    <span>Menunggu</span>
+                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#FFD700] shadow-[2px_2px_0px_0px_#000000]" title="Menunggu">
+                                                    <img src="/images/icon/pending.png" alt="Menunggu" className="size-5 object-contain shrink-0" />
                                                 </span>
                                             ) : item.status === 'dicek' ? (
-                                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xs border-2 border-black bg-[#F5F5DC] text-black font-black text-xs shadow-[2px_2px_0px_0px_#000000]">
-                                                    <img src="/images/icon/find.png" alt="Di Cek" className="h-3.5 w-3.5 object-contain" />
-                                                    <span>Di Cek</span>
+                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#F5F5DC] shadow-[2px_2px_0px_0px_#000000]" title="Di Cek">
+                                                    <img src="/images/icon/find.png" alt="Di Cek" className="size-5 object-contain shrink-0" />
                                                 </span>
                                             ) : (
-                                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xs border-2 border-black bg-[#00C2CB] text-black font-black text-xs shadow-[2px_2px_0px_0px_#000000]">
-                                                    <img src="/images/icon/checklist.png" alt="Diterima" className="h-3.5 w-3.5 object-contain" />
-                                                    <span>Diterima</span>
+                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#00C2CB] shadow-[2px_2px_0px_0px_#000000]" title="Diterima">
+                                                    <img src="/images/icon/checklist.png" alt="Diterima" className="size-5 object-contain shrink-0" />
                                                 </span>
                                             )}
                                         </td>

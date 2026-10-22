@@ -119,19 +119,16 @@ export function SaldoView({
                                         </td>
                                         <td className="px-5 py-3.5 text-center align-middle">
                                             {item.status === 'ditolak' || item.status === 'rejected' || item.status === 'gagal' ? (
-                                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xs border-2 border-black bg-[#FF00FF] text-black font-black text-xs shadow-[2px_2px_0px_0px_#000000]">
-                                                    <img src="/images/icon/reject.png" alt="Ditolak" className="h-3.5 w-3.5 object-contain" />
-                                                    <span>Ditolak</span>
+                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#FF00FF] shadow-[2px_2px_0px_0px_#000000]" title="Ditolak">
+                                                    <img src="/images/icon/reject.png" alt="Ditolak" className="size-5 object-contain shrink-0" />
                                                 </span>
                                             ) : item.status === 'pending' || item.status === 'menunggu' ? (
-                                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xs border-2 border-black bg-[#FFD700] text-black font-black text-xs shadow-[2px_2px_0px_0px_#000000]">
-                                                    <span>⏳</span>
-                                                    <span>Menunggu</span>
+                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#FFD700] shadow-[2px_2px_0px_0px_#000000]" title="Menunggu">
+                                                    <img src="/images/icon/pending.png" alt="Menunggu" className="size-5 object-contain shrink-0" />
                                                 </span>
                                             ) : (
-                                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xs border-2 border-black bg-[#00C2CB] text-black font-black text-xs shadow-[2px_2px_0px_0px_#000000]">
-                                                    <img src="/images/icon/checklist.png" alt="Selesai" className="h-3.5 w-3.5 object-contain" />
-                                                    <span>Selesai</span>
+                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#00C2CB] shadow-[2px_2px_0px_0px_#000000]" title="Selesai">
+                                                    <img src="/images/icon/checklist.png" alt="Selesai" className="size-5 object-contain shrink-0" />
                                                 </span>
                                             )}
                                         </td>

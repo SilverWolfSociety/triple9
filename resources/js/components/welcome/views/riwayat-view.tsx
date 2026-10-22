@@ -188,24 +188,20 @@ export function RiwayatView({
                                         <td className="px-4 py-3 font-mono font-bold text-xs text-neutral-800">{item.date}</td>
                                         <td className="px-4 py-3 text-center align-middle">
                                             {item.status === 'ditolak' ? (
-                                                <span className="inline-flex items-center justify-center gap-1.5 px-2.5 py-1 rounded-sm text-[11px] font-black border-2 border-black bg-[#FF00FF] text-black shadow-[2px_2px_0px_0px_#000000]">
-                                                    <img src="/images/icon/reject.png" alt="Ditolak" className="h-3.5 w-3.5 object-contain shrink-0" />
-                                                    Ditolak
+                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#FF00FF] shadow-[2px_2px_0px_0px_#000000]" title="Ditolak">
+                                                    <img src="/images/icon/reject.png" alt="Ditolak" className="size-5 object-contain shrink-0" />
                                                 </span>
                                             ) : item.status === 'pending' ? (
-                                                <span className="inline-flex items-center justify-center gap-1.5 px-2.5 py-1 rounded-sm text-[11px] font-black border-2 border-black bg-[#FFD700] text-black shadow-[2px_2px_0px_0px_#000000]">
-                                                    <img src="/images/icon/pending.png" alt="Menunggu" className="h-3.5 w-3.5 object-contain shrink-0" />
-                                                    Menunggu
+                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#FFD700] shadow-[2px_2px_0px_0px_#000000]" title="Menunggu">
+                                                    <img src="/images/icon/pending.png" alt="Menunggu" className="size-5 object-contain shrink-0" />
                                                 </span>
                                             ) : item.status === 'dicek' ? (
-                                                <span className="inline-flex items-center justify-center gap-1.5 px-2.5 py-1 rounded-sm text-[11px] font-black border-2 border-black bg-[#F5F5DC] text-black shadow-[2px_2px_0px_0px_#000000]">
-                                                    <img src="/images/icon/pending.png" alt="Di Cek" className="h-3.5 w-3.5 object-contain shrink-0" />
-                                                    Di Cek
+                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#F5F5DC] shadow-[2px_2px_0px_0px_#000000]" title="Di Cek">
+                                                    <img src="/images/icon/find.png" alt="Di Cek" className="size-5 object-contain shrink-0" />
                                                 </span>
                                             ) : (
-                                                <span className="inline-flex items-center justify-center gap-1.5 px-2.5 py-1 rounded-sm text-[11px] font-black border-2 border-black bg-[#00C2CB] text-black shadow-[2px_2px_0px_0px_#000000]">
-                                                    <img src="/images/icon/checklist.png" alt="Diterima" className="h-3.5 w-3.5 object-contain shrink-0" />
-                                                    Diterima
+                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#00C2CB] shadow-[2px_2px_0px_0px_#000000]" title="Diterima">
+                                                    <img src="/images/icon/checklist.png" alt="Diterima" className="size-5 object-contain shrink-0" />
                                                 </span>
                                             )}
                                         </td>
