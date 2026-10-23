@@ -6,7 +6,6 @@ export type AdminNavId =
     | 'setoran'
     | 'payouts'
     | 'users'
-    | 'support'
     | 'settings';
 
 export interface AdminNavItem {

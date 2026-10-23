@@ -9,14 +9,11 @@ import {
     AdminSetoranView,
     AdminPayoutsView,
     AdminUsersView,
-    AdminSupportView,
     AdminSettingsView,
     AdminBalanceModal,
-    AdminTicketModal,
     initialSetoranData,
     initialPayoutData,
     initialUsersData,
-    initialTicketsData,
     initialPlatformSettings,
 } from '@/components/admin';
 import type {
@@ -24,7 +21,6 @@ import type {
     AdminSetoranItem,
     AdminPayoutItem,
     AdminUserItem,
-    AdminTicketItem,
     PlatformSettings,
 } from '@/components/admin';
 
@@ -115,31 +111,9 @@ export default function Dashboard() {
         return initialUsersData;
     });
 
-    // Tickets List State
-    const [ticketsList, setTicketsList] = useState<AdminTicketItem[]>(() => {
-        try {
-            const saved = localStorage.getItem('triple9_admin_tickets');
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                return parsed.map((item: AdminTicketItem) => ({
-                    ...item,
-                    replies: (item.replies || []).filter(
-                        (r, idx) => !(idx === 0 && r.sender === 'user' && r.message.trim() === item.message.trim())
-                    ),
-                }));
-            }
-        } catch {
-            // ignore
-        }
-        return initialTicketsData;
-    });
-
     // Modals State
     const [balanceModalUser, setBalanceModalUser] = useState<AdminUserItem | null>(null);
     const [isBalanceModalOpen, setIsBalanceModalOpen] = useState(false);
-
-    const [ticketModalItem, setTicketModalItem] = useState<AdminTicketItem | null>(null);
-    const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
 
     // Sync to localStorage
     useEffect(() => {
@@ -166,16 +140,9 @@ export default function Dashboard() {
         } catch { }
     }, [usersList]);
 
-    useEffect(() => {
-        try {
-            localStorage.setItem('triple9_admin_tickets', JSON.stringify(ticketsList));
-        } catch { }
-    }, [ticketsList]);
-
     // Badges / Counters
-    const pendingSetoranCount = setoranList.filter((s) => s.status === 'pending').length;
+    const pendingSetoranCount = setoranList.filter((s) => s.status === 'pending' || s.status === 'dicek').length;
     const pendingPayoutCount = payoutList.filter((p) => p.status === 'pending').length;
-    const waitingTicketCount = ticketsList.filter((t) => t.status === 'waiting').length;
 
     // Active item label mapping
     const navTitles: Record<AdminNavId, string> = {
@@ -183,7 +150,6 @@ export default function Dashboard() {
         setoran: 'Kelola Setoran Akun',
         payouts: 'Pencairan Saldo',
         users: 'Data & Saldo Pengguna',
-        support: 'Tiket Bantuan & CS',
         settings: 'Pengaturan Sistem',
     };
     const activeItemLabel = navTitles[activeNav] || 'Admin Panel';
@@ -219,6 +185,18 @@ export default function Dashboard() {
                     ? { ...s, status: 'ditolak' as const, note: reason || 'Akun tidak valid / password salah' }
                     : s,
             ),
+        );
+    };
+
+    const handleCheckSetoran = (id: string) => {
+        setSetoranList((prev) =>
+            prev.map((s) => (s.id === id ? { ...s, status: 'dicek' as const } : s)),
+        );
+    };
+
+    const handleBatchCheck = (ids: string[]) => {
+        setSetoranList((prev) =>
+            prev.map((s) => (ids.includes(s.id) ? { ...s, status: 'dicek' as const } : s)),
         );
     };
 
@@ -347,65 +325,6 @@ export default function Dashboard() {
         );
     };
 
-    // Handlers: Support Tickets
-    const handleSendTicketReply = (ticketId: string, replyMessage: string) => {
-        const now = new Date();
-        const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-
-        setTicketsList((prev) =>
-            prev.map((t) => {
-                if (t.id === ticketId) {
-                    const newReplies = [
-                        ...t.replies,
-                        {
-                            sender: 'admin' as const,
-                            name: user.name || 'Admin Triple9',
-                            message: replyMessage,
-                            time: timeStr,
-                        },
-                    ];
-                    return {
-                        ...t,
-                        status: 'in_progress' as const,
-                        replies: newReplies,
-                    };
-                }
-                return t;
-            }),
-        );
-
-        // Update modal item if open
-        if (ticketModalItem && ticketModalItem.id === ticketId) {
-            setTicketModalItem((prev) =>
-                prev
-                    ? {
-                        ...prev,
-                        status: 'in_progress',
-                        replies: [
-                            ...prev.replies,
-                            {
-                                sender: 'admin',
-                                name: user.name || 'Admin Triple9',
-                                message: replyMessage,
-                                time: timeStr,
-                            },
-                        ],
-                    }
-                    : null,
-            );
-        }
-    };
-
-    const handleCloseTicket = (ticketId: string) => {
-        setTicketsList((prev) =>
-            prev.map((t) => (t.id === ticketId ? { ...t, status: 'resolved' as const } : t)),
-        );
-
-        if (ticketModalItem && ticketModalItem.id === ticketId) {
-            setTicketModalItem((prev) => (prev ? { ...prev, status: 'resolved' } : null));
-        }
-    };
-
     // Handlers: Settings
     const handleSaveSettings = (newSettings: PlatformSettings) => {
         setSettings(newSettings);
@@ -427,7 +346,6 @@ export default function Dashboard() {
                     }}
                     pendingSetoranCount={pendingSetoranCount}
                     pendingPayoutCount={pendingPayoutCount}
-                    waitingTicketCount={waitingTicketCount}
                 />
 
                 {/* INSET MAIN CONTENT AREA */}
@@ -445,10 +363,10 @@ export default function Dashboard() {
                                     setoranList={setoranList}
                                     payoutList={payoutList}
                                     usersList={usersList}
-                                    ticketsList={ticketsList}
                                     settings={settings}
                                     onApproveSetoran={handleApproveSetoran}
                                     onRejectSetoran={handleRejectSetoran}
+                                    onCheckSetoran={handleCheckSetoran}
                                 />
                             )}
 
@@ -458,8 +376,10 @@ export default function Dashboard() {
                                     setoranList={setoranList}
                                     onApproveSetoran={handleApproveSetoran}
                                     onRejectSetoran={handleRejectSetoran}
+                                    onCheckSetoran={handleCheckSetoran}
                                     onBatchApprove={handleBatchApprove}
                                     onBatchReject={handleBatchReject}
+                                    onBatchCheck={handleBatchCheck}
                                 />
                             )}
 
@@ -485,19 +405,7 @@ export default function Dashboard() {
                                 />
                             )}
 
-                            {/* 5. SUPPORT VIEW */}
-                            {activeNav === 'support' && (
-                                <AdminSupportView
-                                    ticketsList={ticketsList}
-                                    onOpenReplyModal={(ticketItem) => {
-                                        setTicketModalItem(ticketItem);
-                                        setIsTicketModalOpen(true);
-                                    }}
-                                    onCloseTicket={handleCloseTicket}
-                                />
-                            )}
-
-                            {/* 6. SETTINGS VIEW */}
+                            {/* 5. SETTINGS VIEW */}
                             {activeNav === 'settings' && (
                                 <AdminSettingsView
                                     settings={settings}
@@ -517,18 +425,6 @@ export default function Dashboard() {
                     }}
                     user={balanceModalUser}
                     onUpdateBalance={handleUpdateBalance}
-                />
-
-                {/* MODAL: Balas Tiket Bantuan */}
-                <AdminTicketModal
-                    isOpen={isTicketModalOpen}
-                    onClose={() => {
-                        setIsTicketModalOpen(false);
-                        setTicketModalItem(null);
-                    }}
-                    ticket={ticketModalItem}
-                    onSendReply={handleSendTicketReply}
-                    onCloseTicket={handleCloseTicket}
                 />
             </SidebarProvider>
         </>

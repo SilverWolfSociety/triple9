@@ -20,24 +20,24 @@ export function RulesView({ onNavigateToStor }: RulesViewProps) {
             {/* Main Rules Card */}
             <div className="rounded-md bg-white border-[3px] border-black p-5 sm:p-7 lg:p-8 shadow-[8px_8px_0px_0px_#000000] space-y-6">
 
-                {/* 7 Rules List */}
-                <ol className="space-y-4 text-xs sm:text-sm text-black">
-                    <li className="flex items-start gap-3">
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border-2 border-black bg-[#00C2CB] text-black font-black text-xs shadow-[2px_2px_0px_0px_#000000]">
-                            1
+                {/* 7 Rules Cards */}
+                <div className="space-y-3 text-xs sm:text-sm text-black">
+                    <div className="flex items-start gap-3.5 p-3.5 rounded-sm bg-[#F5F5DC] border-2 border-black shadow-[3px_3px_0px_0px_#000000]">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border-2 border-black bg-[#00C2CB] text-black font-black text-xs shadow-[1px_1px_0px_0px_#000000]">
+                            01
                         </span>
-                        <div className="pt-1">
+                        <div className="pt-0.5">
                             <strong className="text-black font-black">
                                 Gmail harus Fresh (baru dibuat).
                             </strong>
                         </div>
-                    </li>
+                    </div>
 
-                    <li className="flex items-start gap-3">
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border-2 border-black bg-[#00C2CB] text-black font-black text-xs shadow-[2px_2px_0px_0px_#000000]">
-                            2
+                    <div className="flex items-start gap-3.5 p-3.5 rounded-sm bg-[#F5F5DC] border-2 border-black shadow-[3px_3px_0px_0px_#000000]">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border-2 border-black bg-[#FFD700] text-black font-black text-xs shadow-[1px_1px_0px_0px_#000000]">
+                            02
                         </span>
-                        <div className="pt-1">
+                        <div className="pt-0.5">
                             <strong className="text-black font-black">
                                 Nama Gmail yang didaftarkan wajib sama persis dengan nama Gmail hasil Generate di website.
                             </strong>
@@ -45,81 +45,82 @@ export function RulesView({ onNavigateToStor }: RulesViewProps) {
                                 Tidak boleh mengubah, menambah, atau mengurangi karakter apa pun.
                             </p>
                         </div>
-                    </li>
+                    </div>
 
-                    <li className="flex items-start gap-3">
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border-2 border-black bg-[#00C2CB] text-black font-black text-xs shadow-[2px_2px_0px_0px_#000000]">
-                            3
+                    <div className="flex items-start gap-3.5 p-3.5 rounded-sm bg-[#F5F5DC] border-2 border-black shadow-[3px_3px_0px_0px_#000000]">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border-2 border-black bg-[#FF00FF] text-black font-black text-xs shadow-[1px_1px_0px_0px_#000000]">
+                            03
                         </span>
-                        <div className="pt-1">
+                        <div className="pt-0.5">
                             <strong className="text-black font-black">
                                 Tanggal lahir akun Gmail wajib 18 tahun ke atas.
                             </strong>
                         </div>
-                    </li>
+                    </div>
 
-                    <li className="flex items-start gap-3">
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border-2 border-black bg-[#00C2CB] text-black font-black text-xs shadow-[2px_2px_0px_0px_#000000]">
-                            4
+                    <div className="flex items-start gap-3.5 p-3.5 rounded-sm bg-[#F5F5DC] border-2 border-black shadow-[3px_3px_0px_0px_#000000]">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border-2 border-black bg-white text-black font-black text-xs shadow-[1px_1px_0px_0px_#000000]">
+                            04
                         </span>
-                        <div className="pt-1">
+                        <div className="pt-0.5">
                             <strong className="text-black font-black">
-                                Password Gmail wajib menggunakan: <span className="bg-[#FFD700] px-1.5 py-0.5 border border-black font-mono font-black">triple9</span> ATAU <span className="bg-[#FFD700] px-1.5 py-0.5 border border-black font-mono font-black">9triple</span>
+                                Password Gmail wajib menggunakan: <span className="bg-white px-1.5 py-0.5 border border-black font-mono font-black">triple9</span> ATAU <span className="bg-white px-1.5 py-0.5 border border-black font-mono font-black">9triple</span>
                             </strong>
                             <p className="text-xs font-bold text-neutral-700 mt-1">
-                                (Pilih salah satu password)
+                                (Pilih salah satu password room yang aktif)
                             </p>
                         </div>
-                    </li>
+                    </div>
 
-                    <li className="flex items-start gap-3">
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border-2 border-black bg-[#00C2CB] text-black font-black text-xs shadow-[2px_2px_0px_0px_#000000]">
-                            5
+                    <div className="flex items-start gap-3.5 p-3.5 rounded-sm bg-[#F5F5DC] border-2 border-black shadow-[3px_3px_0px_0px_#000000]">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border-2 border-black bg-[#00C2CB] text-black font-black text-xs shadow-[1px_1px_0px_0px_#000000]">
+                            05
                         </span>
-                        <div className="pt-1">
+                        <div className="pt-0.5">
                             <strong className="text-black font-black">
                                 Akun tidak boleh ditautkan dengan nomor pemulihan maupun Gmail pemulihan.
                             </strong>
                         </div>
-                    </li>
+                    </div>
 
-                    <li className="flex items-start gap-3">
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border-2 border-black bg-[#00C2CB] text-black font-black text-xs shadow-[2px_2px_0px_0px_#000000]">
-                            6
+                    <div className="flex items-start gap-3.5 p-3.5 rounded-sm bg-[#F5F5DC] border-2 border-black shadow-[3px_3px_0px_0px_#000000]">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border-2 border-black bg-[#FFD700] text-black font-black text-xs shadow-[1px_1px_0px_0px_#000000]">
+                            06
                         </span>
-                        <div className="pt-1">
+                        <div className="pt-0.5">
                             <strong className="text-black font-black">
                                 Sebelum melakukan storan, cek status Gmail di{' '}
                                 <a
                                     href="https://en.gmailcheck.com/"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-black font-black underline bg-[#FFD700] px-1 border border-black hover:bg-[#00C2CB] transition"
+                                    className="text-black font-black underline bg-white px-1 border border-black hover:bg-[#00C2CB] transition"
                                 >
                                     https://en.gmailcheck.com/
                                 </a>
                             </strong>
                         </div>
-                    </li>
+                    </div>
 
-                    <li className="flex items-start gap-3">
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border-2 border-black bg-[#00C2CB] text-black font-black text-xs shadow-[2px_2px_0px_0px_#000000]">
-                            7
+                    <div className="flex items-start gap-3.5 p-3.5 rounded-sm bg-[#F5F5DC] border-2 border-black shadow-[3px_3px_0px_0px_#000000]">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border-2 border-black bg-[#FF00FF] text-black font-black text-xs shadow-[1px_1px_0px_0px_#000000]">
+                            07
                         </span>
-                        <div className="pt-1">
+                        <div className="pt-0.5">
                             <strong className="text-black font-black">
                                 Hanya kirim Gmail dengan status Live/Aktif.
                             </strong>
                         </div>
-                    </li>
-                </ol>
+                    </div>
+                </div>
 
-                {/* Catatan Box */}
-                <div className="rounded-md border-2 border-black bg-[#F5F5DC] p-4 sm:p-5 shadow-[4px_4px_0px_0px_#000000] space-y-2 text-xs sm:text-sm text-black">
-                    <h4 className="font-black text-black uppercase tracking-wider">
-                        Catatan Penting:
+                {/* Catatan Box - Neo-brutalist yellow card style */}
+                <div className="rounded-md border-2 border-black bg-[#FFD700] p-4 sm:p-5 shadow-[4px_4px_0px_0px_#000000] space-y-2 text-xs sm:text-sm text-black">
+                    <h4 className="font-black text-black uppercase tracking-wider flex items-center gap-2">
+                        <img src="/images/icon/checklist.png" alt="Penting" className="h-4 w-4 object-contain shrink-0" />
+                        <span>Catatan Penting:</span>
                     </h4>
-                    <ul className="space-y-1.5 list-disc list-inside font-bold text-neutral-800">
+                    <ul className="space-y-1.5 list-disc list-inside font-bold text-black pl-1">
                         <li>
                             Status di checkgmail.online hanya digunakan untuk memastikan Gmail masih aktif, bukan penentu diterima atau ditolaknya Gmail saat pengecekan admin.
                         </li>

@@ -280,7 +280,7 @@ export function Triple9IntroModal({
                                         <span>Bantuan CS 24 Jam</span>
                                     </h5>
                                     <p className="text-[11px] font-bold text-neutral-700 leading-snug">
-                                        Kirimkan kendala melalui menu Triple9 Support.
+                                        Kirimkan kendala langsung melalui WhatsApp CS Triple9.
                                     </p>
                                 </div>
                             </div>

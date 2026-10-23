@@ -82,17 +82,17 @@ export function SaldoView({
                 <h3 className="text-sm sm:text-base font-black uppercase tracking-wider text-black">
                     Riwayat Penarikan
                 </h3>
-                <div className="overflow-x-auto rounded-sm border-2 border-black">
-                    <table className="w-full text-left text-xs">
-                        <thead className="bg-black text-white border-b-2 border-black">
-                            <tr>
-                                <th className="px-5 py-3 font-black uppercase tracking-wider text-white">Tanggal</th>
-                                <th className="px-5 py-3 font-black uppercase tracking-wider text-white">Keterangan</th>
-                                <th className="px-5 py-3 font-black uppercase tracking-wider text-white">Nominal</th>
-                                <th className="px-5 py-3 font-black uppercase tracking-wider text-white text-center">Status</th>
+                <div className="overflow-x-auto no-scrollbar">
+                    <table className="w-full text-left text-xs border-2 border-black">
+                        <thead>
+                            <tr className="bg-[#FFD700] border-b-2 border-black text-black uppercase font-black tracking-wider text-[11px]">
+                                <th className="p-3 border-r-2 border-black">Tanggal</th>
+                                <th className="p-3 border-r-2 border-black">Keterangan</th>
+                                <th className="p-3 border-r-2 border-black">Nominal</th>
+                                <th className="p-3 text-center">Status</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y-2 divide-black bg-white text-black">
+                        <tbody className="divide-y-2 divide-black bg-white font-medium text-black">
                             {transactionHistory.length === 0 ? (
                                 <tr>
                                     <td
@@ -106,18 +106,18 @@ export function SaldoView({
                                 transactionHistory.map((item, idx) => (
                                     <tr
                                         key={idx}
-                                        className="hover:bg-[#F5F5DC]/60 transition-colors"
+                                        className="hover:bg-[#F5F5DC] transition"
                                     >
-                                        <td className="px-5 py-3.5 font-mono font-bold text-black">
+                                        <td className="p-3 border-r-2 border-black font-mono font-bold text-black">
                                             {item.date}
                                         </td>
-                                        <td className="px-5 py-3.5 font-bold text-black">
+                                        <td className="p-3 border-r-2 border-black font-bold text-black">
                                             {item.desc}
                                         </td>
-                                        <td className={`px-5 py-3.5 font-black font-mono ${item.amount < 0 ? 'text-[#FF00FF]' : 'text-black'}`}>
+                                        <td className={`p-3 border-r-2 border-black font-black font-mono ${item.amount < 0 ? 'text-[#FF00FF]' : 'text-black'}`}>
                                             {item.amount < 0 ? `-Rp${Math.abs(item.amount).toLocaleString('id-ID')}` : `+Rp${item.amount.toLocaleString('id-ID')}`}
                                         </td>
-                                        <td className="px-5 py-3.5 text-center align-middle">
+                                        <td className="p-3 text-center align-middle">
                                             {item.status === 'ditolak' || item.status === 'rejected' || item.status === 'gagal' ? (
                                                 <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#FF00FF] shadow-[2px_2px_0px_0px_#000000]" title="Ditolak">
                                                     <img src="/images/icon/reject.png" alt="Ditolak" className="size-5 object-contain shrink-0" />

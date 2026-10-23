@@ -44,24 +44,16 @@ export function AdminUsersView({
         <div className="space-y-6">
             {/* Header Control Card */}
             <div className="rounded-md border-[3px] border-black bg-white p-5 sm:p-6 shadow-[8px_8px_0px_0px_#000000] space-y-4">
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-b-2 border-black pb-4">
-                    <div>
-                        <h2 className="text-base sm:text-lg font-black uppercase tracking-wider text-black">
-                            Kelola Data Pengguna
-                        </h2>
-                    </div>
-
-                    {/* Search */}
-                    <div className="relative min-w-[220px]">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-black" />
-                        <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="Cari nama / email..."
-                            className="w-full pl-9 pr-3 py-1.5 rounded-none border-2 border-black bg-white text-xs font-bold text-black placeholder:text-black/40 shadow-[2px_2px_0px_0px_#000000] focus:outline-none"
-                        />
-                    </div>
+                {/* 1. Search Bar */}
+                <div className="relative">
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-black stroke-[2.5]" />
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Cari nama / email..."
+                        className="w-full rounded-sm border-2 border-black bg-white pl-10 pr-4 py-2.5 text-xs sm:text-sm font-bold text-black placeholder:text-neutral-500 shadow-[4px_4px_0px_0px_#000000] focus:outline-none focus:bg-[#F5F5DC] transition"
+                    />
                 </div>
 
                 {/* Filter Role */}
@@ -97,10 +89,8 @@ export function AdminUsersView({
                         Administrator ({usersList.filter((u) => u.role === 'admin').length})
                     </button>
                 </div>
-            </div>
 
-            {/* Users Table */}
-            <div className="rounded-md border-[3px] border-black bg-white p-5 sm:p-6 shadow-[8px_8px_0px_0px_#000000] space-y-4">
+                {/* Users Table */}
                 <div className="overflow-x-auto no-scrollbar">
                     <table className="w-full text-left text-xs border-2 border-black">
                         <thead>

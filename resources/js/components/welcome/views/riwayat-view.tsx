@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, ChevronDown } from 'lucide-react';
 import type { StorRecord, RiwayatFilter, JalurFilter, DayFilter } from '../types';
 
@@ -48,6 +48,27 @@ export function RiwayatView({
     const diterimaCount = storHistory.filter((s) => s.status === 'diterima').length;
     const ditolakCount = storHistory.filter((s) => s.status === 'ditolak').length;
 
+    // Pagination State (Identik dengan Dashboard Admin)
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const totalPages = Math.ceil(filteredStorHistory.length / itemsPerPage) || 1;
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchGmailQuery, riwayatFilter, jalurFilter, dayFilter, itemsPerPage]);
+
+    const paginatedStorHistory = filteredStorHistory.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage,
+    );
+
+    const getVisiblePages = (curr: number, total: number) => {
+        if (total <= 5) return Array.from({ length: total }, (_, i) => i + 1);
+        if (curr <= 3) return [1, 2, 3, 4, '...', total];
+        if (curr >= total - 2) return [1, '...', total - 3, total - 2, total - 1, total];
+        return [1, '...', curr - 1, curr, curr + 1, '...', total];
+    };
+
     return (
         <div className="w-full space-y-4">
             <div className="rounded-md bg-white border-[3px] border-black p-5 sm:p-7 shadow-[8px_8px_0px_0px_#000000] space-y-5">
@@ -65,28 +86,38 @@ export function RiwayatView({
 
                 {/* 2. Filter Controls: Status Pills, Dropdown Jalur, Day Pills */}
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pt-1">
-                    {/* Status Group */}
+                    {/* Status Group with semantic colors matching admin dashboard */}
                     <div className="flex flex-wrap items-center gap-2">
                         {[
-                            { id: 'all' as const, label: 'Semua' },
-                            { id: 'pending' as const, label: `Menunggu (${pendingCount})` },
-                            { id: 'dicek' as const, label: `Di Cek (${dicekCount})` },
-                            { id: 'diterima' as const, label: `Diterima (${diterimaCount})` },
-                            { id: 'ditolak' as const, label: `Ditolak (${ditolakCount})` },
-                        ].map((tab) => (
-                            <button
-                                key={tab.id}
-                                type="button"
-                                onClick={() => onChangeRiwayatFilter(tab.id)}
-                                className={`rounded-sm px-3 py-1.5 text-xs font-black uppercase tracking-wider border-2 border-black transition cursor-pointer ${
-                                    riwayatFilter === tab.id
-                                        ? 'bg-[#00C2CB] text-black shadow-[4px_4px_0px_0px_#000000] translate-x-[-1px] translate-y-[-1px]'
-                                        : 'bg-white text-black hover:bg-[#F5F5DC] shadow-[2px_2px_0px_0px_#000000]'
-                                }`}
-                            >
-                                {tab.label}
-                            </button>
-                        ))}
+                            { id: 'all' as const, label: 'Semua', count: storHistory.length },
+                            { id: 'pending' as const, label: 'Menunggu', count: pendingCount },
+                            { id: 'dicek' as const, label: 'Di Cek', count: dicekCount },
+                            { id: 'diterima' as const, label: 'Diterima', count: diterimaCount },
+                            { id: 'ditolak' as const, label: 'Ditolak', count: ditolakCount },
+                        ].map((tab) => {
+                            const isActive = riwayatFilter === tab.id;
+                            let activeClass = 'bg-[#00C2CB] text-black shadow-[2px_2px_0px_0px_#000000]';
+                            if (tab.id === 'all') activeClass = 'bg-black text-white shadow-[2px_2px_0px_0px_#000000]';
+                            if (tab.id === 'pending') activeClass = 'bg-[#FFD700] text-black shadow-[2px_2px_0px_0px_#000000]';
+                            if (tab.id === 'dicek') activeClass = 'bg-[#F5F5DC] text-black font-black shadow-[2px_2px_0px_0px_#000000]';
+                            if (tab.id === 'diterima') activeClass = 'bg-[#00C2CB] text-black shadow-[2px_2px_0px_0px_#000000]';
+                            if (tab.id === 'ditolak') activeClass = 'bg-[#FF00FF] text-black shadow-[2px_2px_0px_0px_#000000]';
+
+                            return (
+                                <button
+                                    key={tab.id}
+                                    type="button"
+                                    onClick={() => onChangeRiwayatFilter(tab.id)}
+                                    className={`rounded-sm px-3 py-1.5 text-xs font-black uppercase tracking-wider border-2 border-black transition cursor-pointer ${
+                                        isActive
+                                            ? activeClass
+                                            : 'bg-white text-black hover:bg-[#F5F5DC] shadow-[2px_2px_0px_0px_#000000]'
+                                    }`}
+                                >
+                                    {tab.label} ({tab.count})
+                                </button>
+                            );
+                        })}
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2">
@@ -167,26 +198,27 @@ export function RiwayatView({
                         </p>
                     </div>
                 ) : (
-                    <div className="overflow-x-auto rounded-md border-2 border-black shadow-[4px_4px_0px_0px_#000000]">
-                        <table className="w-full text-left text-xs">
-                            <thead className="bg-black border-b-2 border-black text-[11px] font-black text-white uppercase tracking-wider">
-                                <tr>
-                                    <th className="px-4 py-3">Gmail</th>
-                                    <th className="px-4 py-3">Jalur</th>
-                                    <th className="px-4 py-3">Tanggal</th>
-                                    <th className="px-4 py-3 text-center">Status</th>
-                                    <th className="px-4 py-3 text-right">Reward</th>
+                    <>
+                        <div className="overflow-x-auto no-scrollbar">
+                        <table className="w-full text-left text-xs border-2 border-black">
+                            <thead>
+                                <tr className="bg-[#FFD700] border-b-2 border-black text-black uppercase font-black tracking-wider text-[11px]">
+                                    <th className="p-3 border-r-2 border-black">Gmail</th>
+                                    <th className="p-3 border-r-2 border-black">Jalur</th>
+                                    <th className="p-3 border-r-2 border-black">Tanggal</th>
+                                    <th className="p-3 border-r-2 border-black text-center">Status</th>
+                                    <th className="p-3 text-right">Reward</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y-2 divide-black bg-white text-black">
-                                {filteredStorHistory.map((item) => (
+                            <tbody className="divide-y-2 divide-black bg-white font-medium text-black">
+                                {paginatedStorHistory.map((item) => (
                                     <tr key={item.id} className="hover:bg-[#F5F5DC] transition">
-                                        <td className="px-4 py-3 font-bold">{item.email}</td>
-                                        <td className="px-4 py-3 text-xs font-mono font-bold text-neutral-800">
+                                        <td className="p-3 border-r-2 border-black font-mono font-bold text-black select-all">{item.email}</td>
+                                        <td className="p-3 border-r-2 border-black text-xs font-mono font-bold text-neutral-800">
                                             PW: {item.room}
                                         </td>
-                                        <td className="px-4 py-3 font-mono font-bold text-xs text-neutral-800">{item.date}</td>
-                                        <td className="px-4 py-3 text-center align-middle">
+                                        <td className="p-3 border-r-2 border-black font-mono font-bold text-xs text-neutral-800">{item.date}</td>
+                                        <td className="p-3 border-r-2 border-black text-center align-middle">
                                             {item.status === 'ditolak' ? (
                                                 <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#FF00FF] shadow-[2px_2px_0px_0px_#000000]" title="Ditolak">
                                                     <img src="/images/icon/reject.png" alt="Ditolak" className="size-5 object-contain shrink-0" />
@@ -205,7 +237,7 @@ export function RiwayatView({
                                                 </span>
                                             )}
                                         </td>
-                                        <td className="px-4 py-3 text-right font-mono font-black text-xs text-black">
+                                        <td className="p-3 text-right font-mono font-black text-xs text-black">
                                             Rp{item.reward.toLocaleString('id-ID')}
                                         </td>
                                     </tr>
@@ -213,6 +245,82 @@ export function RiwayatView({
                             </tbody>
                         </table>
                     </div>
+
+                    {/* Pagination Controls - Identik dengan Dashboard Admin */}
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t-2 border-black text-xs font-black">
+                        <div className="flex flex-wrap items-center gap-2 text-neutral-700 text-[11px] uppercase tracking-wider font-bold">
+                            <span>
+                                Menampilkan{' '}
+                                <span className="font-mono font-black text-black">
+                                    {filteredStorHistory.length === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1}
+                                </span>{' '}
+                                -{' '}
+                                <span className="font-mono font-black text-black">
+                                    {Math.min(currentPage * itemsPerPage, filteredStorHistory.length)}
+                                </span>{' '}
+                                dari{' '}
+                                <span className="font-mono font-black text-black">{filteredStorHistory.length}</span> akun
+                            </span>
+                            <span className="hidden sm:inline text-neutral-300">•</span>
+                            <div className="inline-flex items-center gap-1.5">
+                                <span className="text-neutral-500 text-[10px]">Baris:</span>
+                                <select
+                                    value={itemsPerPage}
+                                    onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                                    className="px-2 py-0.5 border border-black rounded-xs bg-white text-[11px] font-black cursor-pointer shadow-[1px_1px_0px_0px_#000000] focus:outline-none"
+                                >
+                                    <option value={5}>5</option>
+                                    <option value={10}>10</option>
+                                    <option value={20}>20</option>
+                                    <option value={50}>50</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-1.5">
+                            <button
+                                type="button"
+                                disabled={currentPage === 1}
+                                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                                className="px-3 py-1.5 rounded-xs border-2 border-black bg-white hover:bg-[#F5F5DC] disabled:opacity-40 disabled:cursor-not-allowed shadow-[2px_2px_0px_0px_#000000] cursor-pointer text-xs font-black uppercase tracking-wider transition"
+                            >
+                                Prev
+                            </button>
+
+                            <div className="flex items-center gap-1">
+                                {getVisiblePages(currentPage, totalPages).map((p, idx) =>
+                                    p === '...' ? (
+                                        <span key={`ellipsis-${idx}`} className="px-1 text-black font-mono font-bold text-xs">
+                                            ...
+                                        </span>
+                                    ) : (
+                                        <button
+                                            key={`page-${p}`}
+                                            type="button"
+                                            onClick={() => setCurrentPage(p as number)}
+                                            className={`size-8 rounded-xs border-2 border-black text-xs font-black font-mono transition cursor-pointer shadow-[2px_2px_0px_0px_#000000] ${
+                                                currentPage === p
+                                                    ? 'bg-[#00C2CB] text-black'
+                                                    : 'bg-white text-black hover:bg-[#F5F5DC]'
+                                            }`}
+                                        >
+                                            {p}
+                                        </button>
+                                    ),
+                                )}
+                            </div>
+
+                            <button
+                                type="button"
+                                disabled={currentPage === totalPages || filteredStorHistory.length === 0}
+                                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                                className="px-3 py-1.5 rounded-xs border-2 border-black bg-white hover:bg-[#F5F5DC] disabled:opacity-40 disabled:cursor-not-allowed shadow-[2px_2px_0px_0px_#000000] cursor-pointer text-xs font-black uppercase tracking-wider transition"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                    </>
                 )}
             </div>
         </div>

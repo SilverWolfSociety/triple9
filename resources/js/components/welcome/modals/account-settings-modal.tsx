@@ -192,7 +192,7 @@ export function AccountSettingsModal({
                             className={`py-2 px-3 rounded-sm text-xs font-black uppercase tracking-wider border-2 border-black transition cursor-pointer flex items-center justify-center gap-2 ${
                                 activeTab === 'profile'
                                     ? 'bg-[#00C2CB] text-black shadow-[2px_2px_0px_0px_#000000]'
-                                    : 'bg-white text-black hover:bg-neutral-100'
+                                    : 'bg-white text-black hover:bg-[#F5F5DC]'
                             }`}
                         >
                             <img src="/images/icon/person_yellow.png" alt="Profil" className="h-4 w-4 object-contain shrink-0" />
@@ -204,7 +204,7 @@ export function AccountSettingsModal({
                             className={`py-2 px-3 rounded-sm text-xs font-black uppercase tracking-wider border-2 border-black transition cursor-pointer flex items-center justify-center gap-2 ${
                                 activeTab === 'security'
                                     ? 'bg-[#00C2CB] text-black shadow-[2px_2px_0px_0px_#000000]'
-                                    : 'bg-white text-black hover:bg-neutral-100'
+                                    : 'bg-white text-black hover:bg-[#F5F5DC]'
                             }`}
                         >
                             <img src="/images/icon/key.png" alt="Keamanan" className="h-4 w-4 object-contain shrink-0" />

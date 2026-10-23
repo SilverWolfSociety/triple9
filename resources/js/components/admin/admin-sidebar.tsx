@@ -3,7 +3,6 @@ import {
     BarChart3,
     CheckSquare,
     ChevronsUpDown,
-    Headphones,
     LogOut,
     Settings,
     Users,
@@ -40,7 +39,7 @@ interface AdminSidebarProps {
     onSelectNav: (id: AdminNavId) => void;
     pendingSetoranCount: number;
     pendingPayoutCount: number;
-    waitingTicketCount: number;
+    waitingTicketCount?: number;
 }
 
 export function AdminSidebar({
@@ -103,13 +102,6 @@ export function AdminSidebar({
                     id: 'users',
                     label: 'Data Pengguna',
                     icon: Users,
-                },
-                {
-                    id: 'support',
-                    label: 'Tiket Bantuan',
-                    icon: Headphones,
-                    badge: waitingTicketCount > 0 ? waitingTicketCount : undefined,
-                    badgeColor: 'bg-[#00C2CB]',
                 },
             ],
         },

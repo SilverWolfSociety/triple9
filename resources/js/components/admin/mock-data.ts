@@ -70,7 +70,7 @@ export const initialSetoranData: AdminSetoranItem[] = [
         recovery: 'rizky.recov@gmail.com',
         date: '2026-10-22',
         time: '10:40',
-        status: 'pending',
+        status: 'dicek',
         reward: 2500,
     },
     {
@@ -114,7 +114,7 @@ export const initialSetoranData: AdminSetoranItem[] = [
         recovery: 'reza.rec101@gmail.com',
         date: '2026-10-21',
         time: '21:10',
-        status: 'pending',
+        status: 'dicek',
         reward: 2500,
     },
     {

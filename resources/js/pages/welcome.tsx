@@ -251,7 +251,11 @@ export default function Welcome() {
 
                         {/* 11. SUPPORT VIEW */}
                         {activeNav === 'support' && (
-                            <SupportView userName={user?.name} userEmail={user?.email} />
+                            <SupportView
+                                userName={user?.name}
+                                userEmail={user?.email}
+                                onNavigate={handleSelectNav}
+                            />
                         )}
                         </div>
                     </div>

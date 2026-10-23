@@ -20,8 +20,6 @@ export function AdminSupportView({
     const [selectedStatus, setSelectedStatus] = useState<'all' | TicketStatus>('all');
     const [searchQuery, setSearchQuery] = useState('');
 
-    const waitingCount = ticketsList.filter((t) => t.status === 'waiting').length;
-    const inProgressCount = ticketsList.filter((t) => t.status === 'in_progress').length;
     const resolvedCount = ticketsList.filter((t) => t.status === 'resolved').length;
 
     const filteredTickets = ticketsList.filter((t) => {
@@ -35,28 +33,29 @@ export function AdminSupportView({
         return matchesStatus && matchesSearch;
     });
 
+    const getCategoryBadgeColor = (category: string) => {
+        const c = category.toLowerCase();
+        if (c.includes('setor')) return 'bg-[#00C2CB] text-black'; // Cyan / Toska (seperti DANA)
+        if (c.includes('tarik') || c.includes('saldo') || c.includes('payout')) return 'bg-[#FF00FF] text-black'; // Magenta (seperti OVO)
+        if (c.includes('pertanyaan') || c.includes('umum')) return 'bg-[#A3E635] text-black'; // Lime Green (seperti GOPAY)
+        if (c.includes('akun') || c.includes('keamanan') || c.includes('login')) return 'bg-[#FF8A00] text-black'; // Orange (seperti ShopeePay)
+        return 'bg-[#FFD700] text-black';
+    };
+
     return (
         <div className="space-y-6">
             {/* Control Card */}
             <div className="rounded-md border-[3px] border-black bg-white p-5 sm:p-6 shadow-[8px_8px_0px_0px_#000000] space-y-4">
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-b-2 border-black pb-4">
-                    <div>
-                        <h2 className="text-base sm:text-lg font-black uppercase tracking-wider text-black">
-                            Kelola Tiket Bantuan & CS
-                        </h2>
-                    </div>
-
-                    {/* Search */}
-                    <div className="relative min-w-[220px]">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-black" />
-                        <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="Cari tiket / user / kendala..."
-                            className="w-full pl-9 pr-3 py-1.5 rounded-none border-2 border-black bg-white text-xs font-bold text-black placeholder:text-black/40 shadow-[2px_2px_0px_0px_#000000] focus:outline-none"
-                        />
-                    </div>
+                {/* 1. Search Bar */}
+                <div className="relative">
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-black stroke-[2.5]" />
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Cari tiket / user / kendala..."
+                        className="w-full rounded-sm border-2 border-black bg-white pl-10 pr-4 py-2.5 text-xs sm:text-sm font-bold text-black placeholder:text-neutral-500 shadow-[4px_4px_0px_0px_#000000] focus:outline-none focus:bg-[#F5F5DC] transition"
+                    />
                 </div>
 
                 {/* Filter Status */}
@@ -73,39 +72,17 @@ export function AdminSupportView({
                     </button>
                     <button
                         type="button"
-                        onClick={() => setSelectedStatus('waiting')}
-                        className={`px-3 py-1.5 rounded-sm text-xs font-black uppercase tracking-wider border-2 border-black transition cursor-pointer ${selectedStatus === 'waiting'
-                                ? 'bg-[#FFD700] text-black shadow-[2px_2px_0px_0px_#000000]'
-                                : 'bg-white text-black hover:bg-[#F5F5DC]'
-                            }`}
-                    >
-                        Menunggu Respon ({waitingCount})
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => setSelectedStatus('in_progress')}
-                        className={`px-3 py-1.5 rounded-sm text-xs font-black uppercase tracking-wider border-2 border-black transition cursor-pointer ${selectedStatus === 'in_progress'
-                                ? 'bg-[#00C2CB] text-black shadow-[2px_2px_0px_0px_#000000]'
-                                : 'bg-white text-black hover:bg-[#F5F5DC]'
-                            }`}
-                    >
-                        Diproses ({inProgressCount})
-                    </button>
-                    <button
-                        type="button"
                         onClick={() => setSelectedStatus('resolved')}
                         className={`px-3 py-1.5 rounded-sm text-xs font-black uppercase tracking-wider border-2 border-black transition cursor-pointer ${selectedStatus === 'resolved'
-                                ? 'bg-white text-black font-black border-black shadow-[2px_2px_0px_0px_#000000]'
+                                ? 'bg-[#00C2CB] text-black shadow-[2px_2px_0px_0px_#000000]'
                                 : 'bg-white text-black hover:bg-[#F5F5DC]'
                             }`}
                     >
                         Selesai ({resolvedCount})
                     </button>
                 </div>
-            </div>
 
-            {/* Tickets Table */}
-            <div className="rounded-md border-[3px] border-black bg-white p-5 sm:p-6 shadow-[8px_8px_0px_0px_#000000] space-y-4">
+                {/* Tickets Table */}
                 <div className="overflow-x-auto no-scrollbar">
                     <table className="w-full text-left text-xs border-2 border-black">
                         <thead>
@@ -115,14 +92,13 @@ export function AdminSupportView({
                                 <th className="p-3 border-r-2 border-black">Kategori</th>
                                 <th className="p-3 border-r-2 border-black">Subjek & Pesan</th>
                                 <th className="p-3 border-r-2 border-black">Waktu</th>
-                                <th className="p-3 border-r-2 border-black">Status</th>
                                 <th className="p-3 text-right">Aksi</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y-2 divide-black bg-white font-medium">
                             {filteredTickets.length === 0 ? (
                                 <tr>
-                                    <td colSpan={7} className="p-8 text-center text-xs font-black uppercase tracking-wider text-neutral-500">
+                                    <td colSpan={6} className="p-8 text-center text-xs font-black uppercase tracking-wider text-neutral-500">
                                         Tidak ada tiket bantuan yang ditemukan.
                                     </td>
                                 </tr>
@@ -146,7 +122,11 @@ export function AdminSupportView({
                                             </div>
                                         </td>
                                         <td className="p-3 border-r-2 border-black">
-                                            <span className="inline-flex px-2 py-0.5 rounded-xs border border-black bg-[#F5F5DC] text-black font-black text-[10px] uppercase shadow-[1px_1px_0px_0px_#000000]">
+                                            <span
+                                                className={`inline-flex px-2 py-0.5 rounded-xs border border-black font-black text-[10px] uppercase shadow-[1px_1px_0px_0px_#000000] ${getCategoryBadgeColor(
+                                                    item.category,
+                                                )}`}
+                                            >
                                                 {item.category}
                                             </span>
                                         </td>
@@ -158,21 +138,6 @@ export function AdminSupportView({
                                         </td>
                                         <td className="p-3 border-r-2 border-black font-mono text-[11px] text-neutral-600 whitespace-nowrap">
                                             {item.date} {item.time}
-                                        </td>
-                                        <td className="p-3 border-r-2 border-black whitespace-nowrap">
-                                            {item.status === 'waiting' ? (
-                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#FFD700] shadow-[1px_1px_0px_0px_#000000]" title="Menunggu Respon">
-                                                    <img src="/images/icon/pending.png" alt="Menunggu Respon" className="size-5 object-contain shrink-0" />
-                                                </span>
-                                            ) : item.status === 'in_progress' ? (
-                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#F5F5DC] shadow-[1px_1px_0px_0px_#000000]" title="Diproses">
-                                                    <img src="/images/icon/find.png" alt="Diproses" className="size-5 object-contain shrink-0" />
-                                                </span>
-                                            ) : (
-                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#00C2CB] shadow-[1px_1px_0px_0px_#000000]" title="Selesai">
-                                                    <img src="/images/icon/checklist.png" alt="Selesai" className="size-5 object-contain shrink-0" />
-                                                </span>
-                                            )}
                                         </td>
                                         <td className="p-3 text-right whitespace-nowrap">
                                             <div className="inline-flex items-center gap-1.5">

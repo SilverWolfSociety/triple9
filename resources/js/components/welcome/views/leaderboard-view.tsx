@@ -33,7 +33,7 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
                         <img src="/images/icon/trophy.png" alt="Leaderboard" className="h-5 w-5 object-contain" />
                     </div>
                     <h2 className="text-base sm:text-lg font-black uppercase tracking-wider text-black">
-                        Leaderboard Storer
+                        Leaderboard Penyetor
                     </h2>
                 </div>
 
@@ -46,11 +46,10 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
                                 key={p.id}
                                 type="button"
                                 onClick={() => setLeaderboardPeriod(p.id)}
-                                className={`px-3 py-1.5 rounded-sm text-xs font-black uppercase tracking-wider border-2 border-black transition cursor-pointer ${
-                                    isActive
+                                className={`px-3 py-1.5 rounded-sm text-xs font-black uppercase tracking-wider border-2 border-black transition cursor-pointer ${isActive
                                         ? 'bg-[#00C2CB] text-black shadow-[2px_2px_0px_0px_#000000]'
                                         : 'bg-white text-black hover:bg-[#F5F5DC] shadow-[1px_1px_0px_0px_#000000]'
-                                }`}
+                                    }`}
                             >
                                 {p.label}
                             </button>
@@ -156,8 +155,8 @@ export function LeaderboardView({ user }: LeaderboardViewProps) {
 
             {/* LIST TABLE: RANKS #4 TO #10 */}
             <div className="rounded-md bg-white border-[3px] border-black shadow-[8px_8px_0px_0px_#000000] overflow-hidden">
-                {/* Table Header */}
-                <div className="px-4 sm:px-5 py-3 bg-black text-white border-b-2 border-black flex items-center justify-between text-xs font-black uppercase tracking-wider">
+                {/* Table Header: Kuning #FFD700 identik dengan Admin Dashboard */}
+                <div className="px-4 sm:px-5 py-3 bg-[#FFD700] text-black border-b-2 border-black flex items-center justify-between text-xs font-black uppercase tracking-wider">
                     <span className="flex-1 min-w-0">Peringkat & Member</span>
                     <div className="flex items-center shrink-0">
                         <span className="hidden sm:inline-block w-32 sm:w-40 text-left">Gmail Diterima</span>

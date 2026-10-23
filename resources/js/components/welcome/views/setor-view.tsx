@@ -89,7 +89,7 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                 <button
                     type="button"
                     onClick={onNavigateToRules}
-                    className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md text-xs font-black uppercase tracking-wider bg-white text-black border-2 border-black shadow-[2px_2px_0px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all cursor-pointer shrink-0"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md text-xs font-black uppercase tracking-wider bg-white text-black border-2 border-black shadow-[2px_2px_0px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none hover:bg-[#F5F5DC] transition-all cursor-pointer shrink-0"
                 >
                     <img src="/images/icon/notes.png" alt="Rules" className="h-4 w-4 object-contain" />
                     <span>Rules</span>
@@ -333,7 +333,7 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                             <div className="flex items-start gap-2">
                                 <Check className="h-4 w-4 text-black shrink-0 mt-0.5 stroke-[3]" />
                                 <span>
-                                    Password akun wajib <strong className="bg-[#FFD700] px-1 border border-black">triple9</strong> atau <strong className="bg-[#FFD700] px-1 border border-black">9triple</strong>.
+                                    Password akun wajib <strong className="bg-[#FFD700] px-1 border border-black font-mono">triple9</strong> atau <strong className="bg-[#FFD700] px-1 border border-black font-mono">9triple</strong>.
                                 </span>
                             </div>
                             <div className="flex items-start gap-2">

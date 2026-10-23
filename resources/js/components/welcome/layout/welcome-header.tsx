@@ -37,7 +37,7 @@ export function WelcomeHeader({
                     <button
                         type="button"
                         onClick={onOpenIntroModal}
-                        className="flex h-9 w-9 items-center justify-center rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all text-black cursor-pointer"
+                        className="flex h-9 w-9 items-center justify-center rounded-md border-2 border-black bg-white hover:bg-[#F5F5DC] shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all text-black cursor-pointer"
                         title="Panduan & Pengenalan Triple9"
                         aria-label="Buka panduan pengenalan"
                     >

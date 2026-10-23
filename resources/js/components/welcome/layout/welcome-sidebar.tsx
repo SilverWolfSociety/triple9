@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react';
 import {
     ChevronsUpDown,
+    ExternalLink,
     LogIn,
     LogOut,
     Shield,
@@ -46,7 +47,17 @@ export function WelcomeSidebar({
 }: WelcomeSidebarProps) {
     const { state, isMobile, setOpenMobile } = useSidebar();
 
+    const WHATSAPP_SUPPORT_URL =
+        'https://wa.me/6281234567890?text=Halo%20Admin%20Triple9,%20saya%20butuh%20bantuan%20terkait%20layanan%20Triple9.';
+
     const handleNavClick = (id: string) => {
+        if (id === 'support') {
+            window.open(WHATSAPP_SUPPORT_URL, '_blank', 'noopener,noreferrer');
+            if (isMobile) {
+                setOpenMobile(false);
+            }
+            return;
+        }
         onSelectNav(id);
         if (isMobile) {
             setOpenMobile(false);
@@ -98,12 +109,13 @@ export function WelcomeSidebar({
                             {group.items.map((item) => {
                                 const Icon = item.icon;
                                 const isActive = activeNav === item.id;
+                                const isSupport = item.id === 'support';
                                 return (
                                     <SidebarMenuItem key={item.id}>
                                         <SidebarMenuButton
                                             asChild={false}
                                             isActive={isActive}
-                                            tooltip={{ children: item.label }}
+                                            tooltip={{ children: isSupport ? `${item.label} (WhatsApp)` : item.label }}
                                             onClick={() => handleNavClick(item.id)}
                                             className={`cursor-pointer select-none rounded-md text-xs font-bold transition-all duration-200 ${
                                                 isActive
@@ -113,6 +125,9 @@ export function WelcomeSidebar({
                                         >
                                             <Icon className="size-4 shrink-0 stroke-[2.5] text-black" />
                                             <span className="truncate">{item.label}</span>
+                                            {isSupport && (
+                                                <ExternalLink className="size-3 ml-auto text-neutral-600 stroke-[2.5] shrink-0 group-data-[collapsible=icon]:hidden" />
+                                            )}
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>
                                 );

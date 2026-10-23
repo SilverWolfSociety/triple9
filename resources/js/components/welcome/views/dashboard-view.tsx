@@ -42,6 +42,7 @@ export function DashboardView({
     onNavigate,
     onNavigateToRiwayat,
     onOpenWithdrawModal,
+    onOpenIntroModal,
 }: DashboardViewProps) {
     // Start at index 1 to match "🏆 EVENT REWARD 2/4" specified in design prompt
     const [activeSlideIndex, setActiveSlideIndex] = useState(1);
@@ -91,6 +92,16 @@ export function DashboardView({
     const ditolakCount = storHistory.filter((s) => s.status === 'ditolak').length;
     const dicekCount = storHistory.filter((s) => s.status === 'dicek').length;
 
+    // Pagination State (Identik dengan Overview Dashboard Admin)
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5;
+    const totalPages = Math.ceil(storHistory.length / itemsPerPage) || 1;
+
+    const paginatedHistory = storHistory.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage,
+    );
+
     const ActiveIcon = announcements[activeSlideIndex].icon;
 
     return (
@@ -103,8 +114,8 @@ export function DashboardView({
             >
                 {/* Top row: Badge and Prev / Next Controls */}
                 <div className="flex items-center justify-between gap-3 mb-3">
-                    {/* Badge hitam dengan teks kuning "🏆 EVENT REWARD 2/4" */}
-                    <div className="inline-flex items-center gap-2 bg-black text-[#FFD700] border-2 border-black px-3 py-1 rounded-sm shadow-[2px_2px_0px_0px_#000000]">
+                    {/* Badge putih dengan teks hitam "🏆 EVENT REWARD 2/4" */}
+                    <div className="inline-flex items-center gap-2 bg-white text-black border-2 border-black px-3 py-1 rounded-sm shadow-[2px_2px_0px_0px_#000000]">
                         <ActiveIcon />
                         <span className="text-xs font-black uppercase tracking-wider font-mono">
                             {announcements[activeSlideIndex].badge} {activeSlideIndex + 1}/{announcements.length}
@@ -157,10 +168,11 @@ export function DashboardView({
                             key={idx}
                             type="button"
                             onClick={() => setActiveSlideIndex(idx)}
-                            className={`h-2.5 rounded-xs border-2 border-black transition-all cursor-pointer ${idx === activeSlideIndex
+                            className={`h-2.5 rounded-xs border-2 border-black transition-all cursor-pointer ${
+                                idx === activeSlideIndex
                                     ? 'w-7 bg-black'
                                     : 'w-2.5 bg-white hover:bg-neutral-100'
-                                }`}
+                            }`}
                             aria-label={`Ke slide ${idx + 1}`}
                         />
                     ))}
@@ -243,95 +255,97 @@ export function DashboardView({
                 </h2>
 
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    {/* Card 1: Diterima - Accent Teal #00C2CB */}
+                    {/* Card 1: Diterima - Card White, Icon Box Cyan #00C2CB */}
                     <div
                         onClick={() => onNavigateToRiwayat('diterima')}
-                        className="group flex flex-col justify-between rounded-md bg-white p-4 sm:p-5 border-2 border-black shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] transition-all cursor-pointer text-black"
+                        className="p-5 rounded-md border-[3px] border-black bg-white shadow-[6px_6px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_#000000] transition cursor-pointer flex flex-col justify-between text-black"
                     >
-                        <div className="flex items-start justify-between mb-2">
-                            <span className="text-xs font-black uppercase tracking-wider text-black">
+                        <div className="flex items-center justify-between">
+                            <span className="text-[11px] font-black uppercase tracking-wider text-black">
                                 Diterima
                             </span>
-                            <div className="size-9 rounded-sm border-2 border-black bg-[#00C2CB] shadow-[2px_2px_0px_0px_#000000] flex items-center justify-center shrink-0">
-                                <img src="/images/icon/checklist.png" alt="Diterima" className="h-5 w-5 object-contain" />
+                            <div className="size-8 rounded-sm border-2 border-black bg-[#00C2CB] flex items-center justify-center shadow-[2px_2px_0px_0px_#000000]">
+                                <img src="/images/icon/checklist.png" alt="Diterima" className="size-5 object-contain" />
                             </div>
                         </div>
-                        <div className="mt-2">
-                            <span className="text-3xl sm:text-4xl font-black font-mono text-black">
+                        <div className="mt-3">
+                            <div className="text-3xl font-black font-mono text-black">
                                 {diterimaCount}
-                            </span>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Card 2: Pending - Accent Yellow #FFD700 */}
+                    {/* Card 2: Pending - Card White, Icon Box Yellow #FFD700 */}
                     <div
                         onClick={() => onNavigateToRiwayat('pending')}
-                        className="group flex flex-col justify-between rounded-md bg-white p-4 sm:p-5 border-2 border-black shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] transition-all cursor-pointer text-black"
+                        className="p-5 rounded-md border-[3px] border-black bg-white shadow-[6px_6px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_#000000] transition cursor-pointer flex flex-col justify-between text-black"
                     >
-                        <div className="flex items-start justify-between mb-2">
-                            <span className="text-xs font-black uppercase tracking-wider text-black">
+                        <div className="flex items-center justify-between">
+                            <span className="text-[11px] font-black uppercase tracking-wider text-black">
                                 Pending
                             </span>
-                            <div className="size-9 rounded-sm border-2 border-black bg-[#FFD700] shadow-[2px_2px_0px_0px_#000000] flex items-center justify-center shrink-0">
-                                <img src="/images/icon/pending.png" alt="Pending" className="h-5 w-5 object-contain" />
+                            <div className="size-8 rounded-sm border-2 border-black bg-[#FFD700] flex items-center justify-center shadow-[2px_2px_0px_0px_#000000]">
+                                <img src="/images/icon/pending.png" alt="Pending" className="size-5 object-contain" />
                             </div>
                         </div>
-                        <div className="mt-2">
-                            <span className="text-3xl sm:text-4xl font-black font-mono text-black">
+                        <div className="mt-3">
+                            <div className="text-3xl font-black font-mono text-black">
                                 {pendingCount}
-                            </span>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Card 3: Ditolak - Accent Magenta #FF00FF */}
+                    {/* Card 3: Ditolak - Card White, Icon Box Magenta #FF00FF */}
                     <div
                         onClick={() => onNavigateToRiwayat('ditolak')}
-                        className="group flex flex-col justify-between rounded-md bg-white p-4 sm:p-5 border-2 border-black shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] transition-all cursor-pointer text-black"
+                        className="p-5 rounded-md border-[3px] border-black bg-white shadow-[6px_6px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_#000000] transition cursor-pointer flex flex-col justify-between text-black"
                     >
-                        <div className="flex items-start justify-between mb-2">
-                            <span className="text-xs font-black uppercase tracking-wider text-black">
+                        <div className="flex items-center justify-between">
+                            <span className="text-[11px] font-black uppercase tracking-wider text-black">
                                 Ditolak
                             </span>
-                            <div className="size-9 rounded-sm border-2 border-black bg-[#FF00FF] shadow-[2px_2px_0px_0px_#000000] flex items-center justify-center shrink-0">
-                                <img src="/images/icon/reject.png" alt="Ditolak" className="h-5 w-5 object-contain" />
+                            <div className="size-8 rounded-sm border-2 border-black bg-[#FF00FF] flex items-center justify-center shadow-[2px_2px_0px_0px_#000000]">
+                                <img src="/images/icon/reject.png" alt="Ditolak" className="size-5 object-contain" />
                             </div>
                         </div>
-                        <div className="mt-2">
-                            <span className="text-3xl sm:text-4xl font-black font-mono text-black">
+                        <div className="mt-3">
+                            <div className="text-3xl font-black font-mono text-black">
                                 {ditolakCount}
-                            </span>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Card 4: Di Cek - Paper Beige #F5F5DC */}
+                    {/* Card 4: Di Cek - Card White, Icon Box Krem #F5F5DC */}
                     <div
                         onClick={() => onNavigateToRiwayat('dicek')}
-                        className="group flex flex-col justify-between rounded-md bg-white p-4 sm:p-5 border-2 border-black shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000] transition-all cursor-pointer text-black"
+                        className="p-5 rounded-md border-[3px] border-black bg-white shadow-[6px_6px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_#000000] transition cursor-pointer flex flex-col justify-between text-black"
                     >
-                        <div className="flex items-start justify-between mb-2">
-                            <span className="text-xs font-black uppercase tracking-wider text-black">
+                        <div className="flex items-center justify-between">
+                            <span className="text-[11px] font-black uppercase tracking-wider text-black">
                                 Di Cek
                             </span>
-                            <div className="size-9 rounded-sm border-2 border-black bg-[#F5F5DC] shadow-[2px_2px_0px_0px_#000000] flex items-center justify-center shrink-0">
-                                <img src="/images/icon/find.png" alt="Di Cek" className="h-5 w-5 object-contain" />
+                            <div className="size-8 rounded-sm border-2 border-black bg-[#F5F5DC] flex items-center justify-center shadow-[2px_2px_0px_0px_#000000]">
+                                <img src="/images/icon/find.png" alt="Di Cek" className="size-5 object-contain" />
                             </div>
                         </div>
-                        <div className="mt-2">
-                            <span className="text-3xl sm:text-4xl font-black font-mono text-black">
+                        <div className="mt-3">
+                            <div className="text-3xl font-black font-mono text-black">
                                 {dicekCount}
-                            </span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* 4. TABEL AKTIVITAS SETORAN TERAKHIR - Card Putih #FFFFFF, Border 3px, Shadow 8px */}
-            <div className="rounded-md bg-white border-[3px] border-black shadow-[8px_8px_0px_0px_#000000] overflow-hidden transition-all text-black">
-                {/* Header Card: Judul & Tombol "Lihat Semua >" berlatar #00C2CB */}
-                <div className="flex items-center justify-between px-5 py-4 border-b-2 border-black bg-white">
-                    <h3 className="text-sm sm:text-base font-black text-black uppercase tracking-wider">
-                        Aktivitas Setoran Terakhir
-                    </h3>
+            {/* 4. TABEL AKTIVITAS SETORAN TERAKHIR - Card Putih #FFFFFF, Border 3px, Shadow 8px (Identik dengan Admin Overview) */}
+            <div className="rounded-md border-[3px] border-black bg-white p-5 sm:p-6 shadow-[8px_8px_0px_0px_#000000] space-y-4 text-black">
+                {/* Header Card: Judul & Tombol "Lihat Semua" */}
+                <div className="flex items-center justify-between border-b-2 border-black pb-3">
+                    <div>
+                        <h3 className="text-sm sm:text-base font-black uppercase tracking-wider text-black">
+                            Aktivitas Setoran Terakhir
+                        </h3>
+                    </div>
 
                     <button
                         type="button"
@@ -362,62 +376,94 @@ export function DashboardView({
                         </button>
                     </div>
                 ) : (
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left text-xs">
-                            {/* Header Tabel: Background Hitam Pekat #000000 dengan teks putih tebal */}
-                            <thead className="bg-[#000000] text-white border-b-2 border-black">
-                                <tr>
-                                    <th className="px-5 py-3.5 font-black uppercase tracking-wider text-white">Gmail</th>
-                                    <th className="px-5 py-3.5 font-black uppercase tracking-wider text-white">Jalur</th>
-                                    <th className="px-5 py-3.5 font-black uppercase tracking-wider text-white">Tanggal</th>
-                                    <th className="px-5 py-3.5 font-black uppercase tracking-wider text-white text-center">Status</th>
-                                    <th className="px-5 py-3.5 font-black uppercase tracking-wider text-white text-right">Reward</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y-2 divide-black bg-white text-black">
-                                {storHistory.slice(0, 5).map((item) => (
-                                    <tr key={item.id} className="hover:bg-neutral-50 transition-colors">
-                                        {/* GMAIL: font-bold */}
-                                        <td className="px-5 py-3.5 font-bold text-black text-sm">
-                                            {item.email}
-                                        </td>
-                                        {/* JALUR: font-mono */}
-                                        <td className="px-5 py-3.5 font-mono font-bold text-black text-xs">
-                                            PW: {item.room}
-                                        </td>
-                                        {/* TANGGAL: font-mono */}
-                                        <td className="px-5 py-3.5 font-mono font-bold text-black text-xs">
-                                            {item.date}
-                                        </td>
-                                        {/* STATUS: Badge kotak berbingkai hitam 2px */}
-                                        <td className="px-5 py-3.5 text-center align-middle">
-                                            {item.status === 'ditolak' ? (
-                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#FF00FF] shadow-[2px_2px_0px_0px_#000000]" title="Ditolak">
-                                                    <img src="/images/icon/reject.png" alt="Ditolak" className="size-5 object-contain shrink-0" />
-                                                </span>
-                                            ) : item.status === 'pending' ? (
-                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#FFD700] shadow-[2px_2px_0px_0px_#000000]" title="Menunggu">
-                                                    <img src="/images/icon/pending.png" alt="Menunggu" className="size-5 object-contain shrink-0" />
-                                                </span>
-                                            ) : item.status === 'dicek' ? (
-                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#F5F5DC] shadow-[2px_2px_0px_0px_#000000]" title="Di Cek">
-                                                    <img src="/images/icon/find.png" alt="Di Cek" className="size-5 object-contain shrink-0" />
-                                                </span>
-                                            ) : (
-                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#00C2CB] shadow-[2px_2px_0px_0px_#000000]" title="Diterima">
-                                                    <img src="/images/icon/checklist.png" alt="Diterima" className="size-5 object-contain shrink-0" />
-                                                </span>
-                                            )}
-                                        </td>
-                                        {/* REWARD: font-black font-mono */}
-                                        <td className="px-5 py-3.5 text-right font-black font-mono text-black text-sm">
-                                            Rp{item.reward.toLocaleString('id-ID')}
-                                        </td>
+                    <>
+                        <div className="overflow-x-auto no-scrollbar">
+                            <table className="w-full text-left text-xs border-2 border-black">
+                                {/* Header Tabel: Neo-Brutalist Kuning #FFD700 identik dengan Admin Dashboard */}
+                                <thead>
+                                    <tr className="bg-[#FFD700] border-b-2 border-black text-black uppercase font-black tracking-wider text-[11px]">
+                                        <th className="p-3 border-r-2 border-black">Gmail</th>
+                                        <th className="p-3 border-r-2 border-black">Jalur</th>
+                                        <th className="p-3 border-r-2 border-black">Tanggal</th>
+                                        <th className="p-3 border-r-2 border-black text-center">Status</th>
+                                        <th className="p-3 text-right">Reward</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody className="divide-y-2 divide-black bg-white font-medium text-black">
+                                    {paginatedHistory.map((item) => (
+                                        <tr key={item.id} className="hover:bg-[#F5F5DC] transition">
+                                            {/* GMAIL: font-bold */}
+                                            <td className="p-3 border-r-2 border-black font-mono font-bold text-black select-all">
+                                                {item.email}
+                                            </td>
+                                            {/* JALUR: font-mono */}
+                                            <td className="p-3 border-r-2 border-black font-mono font-bold text-black text-xs">
+                                                PW: {item.room}
+                                            </td>
+                                            {/* TANGGAL: font-mono */}
+                                            <td className="p-3 border-r-2 border-black font-mono font-bold text-black text-xs">
+                                                {item.date}
+                                            </td>
+                                            {/* STATUS: Badge kotak berbingkai hitam */}
+                                            <td className="p-3 border-r-2 border-black text-center align-middle">
+                                                {item.status === 'ditolak' ? (
+                                                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#FF00FF] shadow-[1px_1px_0px_0px_#000000]" title="Ditolak">
+                                                        <img src="/images/icon/reject.png" alt="Ditolak" className="size-5 object-contain shrink-0" />
+                                                    </span>
+                                                ) : item.status === 'pending' ? (
+                                                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#FFD700] shadow-[1px_1px_0px_0px_#000000]" title="Menunggu">
+                                                        <img src="/images/icon/pending.png" alt="Menunggu" className="size-5 object-contain shrink-0" />
+                                                    </span>
+                                                ) : item.status === 'dicek' ? (
+                                                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#F5F5DC] shadow-[1px_1px_0px_0px_#000000]" title="Di Cek">
+                                                        <img src="/images/icon/find.png" alt="Di Cek" className="size-5 object-contain shrink-0" />
+                                                    </span>
+                                                ) : (
+                                                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#00C2CB] shadow-[1px_1px_0px_0px_#000000]" title="Diterima">
+                                                        <img src="/images/icon/checklist.png" alt="Diterima" className="size-5 object-contain shrink-0" />
+                                                    </span>
+                                                )}
+                                            </td>
+                                            {/* REWARD: font-black font-mono */}
+                                            <td className="p-3 text-right font-black font-mono text-black text-xs sm:text-sm">
+                                                Rp{item.reward.toLocaleString('id-ID')}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* Pagination Controls - Identik dengan Foto Kedua (Overview Admin) */}
+                        {totalPages > 1 && (
+                            <div className="flex items-center justify-between pt-2 border-t border-black/10 text-xs font-black">
+                                <span className="text-neutral-600 text-[11px] uppercase tracking-wider font-bold">
+                                    Halaman {currentPage} dari {totalPages} ({storHistory.length} akun)
+                                </span>
+                                <div className="flex items-center gap-1.5">
+                                    <button
+                                        type="button"
+                                        disabled={currentPage === 1}
+                                        onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                                        className="px-2.5 py-1 rounded-xs border-2 border-black bg-white hover:bg-[#F5F5DC] disabled:opacity-40 disabled:cursor-not-allowed shadow-[1px_1px_0px_0px_#000000] cursor-pointer text-[11px] font-black uppercase tracking-wider transition"
+                                    >
+                                        Prev
+                                    </button>
+                                    <span className="px-2 py-1 text-black font-mono font-bold text-xs">
+                                        {currentPage} / {totalPages}
+                                    </span>
+                                    <button
+                                        type="button"
+                                        disabled={currentPage === totalPages}
+                                        onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                                        className="px-2.5 py-1 rounded-xs border-2 border-black bg-white hover:bg-[#F5F5DC] disabled:opacity-40 disabled:cursor-not-allowed shadow-[1px_1px_0px_0px_#000000] cursor-pointer text-[11px] font-black uppercase tracking-wider transition"
+                                    >
+                                        Next
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
         </div>

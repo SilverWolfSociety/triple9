@@ -43,7 +43,7 @@ export function AdminTicketModal({
                         <img src="/images/icon/headphone.png" alt="Tiket Kendala" className="size-6 object-contain shrink-0" />
                         <div>
                             <h3 className="text-sm sm:text-base font-black uppercase tracking-wider text-black">
-                                Tiket {ticket.ticketNumber} — {ticket.category}
+                                Tiket {ticket.ticketNumber} {ticket.category}
                             </h3>
                             <p className="text-xs font-bold text-neutral-600">
                                 Pengirim: {ticket.userName} ({ticket.userEmail}) • {ticket.date} {ticket.time}

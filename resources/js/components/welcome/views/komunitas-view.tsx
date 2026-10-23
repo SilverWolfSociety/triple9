@@ -246,10 +246,10 @@ export function KomunitasView() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-1 text-xs">
                     <div className="p-4 rounded-sm border-2 border-black bg-[#F5F5DC] shadow-[2px_2px_0px_0px_#000000]">
                         <span className="font-black uppercase text-black block mb-1">
-                            1. Dilarang Spam & Promo Liar
+                            1. Dilarang Spam &amp; Promo Liar
                         </span>
                         <p className="font-bold text-neutral-800 leading-relaxed text-[11px]">
-                            Dilarang mengirimkan link affiliate platform lain, judi online, pinjaman online, atau konten tidak pantas.
+                            Dilarang mengirimkan link judi online, pinjaman online, atau konten tidak pantas.
                         </p>
                     </div>
 
@@ -289,7 +289,7 @@ export function KomunitasView() {
                 </div>
 
                 <div className="space-y-2.5 text-xs">
-                    <div className="p-3.5 rounded-sm bg-white border-2 border-black shadow-[2px_2px_0px_0px_#000000]">
+                    <div className="p-3.5 rounded-sm bg-[#F5F5DC] border-2 border-black shadow-[2px_2px_0px_0px_#000000]">
                         <h4 className="font-black text-black mb-1">
                             Apakah bergabung ke Saluran WhatsApp atau Telegram dipungut biaya?
                         </h4>
@@ -298,7 +298,7 @@ export function KomunitasView() {
                         </p>
                     </div>
 
-                    <div className="p-3.5 rounded-sm bg-white border-2 border-black shadow-[2px_2px_0px_0px_#000000]">
+                    <div className="p-3.5 rounded-sm bg-[#F5F5DC] border-2 border-black shadow-[2px_2px_0px_0px_#000000]">
                         <h4 className="font-black text-black mb-1">
                             Apa perbedaan Saluran WhatsApp dan Komunitas Telegram?
                         </h4>
