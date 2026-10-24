@@ -140,6 +140,12 @@ export default function Dashboard() {
         } catch { }
     }, [usersList]);
 
+    useEffect(() => {
+        try {
+            localStorage.setItem('triple9_admin_settings', JSON.stringify(settings));
+        } catch { }
+    }, [settings]);
+
     // Badges / Counters
     const pendingSetoranCount = setoranList.filter((s) => s.status === 'pending' || s.status === 'dicek').length;
     const pendingPayoutCount = payoutList.filter((p) => p.status === 'pending').length;

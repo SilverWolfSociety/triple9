@@ -25,6 +25,9 @@ export function AdminBalanceModal({
     const formatRupiah = (val: number) =>
         'Rp ' + new Intl.NumberFormat('id-ID').format(val);
 
+    const formatThousand = (val?: number | null) =>
+        val && val > 0 ? new Intl.NumberFormat('id-ID').format(val) : '';
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (amount <= 0) {
@@ -69,7 +72,7 @@ export function AdminBalanceModal({
                         <div className="font-black text-black truncate">{user.name}</div>
                         <div className="text-xs text-neutral-600 truncate">{user.email}</div>
                         <div className="text-xs font-mono font-bold text-black mt-0.5">
-                            Saldo Saat Ini: <span className="font-black text-[#00C2CB]">{formatRupiah(user.currentBalance)}</span>
+                            Saldo Saat Ini: <span className="font-black text-[#00C2CB]">{user.role === 'admin' ? '-' : formatRupiah(user.currentBalance)}</span>
                         </div>
                     </div>
                 </div>
@@ -114,12 +117,16 @@ export function AdminBalanceModal({
                                 Rp
                             </span>
                             <input
-                                type="number"
+                                type="text"
+                                inputMode="numeric"
                                 required
-                                min={1000}
-                                step={1000}
-                                value={amount}
-                                onChange={(e) => setAmount(Number(e.target.value))}
+                                value={formatThousand(amount)}
+                                onFocus={(e) => e.target.select()}
+                                onChange={(e) => {
+                                    const val = e.target.value.replace(/\D/g, '');
+                                    setAmount(val === '' ? 0 : parseInt(val, 10));
+                                }}
+                                placeholder="0"
                                 className="w-full pl-9 pr-3 py-2 rounded-none border-2 border-black bg-white text-xs font-bold text-black shadow-[2px_2px_0px_0px_#000000] focus:outline-none"
                             />
                         </div>

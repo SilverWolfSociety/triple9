@@ -10,7 +10,6 @@ interface CommunityChannel {
     id: string;
     platform: 'whatsapp' | 'telegram';
     title: string;
-    subtitle: string;
     type: 'channel' | 'group';
     membersCount: string;
     activityLevel: string;
@@ -27,9 +26,8 @@ const communityChannels: CommunityChannel[] = [
         id: 'wa-channel',
         platform: 'whatsapp',
         title: 'Saluran Resmi WhatsApp Triple9',
-        subtitle: 'Informasi Tercepat & Kuota Harian',
         type: 'channel',
-        membersCount: '14.500+ Pengikut',
+        membersCount: '500+ Pengikut',
         activityLevel: 'Update Harian',
         description:
             'Saluran satu arah resmi dari manajemen Triple9. Dapatkan info pembukaan kuota setor, update harga beli akun Gmail, dan pengumuman pemenang mingguan.',
@@ -47,10 +45,9 @@ const communityChannels: CommunityChannel[] = [
         id: 'tg-group',
         platform: 'telegram',
         title: 'Grup Komunitas Telegram Triple9',
-        subtitle: 'Forum Diskusi Terbuka untuk Setor Gmail',
         type: 'group',
-        membersCount: '9.800+ Anggota',
-        activityLevel: 'Aktif (24 Jam)',
+        membersCount: '800+ Anggota',
+        activityLevel: 'Aktif 24 Jam',
         description:
             'Ruang diskusi dua arah bagi seluruh penyetor akun Gmail di Triple9. Tempat berbagi tips bypass OTP/No-HP, tanya jawab kendala apapun, serta bertukar pengalaman.',
         features: [
@@ -122,9 +119,6 @@ export function KomunitasView() {
                                             <h4 className="text-base font-black text-black uppercase tracking-wider">
                                                 {channel.title}
                                             </h4>
-                                            <p className="text-xs font-bold text-neutral-600">
-                                                {channel.subtitle}
-                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -147,26 +141,6 @@ export function KomunitasView() {
                                             {channel.activityLevel}
                                         </div>
                                     </div>
-                                </div>
-
-                                {/* Description */}
-                                <p className="text-xs font-bold text-neutral-800 leading-relaxed mb-4">
-                                    {channel.description}
-                                </p>
-
-                                {/* Features Checklist */}
-                                <div className="space-y-2 mb-5">
-                                    <div className="text-[11px] font-black text-black tracking-wider uppercase">
-                                        Keuntungan di Saluran Ini:
-                                    </div>
-                                    {channel.features.map((feat, idx) => (
-                                        <div key={idx} className="flex items-start gap-2 text-xs font-bold text-neutral-800">
-                                            <Check
-                                                className="h-4 w-4 shrink-0 mt-0.5 text-black stroke-[3]"
-                                            />
-                                            <span>{feat}</span>
-                                        </div>
-                                    ))}
                                 </div>
                             </div>
 
@@ -289,7 +263,7 @@ export function KomunitasView() {
                 </div>
 
                 <div className="space-y-2.5 text-xs">
-                    <div className="p-3.5 rounded-sm bg-[#F5F5DC] border-2 border-black shadow-[2px_2px_0px_0px_#000000]">
+                    <div className="p-3.5 rounded-sm bg-white border-2 border-black shadow-[2px_2px_0px_0px_#000000]">
                         <h4 className="font-black text-black mb-1">
                             Apakah bergabung ke Saluran WhatsApp atau Telegram dipungut biaya?
                         </h4>
@@ -298,7 +272,7 @@ export function KomunitasView() {
                         </p>
                     </div>
 
-                    <div className="p-3.5 rounded-sm bg-[#F5F5DC] border-2 border-black shadow-[2px_2px_0px_0px_#000000]">
+                    <div className="p-3.5 rounded-sm bg-white border-2 border-black shadow-[2px_2px_0px_0px_#000000]">
                         <h4 className="font-black text-black mb-1">
                             Apa perbedaan Saluran WhatsApp dan Komunitas Telegram?
                         </h4>
@@ -381,10 +355,6 @@ export function KomunitasView() {
                                     />
                                 </div>
                             </div>
-
-                            <p className="text-[11px] font-bold text-neutral-700 mt-3 text-center">
-                                Arahkan kamera HP Anda untuk membuka tautan langsung.
-                            </p>
                         </div>
 
                         <div className="space-y-2">

@@ -48,34 +48,71 @@ export function DashboardView({
     const [activeSlideIndex, setActiveSlideIndex] = useState(1);
     const [isSlidePaused, setIsSlidePaused] = useState(false);
 
+    const [adminSettings] = useState<{
+        announcementCategory?: string;
+        announcementTitle?: string;
+        announcementText?: string;
+        announcementActive?: boolean;
+    } | null>(() => {
+        try {
+            const saved = localStorage.getItem('triple9_admin_settings');
+            if (saved) return JSON.parse(saved);
+        } catch { }
+        return null;
+    });
+
     const announcements: AnnouncementItem[] = [
         {
             badge: 'Pengumuman Setoran',
             badgeColor: 'text-black',
             icon: AnnouncementIcon,
-            title: 'Setoran OPEN Setiap Hari Senin s/d Jumat',
-            description: 'Jam operasional verifikasi setor akun: 08:00 - 16:00 WIB.',
+            title:
+                adminSettings?.announcementCategory === 'Pengumuman Setoran' && adminSettings?.announcementTitle
+                    ? adminSettings.announcementTitle
+                    : 'Setoran OPEN Setiap Hari Senin s/d Jumat',
+            description:
+                adminSettings?.announcementCategory === 'Pengumuman Setoran' && adminSettings?.announcementText
+                    ? adminSettings.announcementText
+                    : 'Jam operasional verifikasi setor akun: 08:00 - 16:00 WIB.',
         },
         {
             badge: 'Event Reward',
             badgeColor: 'text-black',
             icon: TrophyIcon,
-            title: 'Bonus Reward Leaderboard Top 10',
-            description: 'Tingkatkan setoran dan dapatkan hadiah bonus saldo mingguan untuk 10 member teratas.',
+            title:
+                adminSettings?.announcementCategory === 'Event Reward' && adminSettings?.announcementTitle
+                    ? adminSettings.announcementTitle
+                    : 'Bonus Reward Leaderboard Top 10',
+            description:
+                adminSettings?.announcementCategory === 'Event Reward' && adminSettings?.announcementText
+                    ? adminSettings.announcementText
+                    : 'Tingkatkan setoran dan dapatkan hadiah bonus saldo mingguan untuk 10 member teratas.',
         },
         {
             badge: 'Ketentuan & Rules',
             badgeColor: 'text-black',
             icon: NotesIcon,
-            title: 'Pastikan Format Akun Sesuai Ketentuan',
-            description: 'Gmail harus Fresh, Tanggal lahir akun Gmail wajib 18 tahun ke atas.',
+            title:
+                adminSettings?.announcementCategory === 'Ketentuan & Rules' && adminSettings?.announcementTitle
+                    ? adminSettings.announcementTitle
+                    : 'Pastikan Format Akun Sesuai Ketentuan',
+            description:
+                adminSettings?.announcementCategory === 'Ketentuan & Rules' && adminSettings?.announcementText
+                    ? adminSettings.announcementText
+                    : 'Gmail harus Fresh, Tanggal lahir akun Gmail wajib 18 tahun ke atas.',
         },
         {
             badge: 'Panduan Triple9',
             badgeColor: 'text-black',
             icon: WhatIcon,
-            title: 'Apa itu Triple9 & Cara Kerjanya?',
-            description: 'Pelajari alur penyetoran Gmail hingga pencairan reward saldo instan.',
+            title:
+                adminSettings?.announcementCategory === 'Panduan Triple9' && adminSettings?.announcementTitle
+                    ? adminSettings.announcementTitle
+                    : 'Apa itu Triple9 & Cara Kerjanya?',
+            description:
+                adminSettings?.announcementCategory === 'Panduan Triple9' && adminSettings?.announcementText
+                    ? adminSettings.announcementText
+                    : 'Pelajari alur penyetoran Gmail hingga pencairan reward saldo instan.',
         },
     ];
 

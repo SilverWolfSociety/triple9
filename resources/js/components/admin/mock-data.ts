@@ -10,10 +10,19 @@ export const initialPlatformSettings: PlatformSettings = {
     gmailRate: 2500,
     minWithdraw: 20000,
     referralBonus: 500,
-    announcementText: '🔥 Rate setor akun Gmail naik menjadi Rp 2.500/akun valid! Proses cepat payout tiap hari.',
+    announcementCategory: 'Pengumuman Setoran',
+    announcementTitle: 'Setoran OPEN Setiap Hari Senin s/d Jumat',
+    announcementText: 'Jam operasional verifikasi setor akun: 08:00 - 16:00 WIB.',
     announcementActive: true,
     depositsOpen: true,
     autoCheckActive: true,
+    announcementType: 'setoran',
+    maxBatchDeposit: 50,
+    maintenanceMode: false,
+    waChannelUrl: 'https://whatsapp.com/channel/triple9-resmi',
+    tgGroupUrl: 'https://t.me/triple9_official',
+    supportContact: '0812-9999-9999',
+    operatingHours: '08:00 - 23:00 WIB',
 };
 
 export const initialSetoranData: AdminSetoranItem[] = [

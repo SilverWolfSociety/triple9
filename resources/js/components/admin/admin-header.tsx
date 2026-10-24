@@ -24,7 +24,7 @@ export function AdminHeader({ activeItemLabel }: AdminHeaderProps) {
                 {/* Admin Status Pill */}
                 <div className="inline-flex items-center gap-1.5 bg-[#FFD700] border-2 border-black px-2.5 py-1 text-[11px] font-black uppercase tracking-wider text-black shadow-[2px_2px_0px_0px_#000000]">
                     <ShieldCheck className="h-3.5 w-3.5 stroke-[3] text-black" />
-                    <span>Admin Mode</span>
+                    <span>Admin Mode V 1.0</span>
                 </div>
             </div>
         </header>

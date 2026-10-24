@@ -3,7 +3,6 @@ import {
     Bell,
     X,
     ChevronRight,
-    BellOff,
     RotateCcw,
 } from 'lucide-react';
 import type { NotificationItem } from '../types';
@@ -173,11 +172,10 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className={`relative flex h-9 w-9 items-center justify-center rounded-md border-2 border-black ${
-                    isOpen
-                        ? 'bg-[#FFD700] translate-x-[2px] translate-y-[2px] shadow-[2px_2px_0px_0px_#000000]'
-                        : 'bg-white hover:bg-[#F5F5DC] shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000]'
-                } active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all cursor-pointer text-black`}
+                className={`relative flex h-9 w-9 items-center justify-center rounded-md border-2 border-black ${isOpen
+                    ? 'bg-[#FFD700] translate-x-[2px] translate-y-[2px] shadow-[2px_2px_0px_0px_#000000]'
+                    : 'bg-white hover:bg-[#F5F5DC] shadow-[4px_4px_0px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#000000]'
+                    } active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all cursor-pointer text-black`}
                 title="Notifikasi"
                 aria-label="Notifikasi sistem"
                 aria-expanded={isOpen}
@@ -262,22 +260,20 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
                             <button
                                 type="button"
                                 onClick={() => setActiveTab('all')}
-                                className={`py-1.5 px-3 rounded-sm text-xs font-black uppercase tracking-wide border-2 border-black transition-all cursor-pointer ${
-                                    activeTab === 'all'
-                                        ? 'bg-[#FFD700] text-black shadow-[2px_2px_0px_0px_#000000] translate-x-[1px] translate-y-[1px]'
-                                        : 'bg-white text-black hover:bg-[#F5F5DC] shadow-[2px_2px_0px_0px_#000000]'
-                                }`}
+                                className={`py-1.5 px-3 rounded-sm text-xs font-black uppercase tracking-wide border-2 border-black transition-all cursor-pointer ${activeTab === 'all'
+                                    ? 'bg-[#FFD700] text-black shadow-[2px_2px_0px_0px_#000000] translate-x-[1px] translate-y-[1px]'
+                                    : 'bg-white text-black hover:bg-[#F5F5DC] shadow-[2px_2px_0px_0px_#000000]'
+                                    }`}
                             >
                                 Semua ({notifications.length})
                             </button>
                             <button
                                 type="button"
                                 onClick={() => setActiveTab('unread')}
-                                className={`py-1.5 px-3 rounded-sm text-xs font-black uppercase tracking-wide border-2 border-black transition-all cursor-pointer ${
-                                    activeTab === 'unread'
-                                        ? 'bg-[#FFD700] text-black shadow-[2px_2px_0px_0px_#000000] translate-x-[1px] translate-y-[1px]'
-                                        : 'bg-white text-black hover:bg-[#F5F5DC] shadow-[2px_2px_0px_0px_#000000]'
-                                }`}
+                                className={`py-1.5 px-3 rounded-sm text-xs font-black uppercase tracking-wide border-2 border-black transition-all cursor-pointer ${activeTab === 'unread'
+                                    ? 'bg-[#FFD700] text-black shadow-[2px_2px_0px_0px_#000000] translate-x-[1px] translate-y-[1px]'
+                                    : 'bg-white text-black hover:bg-[#F5F5DC] shadow-[2px_2px_0px_0px_#000000]'
+                                    }`}
                             >
                                 Belum Dibaca ({unreadCount})
                             </button>
@@ -289,17 +285,16 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
                         {filteredNotifications.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-10 px-4 text-center">
                                 <div className="flex h-12 w-12 items-center justify-center rounded-sm border-2 border-black bg-[#FFD700] text-black shadow-[3px_3px_0px_0px_#000000] mb-2.5">
-                                    <BellOff className="h-6 w-6 stroke-[2.5]" />
+                                    <img
+                                        src="/images/icon/notification_disabled.png"
+                                        alt="Tidak ada notifikasi"
+                                        className="h-7 w-7 object-contain"
+                                    />
                                 </div>
                                 <p className="text-xs font-black uppercase text-black">
                                     {activeTab === 'unread'
                                         ? 'Tidak ada notifikasi belum dibaca'
                                         : 'Tidak ada notifikasi'}
-                                </p>
-                                <p className="text-[11px] font-bold text-neutral-600 max-w-[220px] mt-1 leading-relaxed">
-                                    {activeTab === 'unread'
-                                        ? 'Semua notifikasi Anda sudah dibaca.'
-                                        : 'Update reward stor, penarikan, dan bonus akan tampil di sini.'}
                                 </p>
                                 {notifications.length === 0 && (
                                     <button
@@ -317,11 +312,10 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
                                 <div
                                     key={item.id}
                                     onClick={() => handleItemClick(item)}
-                                    className={`group relative flex items-start gap-3 p-3.5 transition-all cursor-pointer ${
-                                        !item.read
-                                            ? 'bg-[#F5F5DC] hover:bg-[#eaeac8]'
-                                            : 'bg-white hover:bg-[#F5F5DC]/60'
-                                    }`}
+                                    className={`group relative flex items-start gap-3 p-3.5 transition-all cursor-pointer ${!item.read
+                                        ? 'bg-[#F5F5DC] hover:bg-[#eaeac8]'
+                                        : 'bg-white hover:bg-[#F5F5DC]/60'
+                                        }`}
                                 >
                                     {renderIcon(item.type)}
 

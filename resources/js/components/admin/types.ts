@@ -101,4 +101,13 @@ export interface PlatformSettings {
     announcementActive: boolean;
     depositsOpen: boolean;
     autoCheckActive: boolean;
+    announcementType?: string;
+    announcementTitle?: string;
+    announcementCategory?: string;
+    maxBatchDeposit?: number;
+    maintenanceMode?: boolean;
+    waChannelUrl?: string;
+    tgGroupUrl?: string;
+    supportContact?: string;
+    operatingHours?: string;
 }

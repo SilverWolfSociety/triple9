@@ -146,10 +146,10 @@ export function AdminUsersView({
                                             )}
                                         </td>
                                         <td className="p-3 border-r-2 border-black font-mono font-black text-black">
-                                            {item.totalSetoran} Akun
+                                            {item.role === 'admin' ? '-' : `${item.totalSetoran} Akun`}
                                         </td>
                                         <td className="p-3 border-r-2 border-black font-mono font-black text-black">
-                                            {formatRupiah(item.currentBalance)}
+                                            {item.role === 'admin' ? '-' : formatRupiah(item.currentBalance)}
                                         </td>
                                         <td className="p-3 border-r-2 border-black text-neutral-600 font-mono">
                                             {item.joinedDate}
@@ -170,8 +170,12 @@ export function AdminUsersView({
                                                 <button
                                                     type="button"
                                                     onClick={() => onOpenBalanceModal(item)}
-                                                    className="inline-flex items-center gap-1.5 px-2 py-1 rounded-xs border border-black bg-[#00C2CB] hover:bg-[#00a8b0] text-black text-[11px] font-black uppercase shadow-[1px_1px_0px_0px_#000000] cursor-pointer"
-                                                    title="Sesuaikan Saldo Manual"
+                                                    disabled={item.role === 'admin'}
+                                                    className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-xs border border-black text-black text-[11px] font-black uppercase shadow-[1px_1px_0px_0px_#000000] ${item.role === 'admin'
+                                                        ? 'opacity-40 cursor-not-allowed bg-neutral-200 shadow-none'
+                                                        : 'bg-[#00C2CB] hover:bg-[#00a8b0] cursor-pointer'
+                                                        }`}
+                                                    title={item.role === 'admin' ? 'Role admin tidak memiliki saldo' : 'Sesuaikan Saldo Manual'}
                                                 >
                                                     <img src="/images/icon/edit_payment.png" alt="Saldo" className="size-3.5 object-contain" />
                                                     <span>Saldo</span>
