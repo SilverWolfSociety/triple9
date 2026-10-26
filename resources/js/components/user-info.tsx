@@ -19,7 +19,7 @@ export function UserInfo({
                     {getInitials(user.name)}
                 </AvatarFallback>
             </Avatar>
-            <div className="grid flex-1 text-left text-sm leading-tight min-w-0 transition-[opacity,width] duration-200 ease-linear overflow-hidden whitespace-nowrap group-data-[collapsible=icon]:w-0 group-data-[collapsible=icon]:opacity-0">
+            <div className="grid flex-1 text-left text-sm leading-normal py-0.5 min-w-0 transition-[opacity,width] duration-200 ease-linear overflow-hidden whitespace-nowrap group-data-[collapsible=icon]:w-0 group-data-[collapsible=icon]:opacity-0">
                 <span className="truncate font-black text-black">{user.name}</span>
                 {showEmail && (
                     <span className="truncate text-xs font-mono font-semibold text-neutral-600">

@@ -48,7 +48,7 @@ export function DashboardView({
     const [activeSlideIndex, setActiveSlideIndex] = useState(1);
     const [isSlidePaused, setIsSlidePaused] = useState(false);
 
-    const [adminSettings] = useState<{
+    const [adminSettings, setAdminSettings] = useState<{
         announcementCategory?: string;
         announcementTitle?: string;
         announcementText?: string;
@@ -60,6 +60,23 @@ export function DashboardView({
         } catch { }
         return null;
     });
+
+    useEffect(() => {
+        const handleSettingsUpdate = () => {
+            try {
+                const saved = localStorage.getItem('triple9_admin_settings');
+                if (saved) setAdminSettings(JSON.parse(saved));
+            } catch { }
+        };
+        window.addEventListener('storage', handleSettingsUpdate);
+        window.addEventListener('triple9_settings_updated', handleSettingsUpdate);
+        window.addEventListener('triple9_sync_settings', handleSettingsUpdate);
+        return () => {
+            window.removeEventListener('storage', handleSettingsUpdate);
+            window.removeEventListener('triple9_settings_updated', handleSettingsUpdate);
+            window.removeEventListener('triple9_sync_settings', handleSettingsUpdate);
+        };
+    }, []);
 
     const announcements: AnnouncementItem[] = [
         {
@@ -420,10 +437,11 @@ export function DashboardView({
                                 <thead>
                                     <tr className="bg-[#FFD700] border-b-2 border-black text-black uppercase font-black tracking-wider text-[11px]">
                                         <th className="p-3 border-r-2 border-black">Gmail</th>
-                                        <th className="p-3 border-r-2 border-black">Jalur</th>
-                                        <th className="p-3 border-r-2 border-black">Tanggal</th>
-                                        <th className="p-3 border-r-2 border-black text-center">Status</th>
-                                        <th className="p-3 text-right">Reward</th>
+                                        <th className="p-3 border-r-2 border-black whitespace-nowrap w-28">Jalur</th>
+                                        <th className="p-3 border-r-2 border-black whitespace-nowrap w-28">Tanggal</th>
+                                        <th className="p-3 border-r-2 border-black whitespace-nowrap w-32">Status</th>
+                                        <th className="p-3 border-r-2 border-black whitespace-nowrap min-w-[130px]">Catatan</th>
+                                        <th className="p-3 text-right whitespace-nowrap w-28">Reward</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y-2 divide-black bg-white font-medium text-black">
@@ -441,25 +459,33 @@ export function DashboardView({
                                             <td className="p-3 border-r-2 border-black font-mono font-bold text-black text-xs">
                                                 {item.date}
                                             </td>
-                                            {/* STATUS: Badge kotak berbingkai hitam */}
-                                            <td className="p-3 border-r-2 border-black text-center align-middle">
+                                            {/* STATUS: Badge */}
+                                            <td className="p-3 border-r-2 border-black align-middle whitespace-nowrap">
                                                 {item.status === 'ditolak' ? (
-                                                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#FF00FF] shadow-[1px_1px_0px_0px_#000000]" title="Ditolak">
-                                                        <img src="/images/icon/reject.png" alt="Ditolak" className="size-5 object-contain shrink-0" />
+                                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs border-2 border-black bg-[#FF00FF] font-black text-[10px] uppercase shadow-[2px_2px_0px_0px_#000000]">
+                                                        <img src="/images/icon/reject.png" alt="Ditolak" className="size-3.5 object-contain shrink-0" />
+                                                        <span>Ditolak</span>
                                                     </span>
                                                 ) : item.status === 'pending' ? (
-                                                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#FFD700] shadow-[1px_1px_0px_0px_#000000]" title="Menunggu">
-                                                        <img src="/images/icon/pending.png" alt="Menunggu" className="size-5 object-contain shrink-0" />
+                                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs border-2 border-black bg-[#FFD700] font-black text-[10px] uppercase shadow-[2px_2px_0px_0px_#000000]">
+                                                        <img src="/images/icon/pending.png" alt="Menunggu" className="size-3.5 object-contain shrink-0" />
+                                                        <span>Menunggu</span>
                                                     </span>
                                                 ) : item.status === 'dicek' ? (
-                                                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#F5F5DC] shadow-[1px_1px_0px_0px_#000000]" title="Di Cek">
-                                                        <img src="/images/icon/find.png" alt="Di Cek" className="size-5 object-contain shrink-0" />
+                                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs border-2 border-black bg-[#F5F5DC] font-black text-[10px] uppercase shadow-[2px_2px_0px_0px_#000000]">
+                                                        <img src="/images/icon/find.png" alt="Di Cek" className="size-3.5 object-contain shrink-0" />
+                                                        <span>Di Cek</span>
                                                     </span>
                                                 ) : (
-                                                    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#00C2CB] shadow-[1px_1px_0px_0px_#000000]" title="Diterima">
-                                                        <img src="/images/icon/checklist.png" alt="Diterima" className="size-5 object-contain shrink-0" />
+                                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs border-2 border-black bg-[#00C2CB] font-black text-[10px] uppercase shadow-[2px_2px_0px_0px_#000000]">
+                                                        <img src="/images/icon/checklist.png" alt="Diterima" className="size-3.5 object-contain shrink-0" />
+                                                        <span>Diterima</span>
                                                     </span>
                                                 )}
+                                            </td>
+                                            {/* CATATAN */}
+                                            <td className="p-3 border-r-2 border-black text-xs text-neutral-600 whitespace-nowrap min-w-[130px]">
+                                                {item.note || '-'}
                                             </td>
                                             {/* REWARD: font-black font-mono */}
                                             <td className="p-3 text-right font-black font-mono text-black text-xs sm:text-sm">

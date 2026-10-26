@@ -11,61 +11,41 @@ interface NotificationDropdownProps {
     onNavigate?: (navId: string) => void;
 }
 
-const initialNotifications: NotificationItem[] = [
-    {
-        id: 'notif-1',
-        title: 'Reward Setor Diterima',
-        message: 'Akun google.sec***@gmail.com (PW: 9triple) berhasil disetujui. Reward +Rp5.000 telah masuk ke saldo.',
-        time: '5 menit lalu',
-        type: 'reward',
-        read: false,
-        actionNav: 'riwayat',
-    },
-    {
-        id: 'notif-2',
-        title: 'Penarikan Sukses Diproses',
-        message: 'Penarikan saldo Rp50.000 ke DANA (0812****8990) telah dikirim oleh admin verifikator.',
-        time: '35 menit lalu',
-        type: 'wallet',
-        read: false,
-        actionNav: 'saldo',
-    },
-    {
-        id: 'notif-3',
-        title: 'Event Bonus Rate 9triple!',
-        message: 'Rate setor untuk jalur 9triple naik menjadi Rp5.000 per akun sampai pukul 23:59 WIB hari ini.',
-        time: '2 jam lalu',
-        type: 'bonus',
-        read: false,
-        actionNav: 'stor',
-    },
-    {
-        id: 'notif-4',
-        title: 'Batch Stor Sedang Dicek',
-        message: '5 akun pada batch #TR-9921 sedang dalam proses pengecekan kualitas oleh tim audit.',
-        time: '4 jam lalu',
-        type: 'system',
-        read: true,
-        actionNav: 'riwayat',
-    },
-    {
-        id: 'notif-5',
-        title: 'Tiket Bantuan Dibalas',
-        message: 'Admin telah membalas tiket kendala verifikasi Anda di Triple9 Support.',
-        time: '1 hari lalu',
-        type: 'ticket',
-        read: true,
-        actionNav: 'support',
-    },
-];
+const initialNotifications: NotificationItem[] = [];
 
 export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [activeTab, setActiveTab] = useState<'all' | 'unread'>('all');
-    const [notifications, setNotifications] = useState<NotificationItem[]>(initialNotifications);
+    const [notifications, setNotifications] = useState<NotificationItem[]>(() => {
+        try {
+            const saved = localStorage.getItem('triple9_user_notifications');
+            if (saved) return JSON.parse(saved);
+        } catch {
+            // ignore
+        }
+        return initialNotifications;
+    });
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     const unreadCount = notifications.filter((n) => !n.read).length;
+
+    // Listen for notification updates from admin actions or other tabs
+    useEffect(() => {
+        const syncNotifications = () => {
+            try {
+                const saved = localStorage.getItem('triple9_user_notifications');
+                if (saved) setNotifications(JSON.parse(saved));
+            } catch {
+                // ignore
+            }
+        };
+        window.addEventListener('storage', syncNotifications);
+        window.addEventListener('triple9_notifications_updated', syncNotifications);
+        return () => {
+            window.removeEventListener('storage', syncNotifications);
+            window.removeEventListener('triple9_notifications_updated', syncNotifications);
+        };
+    }, []);
 
     // Filter notifications based on selected tab
     const filteredNotifications =
@@ -98,29 +78,41 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
         };
     }, [isOpen]);
 
+    const updateAndPersist = (updater: (prev: NotificationItem[]) => NotificationItem[]) => {
+        setNotifications((prev) => {
+            const next = updater(prev);
+            try {
+                localStorage.setItem('triple9_user_notifications', JSON.stringify(next));
+            } catch {
+                // ignore
+            }
+            return next;
+        });
+    };
+
     const markAllAsRead = () => {
-        setNotifications((prev) =>
+        updateAndPersist((prev) =>
             prev.map((item) => ({ ...item, read: true }))
         );
     };
 
     const markAsRead = (id: string) => {
-        setNotifications((prev) =>
+        updateAndPersist((prev) =>
             prev.map((item) => (item.id === id ? { ...item, read: true } : item))
         );
     };
 
     const deleteNotification = (e: React.MouseEvent, id: string) => {
         e.stopPropagation();
-        setNotifications((prev) => prev.filter((item) => item.id !== id));
+        updateAndPersist((prev) => prev.filter((item) => item.id !== id));
     };
 
     const clearAll = () => {
-        setNotifications([]);
+        updateAndPersist(() => []);
     };
 
     const resetNotifications = () => {
-        setNotifications(initialNotifications);
+        updateAndPersist(() => initialNotifications);
     };
 
     const handleItemClick = (item: NotificationItem) => {
@@ -296,16 +288,6 @@ export function NotificationDropdown({ onNavigate }: NotificationDropdownProps) 
                                         ? 'Tidak ada notifikasi belum dibaca'
                                         : 'Tidak ada notifikasi'}
                                 </p>
-                                {notifications.length === 0 && (
-                                    <button
-                                        type="button"
-                                        onClick={resetNotifications}
-                                        className="mt-3 text-xs font-black uppercase bg-[#00C2CB] text-black border-2 border-black px-2.5 py-1 rounded-sm shadow-[2px_2px_0px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] inline-flex items-center gap-1 cursor-pointer"
-                                    >
-                                        <RotateCcw className="h-3 w-3 stroke-[2.5]" />
-                                        <span>Muat Notifikasi</span>
-                                    </button>
-                                )}
                             </div>
                         ) : (
                             filteredNotifications.map((item) => (

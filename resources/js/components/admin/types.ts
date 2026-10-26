@@ -6,6 +6,7 @@ export type AdminNavId =
     | 'setoran'
     | 'payouts'
     | 'users'
+    | 'leaderboard'
     | 'settings';
 
 export interface AdminNavItem {
@@ -31,12 +32,26 @@ export interface AdminSetoranItem {
     userAvatar: string;
     email: string;
     password: string;
-    recovery: string;
     date: string;
     time: string;
     status: SetoranStatus;
     reward: number;
+    batchId?: string;
     note?: string;
+}
+
+export interface SystemRuleItem {
+    id: string;
+    number: string;
+    title: string;
+    description?: string;
+    badgeColor?: string;
+    isActive?: boolean;
+}
+
+export interface SystemRulesConfig {
+    rules: SystemRuleItem[];
+    importantNotes: string[];
 }
 
 export type PayoutStatus = 'pending' | 'success' | 'rejected';
@@ -110,4 +125,6 @@ export interface PlatformSettings {
     tgGroupUrl?: string;
     supportContact?: string;
     operatingHours?: string;
+    rules?: SystemRuleItem[];
+    rulesNotes?: string[];
 }

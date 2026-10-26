@@ -90,7 +90,7 @@ export function AdminChartCard() {
                                 : 'text-neutral-700 hover:text-black'
                                 }`}
                         >
-                            Payout (Rp)
+                            Payout
                         </button>
                     </div>
 

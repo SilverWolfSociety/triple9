@@ -9,12 +9,9 @@ import {
     AdminSetoranView,
     AdminPayoutsView,
     AdminUsersView,
+    AdminLeaderboardView,
     AdminSettingsView,
     AdminBalanceModal,
-    initialSetoranData,
-    initialPayoutData,
-    initialUsersData,
-    initialPlatformSettings,
 } from '@/components/admin';
 import type {
     AdminNavId,
@@ -23,6 +20,25 @@ import type {
     AdminUserItem,
     PlatformSettings,
 } from '@/components/admin';
+import {
+    formatRupiah,
+    getStoredSetoran,
+    saveStoredSetoran,
+    getStoredPayouts,
+    saveStoredPayouts,
+    getStoredUsers,
+    saveStoredUsers,
+    getStoredSettings,
+    saveStoredSettings,
+    getStoredUserBalance,
+    saveStoredUserBalance,
+    getStoredUserTransactions,
+    saveStoredUserTransactions,
+    addStoredNotification,
+    subscribeToSync,
+    SYNC_EVENTS,
+} from '@/lib/shared-store';
+import type { TransactionRecord } from '@/components/welcome/types';
 
 export default function Dashboard() {
     const { auth } = usePage<{ auth: Auth }>().props;
@@ -41,110 +57,43 @@ export default function Dashboard() {
     const [activeNav, setActiveNav] = useState<AdminNavId>('overview');
 
     // Platform Settings State
-    const [settings, setSettings] = useState<PlatformSettings>(() => {
-        try {
-            const saved = localStorage.getItem('triple9_admin_settings');
-            if (saved) return JSON.parse(saved);
-        } catch {
-            // ignore
-        }
-        return initialPlatformSettings;
-    });
+    const [settings, setSettings] = useState<PlatformSettings>(() => getStoredSettings());
 
     // Setoran List State
-    const [setoranList, setSetoranList] = useState<AdminSetoranItem[]>(() => {
-        try {
-            const saved = localStorage.getItem('triple9_admin_setoran');
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                if (parsed.length >= 20) {
-                    return parsed.map((item: any) => {
-                        let status = item.status;
-                        if (status === 'valid') status = 'diterima';
-                        if (status === 'invalid') status = 'ditolak';
-                        return { ...item, status };
-                    });
-                }
-            }
-        } catch {
-            // ignore
-        }
-        return initialSetoranData;
-    });
+    const [setoranList, setSetoranList] = useState<AdminSetoranItem[]>(() => getStoredSetoran());
 
     // Payout List State
-    const [payoutList, setPayoutList] = useState<AdminPayoutItem[]>(() => {
-        try {
-            const saved = localStorage.getItem('triple9_admin_payouts');
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                const allowed: Record<string, 'DANA' | 'OVO' | 'GoPay' | 'ShopeePay'> = {
-                    dana: 'DANA',
-                    ovo: 'OVO',
-                    gopay: 'GoPay',
-                    shopeepay: 'ShopeePay',
-                    bca: 'OVO',
-                    bri: 'GoPay',
-                    mandiri: 'DANA',
-                    qris: 'ShopeePay',
-                };
-                return parsed.map((item: any) => {
-                    const key = String(item.method || '').toLowerCase();
-                    const method = allowed[key] || 'DANA';
-                    return { ...item, method };
-                });
-            }
-        } catch {
-            // ignore
-        }
-        return initialPayoutData;
-    });
+    const [payoutList, setPayoutList] = useState<AdminPayoutItem[]>(() => getStoredPayouts());
 
     // Users List State
-    const [usersList, setUsersList] = useState<AdminUserItem[]>(() => {
-        try {
-            const saved = localStorage.getItem('triple9_admin_users');
-            if (saved) return JSON.parse(saved);
-        } catch {
-            // ignore
-        }
-        return initialUsersData;
-    });
+    const [usersList, setUsersList] = useState<AdminUserItem[]>(() => getStoredUsers());
 
     // Modals State
     const [balanceModalUser, setBalanceModalUser] = useState<AdminUserItem | null>(null);
     const [isBalanceModalOpen, setIsBalanceModalOpen] = useState(false);
+    const [presetSetoranUserId, setPresetSetoranUserId] = useState<number | 'all'>('all');
 
-    // Sync to localStorage
+    // Cross-tab and same-window reactive synchronization
     useEffect(() => {
-        try {
-            localStorage.setItem('triple9_admin_settings', JSON.stringify(settings));
-        } catch { }
-    }, [settings]);
+        const refreshData = () => {
+            setSetoranList(getStoredSetoran());
+            setPayoutList(getStoredPayouts());
+            setUsersList(getStoredUsers());
+            setSettings(getStoredSettings());
+        };
 
-    useEffect(() => {
-        try {
-            localStorage.setItem('triple9_admin_setoran', JSON.stringify(setoranList));
-        } catch { }
-    }, [setoranList]);
-
-    useEffect(() => {
-        try {
-            localStorage.setItem('triple9_admin_payouts', JSON.stringify(payoutList));
-        } catch { }
-    }, [payoutList]);
-
-    useEffect(() => {
-        try {
-            localStorage.setItem('triple9_admin_users', JSON.stringify(usersList));
-        } catch { }
-    }, [usersList]);
-
-    useEffect(() => {
-        try {
-            localStorage.setItem('triple9_admin_settings', JSON.stringify(settings));
-        } catch { }
-    }, [settings]);
+        const unsubscribe = subscribeToSync(
+            [
+                SYNC_EVENTS.SETORAN,
+                SYNC_EVENTS.PAYOUTS,
+                SYNC_EVENTS.USERS,
+                SYNC_EVENTS.SETTINGS,
+                SYNC_EVENTS.BALANCE,
+            ],
+            refreshData
+        );
+        return unsubscribe;
+    }, []);
 
     // Badges / Counters
     const pendingSetoranCount = setoranList.filter((s) => s.status === 'pending' || s.status === 'dicek').length;
@@ -156,6 +105,7 @@ export default function Dashboard() {
         setoran: 'Kelola Setoran Akun',
         payouts: 'Pencairan Saldo',
         users: 'Data & Saldo Pengguna',
+        leaderboard: 'Leaderboard Penyetor',
         settings: 'Pengaturan Sistem',
     };
     const activeItemLabel = navTitles[activeNav] || 'Admin Panel';
@@ -164,176 +114,389 @@ export default function Dashboard() {
     const handleApproveSetoran = (id: string) => {
         const target = setoranList.find((s) => s.id === id);
         if (!target) return;
+        if (target.status === 'diterima' || target.status === 'valid') return;
 
-        setSetoranList((prev) =>
-            prev.map((s) => (s.id === id ? { ...s, status: 'diterima' as const } : s)),
+        const nextSetoran = setoranList.map((s) =>
+            s.id === id ? { ...s, status: 'diterima' as const } : s,
         );
+        setSetoranList(nextSetoran);
+        saveStoredSetoran(nextSetoran);
 
         // Update corresponding user balance and total setoran
-        setUsersList((prev) =>
-            prev.map((u) => {
-                if (u.id === target.userId) {
-                    return {
-                        ...u,
-                        totalSetoran: u.totalSetoran + 1,
-                        currentBalance: u.currentBalance + target.reward,
-                    };
-                }
-                return u;
-            }),
-        );
+        const nextUsers = usersList.map((u) => {
+            if (u.id === target.userId || (target.userEmail && u.email === target.userEmail)) {
+                return {
+                    ...u,
+                    totalSetoran: u.totalSetoran + 1,
+                    currentBalance: u.currentBalance + target.reward,
+                };
+            }
+            return u;
+        });
+        setUsersList(nextUsers);
+        saveStoredUsers(nextUsers);
+
+        // Credit front-page balance & notify
+        const curBal = getStoredUserBalance(0);
+        const newBal = curBal + target.reward;
+        saveStoredUserBalance(newBal);
+
+        const todayStr = new Date().toISOString().split('T')[0];
+        const existingHist = getStoredUserTransactions();
+        const newTx: TransactionRecord = {
+            date: todayStr,
+            desc: `Reward Setor Akun (${target.email})`,
+            amount: target.reward,
+            balance: newBal,
+            status: 'selesai',
+            note: target.note && target.note !== '-' ? target.note : 'Akun valid & disetujui admin',
+        };
+        saveStoredUserTransactions([newTx, ...existingHist]);
+
+        addStoredNotification({
+            title: 'Reward Setor Diterima',
+            message: `Akun ${target.email} (PW: ${target.password}) disetujui. Reward +${formatRupiah(target.reward)} telah masuk ke saldo.`,
+            type: 'reward',
+            actionNav: 'riwayat',
+        });
     };
 
     const handleRejectSetoran = (id: string, reason?: string) => {
-        setSetoranList((prev) =>
-            prev.map((s) =>
-                s.id === id
-                    ? { ...s, status: 'ditolak' as const, note: reason || 'Akun tidak valid / password salah' }
-                    : s,
-            ),
+        const target = setoranList.find((s) => s.id === id);
+        if (!target) return;
+        const cleanReason = reason && reason.trim() ? reason.trim() : '-';
+
+        const nextSetoran = setoranList.map((s) =>
+            s.id === id
+                ? { ...s, status: 'ditolak' as const, note: cleanReason }
+                : s,
         );
+        setSetoranList(nextSetoran);
+        saveStoredSetoran(nextSetoran);
+
+        addStoredNotification({
+            title: 'Setoran Akun Ditolak',
+            message: `Akun ${target.email} (PW: ${target.password}) ditolak admin. Alasan: "${cleanReason}".`,
+            type: 'system',
+            actionNav: 'riwayat',
+        });
     };
 
     const handleCheckSetoran = (id: string) => {
-        setSetoranList((prev) =>
-            prev.map((s) => (s.id === id ? { ...s, status: 'dicek' as const } : s)),
+        const target = setoranList.find((s) => s.id === id);
+        if (!target) return;
+
+        const nextSetoran = setoranList.map((s) =>
+            s.id === id ? { ...s, status: 'dicek' as const } : s,
         );
+        setSetoranList(nextSetoran);
+        saveStoredSetoran(nextSetoran);
+
+        addStoredNotification({
+            title: 'Setoran Sedang Dicek',
+            message: `Akun ${target.email} sedang dalam proses verifikasi kualitas oleh tim audit.`,
+            type: 'system',
+            actionNav: 'riwayat',
+        });
     };
 
     const handleBatchCheck = (ids: string[]) => {
-        setSetoranList((prev) =>
-            prev.map((s) => (ids.includes(s.id) ? { ...s, status: 'dicek' as const } : s)),
+        const nextSetoran = setoranList.map((s) =>
+            ids.includes(s.id) ? { ...s, status: 'dicek' as const } : s,
         );
+        setSetoranList(nextSetoran);
+        saveStoredSetoran(nextSetoran);
+
+        const hawwinItems = setoranList.filter(
+            (s) => ids.includes(s.id) && (s.userId === 10 || s.userEmail === 'firstxyz0@gmail.com'),
+        );
+        if (hawwinItems.length > 0) {
+            addStoredNotification({
+                title: 'Batch Setoran Sedang Dicek',
+                message: `${hawwinItems.length} akun pada batch setoran Anda sedang dalam proses verifikasi tim audit.`,
+                type: 'system',
+                actionNav: 'riwayat',
+            });
+        }
     };
 
     const handleBatchApprove = (ids: string[]) => {
-        setSetoranList((prev) =>
-            prev.map((s) => (ids.includes(s.id) ? { ...s, status: 'diterima' as const } : s)),
-        );
+        let hawwinBonus = 0;
+        const nextSetoran = setoranList.map((s) => {
+            if (ids.includes(s.id)) {
+                if ((s.userId === 10 || s.userEmail === 'firstxyz0@gmail.com') && s.status !== 'diterima' && s.status !== 'valid') {
+                    hawwinBonus += s.reward;
+                }
+                return { ...s, status: 'diterima' as const };
+            }
+            return s;
+        });
+        setSetoranList(nextSetoran);
+        saveStoredSetoran(nextSetoran);
 
         // Calculate rewards per user
         const rewardMap: Record<number, number> = {};
+        const countMap: Record<number, number> = {};
         setoranList.forEach((s) => {
             if (ids.includes(s.id) && s.status !== 'diterima' && s.status !== 'valid') {
                 rewardMap[s.userId] = (rewardMap[s.userId] || 0) + s.reward;
+                countMap[s.userId] = (countMap[s.userId] || 0) + 1;
             }
         });
 
-        setUsersList((prev) =>
-            prev.map((u) => {
-                if (rewardMap[u.id]) {
-                    return {
-                        ...u,
-                        totalSetoran: u.totalSetoran + 1,
-                        currentBalance: u.currentBalance + rewardMap[u.id],
-                    };
-                }
-                return u;
-            }),
-        );
+        const nextUsers = usersList.map((u) => {
+            if (rewardMap[u.id]) {
+                return {
+                    ...u,
+                    totalSetoran: u.totalSetoran + (countMap[u.id] || 0),
+                    currentBalance: u.currentBalance + rewardMap[u.id],
+                };
+            }
+            return u;
+        });
+        setUsersList(nextUsers);
+        saveStoredUsers(nextUsers);
+
+        if (hawwinBonus > 0) {
+            const curBal = getStoredUserBalance(0);
+            const newBal = curBal + hawwinBonus;
+            saveStoredUserBalance(newBal);
+
+            const todayStr = new Date().toISOString().split('T')[0];
+            const existingHist = getStoredUserTransactions();
+            const newTx: TransactionRecord = {
+                date: todayStr,
+                desc: `Reward Batch Setor (${ids.length} akun)`,
+                amount: hawwinBonus,
+                balance: newBal,
+                status: 'selesai',
+                note: 'Disetujui batch oleh admin verifikator',
+            };
+            saveStoredUserTransactions([newTx, ...existingHist]);
+
+            addStoredNotification({
+                title: 'Batch Setor Diterima',
+                message: `${ids.length} akun pada batch setoran Anda berhasil disetujui. Reward +${formatRupiah(hawwinBonus)} telah masuk ke saldo.`,
+                type: 'reward',
+                actionNav: 'riwayat',
+            });
+        }
     };
 
     const handleBatchReject = (ids: string[], reason?: string) => {
-        setSetoranList((prev) =>
-            prev.map((s) =>
-                ids.includes(s.id)
-                    ? { ...s, status: 'ditolak' as const, note: reason || 'Batch tolak verifikasi' }
-                    : s,
-            ),
+        const cleanReason = reason && reason.trim() ? reason.trim() : '-';
+        const nextSetoran = setoranList.map((s) =>
+            ids.includes(s.id)
+                ? { ...s, status: 'ditolak' as const, note: cleanReason }
+                : s,
         );
+        setSetoranList(nextSetoran);
+        saveStoredSetoran(nextSetoran);
+
+        const hawwinItems = setoranList.filter(
+            (s) => ids.includes(s.id) && (s.userId === 10 || s.userEmail === 'firstxyz0@gmail.com'),
+        );
+        if (hawwinItems.length > 0) {
+            addStoredNotification({
+                title: 'Batch Setoran Ditolak',
+                message: `${hawwinItems.length} akun pada batch Anda ditolak admin. Alasan: "${cleanReason}".`,
+                type: 'system',
+                actionNav: 'riwayat',
+            });
+        }
     };
 
     // Handlers: Payouts
     const handleApprovePayout = (id: string, note?: string) => {
-        setPayoutList((prev) =>
-            prev.map((p) =>
-                p.id === id
-                    ? {
-                        ...p,
-                        status: 'success' as const,
-                        note: note || `Transfer berhasil dikirim ke ${p.method} (${p.accountNumber})`,
-                    }
-                    : p,
-            ),
+        const target = payoutList.find((p) => p.id === id);
+        if (!target) return;
+
+        const cleanNote = note && note.trim()
+            ? note.trim()
+            : `Transfer berhasil dikirim ke ${target.method} (${target.accountNumber} a.n ${target.accountName || target.userName})`;
+
+        const nextPayouts = payoutList.map((p) =>
+            p.id === id
+                ? {
+                    ...p,
+                    status: 'success' as const,
+                    note: cleanNote,
+                }
+                : p,
         );
+        setPayoutList(nextPayouts);
+        saveStoredPayouts(nextPayouts);
+
+        const existingHist = getStoredUserTransactions();
+        let matched = false;
+        const updatedHist = existingHist.map((tx) => {
+            if (!matched && tx.status === 'pending' && (tx.desc.includes(target.accountNumber) || Math.abs(tx.amount) === target.amount)) {
+                matched = true;
+                return {
+                    ...tx,
+                    status: 'selesai' as const,
+                    note: cleanNote,
+                };
+            }
+            return tx;
+        });
+        saveStoredUserTransactions(updatedHist);
+
+        addStoredNotification({
+            title: 'Penarikan Sukses Diproses',
+            message: `Penarikan saldo ${formatRupiah(target.amount)} ke ${target.method} (${target.accountNumber}) telah berhasil dikirim admin. Catatan: "${cleanNote}".`,
+            type: 'wallet',
+            actionNav: 'saldo',
+        });
     };
 
     const handleRejectPayout = (id: string, reason?: string) => {
         const target = payoutList.find((p) => p.id === id);
         if (!target) return;
 
-        setPayoutList((prev) =>
-            prev.map((p) =>
-                p.id === id
-                    ? {
-                        ...p,
-                        status: 'rejected' as const,
-                        note: reason || 'Permintaan pencairan ditolak, saldo dikembalikan ke user',
-                    }
-                    : p,
-            ),
+        const cleanReason = reason && reason.trim() ? reason.trim() : 'Data rekening tidak sesuai / ditolak admin';
+
+        const nextPayouts = payoutList.map((p) =>
+            p.id === id
+                ? {
+                    ...p,
+                    status: 'rejected' as const,
+                    note: cleanReason,
+                }
+                : p,
         );
+        setPayoutList(nextPayouts);
+        saveStoredPayouts(nextPayouts);
 
         // Refund balance to user
-        setUsersList((prev) =>
-            prev.map((u) => {
-                if (u.id === target.userId) {
-                    return {
-                        ...u,
-                        currentBalance: u.currentBalance + target.amount,
-                    };
-                }
-                return u;
-            }),
-        );
+        const nextUsers = usersList.map((u) => {
+            if (u.id === target.userId || (target.userEmail && u.email === target.userEmail)) {
+                const refunded = u.currentBalance + target.amount;
+                return {
+                    ...u,
+                    currentBalance: refunded,
+                };
+            }
+            return u;
+        });
+        setUsersList(nextUsers);
+        saveStoredUsers(nextUsers);
+
+        const curBal = getStoredUserBalance(0);
+        const newBal = curBal + target.amount;
+        saveStoredUserBalance(newBal);
+
+        const todayStr = new Date().toISOString().split('T')[0];
+        const existingHist = getStoredUserTransactions();
+        let matched = false;
+        const updatedHist = existingHist.map((tx) => {
+            if (!matched && tx.status === 'pending' && (tx.desc.includes(target.accountNumber) || Math.abs(tx.amount) === target.amount)) {
+                matched = true;
+                return {
+                    ...tx,
+                    status: 'ditolak' as const,
+                    note: cleanReason,
+                };
+            }
+            return tx;
+        });
+
+        const refundTx: TransactionRecord = {
+            date: todayStr,
+            desc: `Pengembalian Dana (${target.method} Ditolak)`,
+            amount: target.amount,
+            balance: newBal,
+            status: 'selesai',
+            note: `Refund penarikan: ${cleanReason}`,
+        };
+        saveStoredUserTransactions([refundTx, ...updatedHist]);
+
+        addStoredNotification({
+            title: 'Penarikan Saldo Ditolak',
+            message: `Penarikan ${formatRupiah(target.amount)} (${target.method}) ditolak oleh admin. Alasan: "${cleanReason}". Saldo telah dikembalikan ke akun Anda.`,
+            type: 'wallet',
+            actionNav: 'saldo',
+        });
     };
 
     // Handlers: Users
-    const handleUpdateBalance = (userId: number, delta: number) => {
-        setUsersList((prev) =>
-            prev.map((u) => {
-                if (u.id === userId) {
-                    return {
-                        ...u,
-                        currentBalance: Math.max(0, u.currentBalance + delta),
-                    };
-                }
-                return u;
-            }),
-        );
+    const handleUpdateBalance = (userId: number, delta: number, note?: string) => {
+        const targetUser = usersList.find((u) => u.id === userId);
+        const newBalance = Math.max(0, (targetUser?.currentBalance || 0) + delta);
+        const isAdd = delta >= 0;
+        const cleanNote = note && note.trim() ? note.trim() : '-';
+
+        const nextUsers = usersList.map((u) => {
+            if (u.id === userId) {
+                return {
+                    ...u,
+                    currentBalance: newBalance,
+                };
+            }
+            return u;
+        });
+        setUsersList(nextUsers);
+        saveStoredUsers(nextUsers);
+
+        // If target is Hawwin (userId: 10 or email), update front-page balance & notify
+        if (userId === 10 || targetUser?.email === 'firstxyz0@gmail.com') {
+            saveStoredUserBalance(newBalance);
+
+            const todayStr = new Date().toISOString().split('T')[0];
+            const existingHist = getStoredUserTransactions();
+            const newTx: TransactionRecord = {
+                date: todayStr,
+                desc: `Penyesuaian Saldo Admin (${isAdd ? 'Tambah' : 'Kurang'})`,
+                amount: delta,
+                balance: newBalance,
+                status: 'selesai',
+                note: cleanNote,
+            };
+            saveStoredUserTransactions([newTx, ...existingHist]);
+
+            const notifTitle = isAdd ? 'Saldo Ditambahkan oleh Admin' : 'Saldo Dikurangi oleh Admin';
+            const notifMessage = `${isAdd ? 'Penambahan' : 'Pengurangan'} saldo sebesar ${isAdd ? '+' : '-'}${formatRupiah(Math.abs(delta))}. Catatan: "${cleanNote}".`;
+            addStoredNotification({
+                title: notifTitle,
+                message: notifMessage,
+                type: isAdd ? 'reward' : 'wallet',
+                actionNav: 'saldo',
+            });
+        }
     };
 
     const handleToggleUserRole = (userId: number) => {
-        setUsersList((prev) =>
-            prev.map((u) => {
-                if (u.id === userId) {
-                    return {
-                        ...u,
-                        role: u.role === 'admin' ? ('user' as const) : ('admin' as const),
-                    };
-                }
-                return u;
-            }),
-        );
+        const nextUsers = usersList.map((u) => {
+            if (u.id === userId) {
+                return {
+                    ...u,
+                    role: u.role === 'admin' ? ('user' as const) : ('admin' as const),
+                };
+            }
+            return u;
+        });
+        setUsersList(nextUsers);
+        saveStoredUsers(nextUsers);
     };
 
     const handleToggleUserStatus = (userId: number) => {
-        setUsersList((prev) =>
-            prev.map((u) => {
-                if (u.id === userId) {
-                    return {
-                        ...u,
-                        status: u.status === 'active' ? ('suspended' as const) : ('active' as const),
-                    };
-                }
-                return u;
-            }),
-        );
+        const nextUsers = usersList.map((u) => {
+            if (u.id === userId) {
+                return {
+                    ...u,
+                    status: u.status === 'active' ? ('suspended' as const) : ('active' as const),
+                };
+            }
+            return u;
+        });
+        setUsersList(nextUsers);
+        saveStoredUsers(nextUsers);
     };
 
     // Handlers: Settings
     const handleSaveSettings = (newSettings: PlatformSettings) => {
         setSettings(newSettings);
+        saveStoredSettings(newSettings);
     };
 
     return (
@@ -380,6 +543,7 @@ export default function Dashboard() {
                             {activeNav === 'setoran' && (
                                 <AdminSetoranView
                                     setoranList={setoranList}
+                                    presetUserId={presetSetoranUserId}
                                     onApproveSetoran={handleApproveSetoran}
                                     onRejectSetoran={handleRejectSetoran}
                                     onCheckSetoran={handleCheckSetoran}
@@ -411,7 +575,24 @@ export default function Dashboard() {
                                 />
                             )}
 
-                            {/* 5. SETTINGS VIEW */}
+                            {/* 5. LEADERBOARD VIEW */}
+                            {activeNav === 'leaderboard' && (
+                                <AdminLeaderboardView
+                                    usersList={usersList}
+                                    setoranList={setoranList}
+                                    onFilterUserSetoran={(userId) => {
+                                        setPresetSetoranUserId(userId);
+                                        setActiveNav('setoran');
+                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    }}
+                                    onOpenBalanceModal={(userItem) => {
+                                        setBalanceModalUser(userItem);
+                                        setIsBalanceModalOpen(true);
+                                    }}
+                                />
+                            )}
+
+                            {/* 6. SETTINGS VIEW */}
                             {activeNav === 'settings' && (
                                 <AdminSettingsView
                                     settings={settings}

@@ -1,24 +1,43 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
-import type { PlatformSettings } from '../types';
-import { initialPlatformSettings } from '../mock-data';
+import type { PlatformSettings, SystemRuleItem } from '../types';
+import {
+    initialPlatformSettings,
+    defaultSystemRules,
+    defaultSystemNotes,
+} from '../mock-data';
+import { AdminRulesTab } from './admin-rules-tab';
 
 interface AdminSettingsViewProps {
     settings?: PlatformSettings;
     onSaveSettings?: (newSettings: PlatformSettings) => void;
 }
 
-type SettingsTab = 'tarif' | 'operasional' | 'broadcast' | 'komunitas' | 'sistem';
+type SettingsTab = 'tarif' | 'operasional' | 'broadcast' | 'rules' | 'komunitas' | 'sistem';
 
 export function AdminSettingsView({
     settings = initialPlatformSettings,
     onSaveSettings,
 }: AdminSettingsViewProps) {
     const [activeTab, setActiveTab] = useState<SettingsTab>('tarif');
-    const [formData, setFormData] = useState<PlatformSettings>(() => ({
-        ...initialPlatformSettings,
-        ...settings,
-    }));
+    const [formData, setFormData] = useState<PlatformSettings>(() => {
+        let rules = settings?.rules;
+        let rulesNotes = settings?.rulesNotes;
+        try {
+            const saved = localStorage.getItem('triple9_rules');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                if (parsed.rules) rules = parsed.rules;
+                if (parsed.importantNotes) rulesNotes = parsed.importantNotes;
+            }
+        } catch { }
+        return {
+            ...initialPlatformSettings,
+            rules: rules || defaultSystemRules,
+            rulesNotes: rulesNotes || defaultSystemNotes,
+            ...settings,
+        };
+    });
     const [hasChanges, setHasChanges] = useState<boolean>(false);
 
     // Sync formData when parent settings prop updates
@@ -27,6 +46,8 @@ export function AdminSettingsView({
             setFormData((prev) => ({
                 ...prev,
                 ...settings,
+                rules: settings.rules || prev.rules || defaultSystemRules,
+                rulesNotes: settings.rulesNotes || prev.rulesNotes || defaultSystemNotes,
             }));
             setHasChanges(false);
         }
@@ -44,8 +65,25 @@ export function AdminSettingsView({
         if (onSaveSettings) {
             onSaveSettings(formData);
         }
+        try {
+            localStorage.setItem(
+                'triple9_rules',
+                JSON.stringify({
+                    rules: formData.rules || defaultSystemRules,
+                    importantNotes: formData.rulesNotes || defaultSystemNotes,
+                }),
+            );
+            window.dispatchEvent(
+                new CustomEvent('triple9_rules_updated', {
+                    detail: {
+                        rules: formData.rules || defaultSystemRules,
+                        importantNotes: formData.rulesNotes || defaultSystemNotes,
+                    },
+                }),
+            );
+        } catch { }
         setHasChanges(false);
-        toast.success('Pengaturan sistem Triple9 berhasil disimpan!');
+        toast.success('Pengaturan sistem & rules Triple9 berhasil disimpan!');
     };
 
     const handleReset = () => {
@@ -69,45 +107,45 @@ export function AdminSettingsView({
         <div className="space-y-6">
             {/* 1. Key Metrics Status Badges */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-                <div className="p-3 bg-white border-2 border-black shadow-[3px_3px_0px_0px_#000000] flex items-center gap-2.5">
+                <div className="p-3 bg-white border-2 border-black shadow-[3px_3px_0px_0px_#000000] flex items-center gap-2.5 min-w-0">
                     <div className="size-8 rounded-xs border border-black bg-[#FFD700] flex items-center justify-center shrink-0">
                         <img src="/images/icon/salary.png" alt="Rate" className="size-5 object-contain" />
                     </div>
-                    <div className="min-w-0">
-                        <div className="text-[10px] font-bold text-neutral-500 uppercase truncate">Rate Gmail</div>
-                        <div className="font-mono font-black text-black truncate">{formatRupiah(formData.gmailRate)}</div>
+                    <div className="min-w-0 flex-1">
+                        <div className="text-[10px] font-bold text-neutral-500 uppercase whitespace-nowrap leading-tight">Rate Gmail</div>
+                        <div className="font-mono font-black text-black text-xs sm:text-sm whitespace-nowrap leading-normal">{formatRupiah(formData.gmailRate)}</div>
                     </div>
                 </div>
 
-                <div className="p-3 bg-white border-2 border-black shadow-[3px_3px_0px_0px_#000000] flex items-center gap-2.5">
+                <div className="p-3 bg-white border-2 border-black shadow-[3px_3px_0px_0px_#000000] flex items-center gap-2.5 min-w-0">
                     <div className="size-8 rounded-xs border border-black bg-[#00C2CB] flex items-center justify-center shrink-0">
                         <img src="/images/icon/wallet.png" alt="Min Payout" className="size-5 object-contain" />
                     </div>
-                    <div className="min-w-0">
-                        <div className="text-[10px] font-bold text-neutral-500 uppercase truncate">Min. Penarikan</div>
-                        <div className="font-mono font-black text-black truncate">{formatRupiah(formData.minWithdraw)}</div>
+                    <div className="min-w-0 flex-1">
+                        <div className="text-[10px] font-bold text-neutral-500 uppercase whitespace-nowrap leading-tight">Min. Penarikan</div>
+                        <div className="font-mono font-black text-black text-xs sm:text-sm whitespace-nowrap leading-normal">{formatRupiah(formData.minWithdraw)}</div>
                     </div>
                 </div>
 
-                <div className="p-3 bg-white border-2 border-black shadow-[3px_3px_0px_0px_#000000] flex items-center gap-2.5">
+                <div className="p-3 bg-white border-2 border-black shadow-[3px_3px_0px_0px_#000000] flex items-center gap-2.5 min-w-0">
                     <div className={`size-8 rounded-xs border border-black flex items-center justify-center shrink-0 ${formData.depositsOpen ? 'bg-[#00C2CB]' : 'bg-[#FF00FF]'}`}>
                         <img src={formData.depositsOpen ? '/images/icon/checklist.png' : '/images/icon/reject.png'} alt="Kuota" className="size-5 object-contain" />
                     </div>
-                    <div className="min-w-0">
-                        <div className="text-[10px] font-bold text-neutral-500 uppercase truncate">Status Kuota</div>
-                        <div className="font-black text-black uppercase text-[11px] truncate">
+                    <div className="min-w-0 flex-1">
+                        <div className="text-[10px] font-bold text-neutral-500 uppercase whitespace-nowrap leading-tight">Status Kuota</div>
+                        <div className="font-black text-black uppercase text-[11px] whitespace-nowrap leading-normal">
                             {formData.depositsOpen ? 'Dibuka' : 'Ditutup'}
                         </div>
                     </div>
                 </div>
 
-                <div className="p-3 bg-white border-2 border-black shadow-[3px_3px_0px_0px_#000000] flex items-center gap-2.5">
+                <div className="p-3 bg-white border-2 border-black shadow-[3px_3px_0px_0px_#000000] flex items-center gap-2.5 min-w-0">
                     <div className={`size-8 rounded-xs border border-black flex items-center justify-center shrink-0 ${formData.announcementActive ? 'bg-[#FFD700]' : 'bg-neutral-200'}`}>
                         <img src="/images/icon/announcement.png" alt="Broadcast" className="size-5 object-contain" />
                     </div>
-                    <div className="min-w-0">
-                        <div className="text-[10px] font-bold text-neutral-500 uppercase truncate">Banner Broadcast</div>
-                        <div className="font-black text-black uppercase text-[11px] truncate">
+                    <div className="min-w-0 flex-1">
+                        <div className="text-[10px] font-bold text-neutral-500 uppercase whitespace-nowrap leading-tight">Banner Broadcast</div>
+                        <div className="font-black text-black uppercase text-[11px] whitespace-nowrap leading-normal">
                             {formData.announcementActive ? 'Tayang' : 'Mati'}
                         </div>
                     </div>
@@ -150,6 +188,18 @@ export function AdminSettingsView({
                 >
                     <img src="/images/icon/announcement.png" alt="Broadcast" className="size-4 object-contain" />
                     <span>Broadcast Pengumuman</span>
+                </button>
+
+                <button
+                    type="button"
+                    onClick={() => setActiveTab('rules')}
+                    className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-sm text-xs font-black uppercase tracking-wider border-2 border-black transition cursor-pointer ${activeTab === 'rules'
+                        ? 'bg-[#FFD700] text-black shadow-[3px_3px_0px_0px_#000000]'
+                        : 'bg-white text-black hover:bg-[#F5F5DC]'
+                        }`}
+                >
+                    <img src="/images/icon/notes.png" alt="Rules" className="size-4 object-contain" />
+                    <span>Rules & Ketentuan</span>
                 </button>
 
                 <button
@@ -831,6 +881,16 @@ export function AdminSettingsView({
                         </div>
                     </div>
                 </div>
+            )}
+
+            {/* TAB: RULES & KETENTUAN */}
+            {activeTab === 'rules' && (
+                <AdminRulesTab
+                    rules={formData.rules || defaultSystemRules}
+                    rulesNotes={formData.rulesNotes || defaultSystemNotes}
+                    onChangeRules={(newRules) => updateField('rules', newRules)}
+                    onChangeNotes={(newNotes) => updateField('rulesNotes', newNotes)}
+                />
             )}
 
             {/* 5. Sticky Bottom Action Bar (if has changes) */}

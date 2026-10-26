@@ -84,11 +84,10 @@ export function AdminBalanceModal({
                         <button
                             type="button"
                             onClick={() => setActionType('add')}
-                            className={`py-2 px-3 rounded-sm border-2 border-black text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition cursor-pointer ${
-                                actionType === 'add'
+                            className={`py-2 px-3 rounded-sm border-2 border-black text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition cursor-pointer ${actionType === 'add'
                                     ? 'bg-[#00C2CB] text-black shadow-[3px_3px_0px_0px_#000000]'
                                     : 'bg-white text-black hover:bg-[#F5F5DC]'
-                            }`}
+                                }`}
                         >
                             <Plus className="size-3.5 stroke-[3]" />
                             <span>Tambah Saldo</span>
@@ -96,11 +95,10 @@ export function AdminBalanceModal({
                         <button
                             type="button"
                             onClick={() => setActionType('subtract')}
-                            className={`py-2 px-3 rounded-sm border-2 border-black text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition cursor-pointer ${
-                                actionType === 'subtract'
+                            className={`py-2 px-3 rounded-sm border-2 border-black text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition cursor-pointer ${actionType === 'subtract'
                                     ? 'bg-[#FF00FF] text-black shadow-[3px_3px_0px_0px_#000000]'
                                     : 'bg-white text-black hover:bg-[#F5F5DC]'
-                            }`}
+                                }`}
                         >
                             <Minus className="size-3.5 stroke-[3]" />
                             <span>Kurangi Saldo</span>
@@ -135,7 +133,7 @@ export function AdminBalanceModal({
                     {/* Note */}
                     <div className="space-y-1">
                         <label className="text-xs font-black uppercase tracking-wider text-black">
-                            Alasan / Keterangan
+                            Catatan
                         </label>
                         <input
                             type="text"

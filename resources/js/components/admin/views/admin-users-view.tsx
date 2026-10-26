@@ -119,22 +119,22 @@ export function AdminUsersView({
                                         <td className="p-3 border-r-2 border-black font-mono font-bold text-black">
                                             #{item.id}
                                         </td>
-                                        <td className="p-3 border-r-2 border-black">
+                                        <td className="p-3 border-r-2 border-black whitespace-nowrap">
                                             <div className="flex items-center gap-2">
                                                 <img
                                                     src={item.avatar}
                                                     alt={item.name}
                                                     className="size-7 rounded-full border border-black bg-[#FFD700] object-contain shrink-0"
                                                 />
-                                                <span className="font-bold text-black truncate max-w-[140px]">
+                                                <span className="font-bold text-black whitespace-nowrap">
                                                     {item.name}
                                                 </span>
                                             </div>
                                         </td>
-                                        <td className="p-3 border-r-2 border-black font-mono text-black select-all">
+                                        <td className="p-3 border-r-2 border-black font-mono text-black select-all whitespace-nowrap">
                                             {item.email}
                                         </td>
-                                        <td className="p-3 border-r-2 border-black">
+                                        <td className="p-3 border-r-2 border-black whitespace-nowrap">
                                             {item.role === 'admin' ? (
                                                 <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#FF00FF] shadow-[1px_1px_0px_0px_#000000]" title="Admin">
                                                     <img src="/images/icon/tatatertib.png" alt="Admin" className="size-5 object-contain shrink-0" />
@@ -145,23 +145,25 @@ export function AdminUsersView({
                                                 </span>
                                             )}
                                         </td>
-                                        <td className="p-3 border-r-2 border-black font-mono font-black text-black">
+                                        <td className="p-3 border-r-2 border-black font-mono font-black text-black whitespace-nowrap">
                                             {item.role === 'admin' ? '-' : `${item.totalSetoran} Akun`}
                                         </td>
-                                        <td className="p-3 border-r-2 border-black font-mono font-black text-black">
+                                        <td className="p-3 border-r-2 border-black font-mono font-black text-black whitespace-nowrap">
                                             {item.role === 'admin' ? '-' : formatRupiah(item.currentBalance)}
                                         </td>
-                                        <td className="p-3 border-r-2 border-black text-neutral-600 font-mono">
+                                        <td className="p-3 border-r-2 border-black text-neutral-600 font-mono whitespace-nowrap">
                                             {item.joinedDate}
                                         </td>
-                                        <td className="p-3 border-r-2 border-black">
+                                        <td className="p-3 border-r-2 border-black whitespace-nowrap">
                                             {item.status === 'active' ? (
-                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#00C2CB] shadow-[1px_1px_0px_0px_#000000]" title="Aktif">
-                                                    <img src="/images/icon/checklist.png" alt="Aktif" className="size-5 object-contain shrink-0" />
+                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs border-2 border-black bg-[#00C2CB] font-black text-[10px] uppercase shadow-[2px_2px_0px_0px_#000000]">
+                                                    <img src="/images/icon/checklist.png" alt="Aktif" className="size-3.5 object-contain shrink-0" />
+                                                    <span>Aktif</span>
                                                 </span>
                                             ) : (
-                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#FF00FF] shadow-[1px_1px_0px_0px_#000000]" title="Suspend">
-                                                    <img src="/images/icon/reject.png" alt="Suspend" className="size-5 object-contain shrink-0" />
+                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs border-2 border-black bg-[#FF00FF] font-black text-[10px] uppercase shadow-[2px_2px_0px_0px_#000000]">
+                                                    <img src="/images/icon/reject.png" alt="Suspend" className="size-3.5 object-contain shrink-0" />
+                                                    <span>Suspend</span>
                                                 </span>
                                             )}
                                         </td>

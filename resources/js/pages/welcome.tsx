@@ -25,6 +25,25 @@ import type {
     EwalletType,
     TransactionRecord,
 } from '@/components/welcome';
+import type { AdminSetoranItem, AdminPayoutItem, PlatformSettings } from '@/components/admin/types';
+import {
+    formatRupiah,
+    getStoredSetoran,
+    saveStoredSetoran,
+    getStoredPayouts,
+    saveStoredPayouts,
+    getStoredUsers,
+    saveStoredUsers,
+    getStoredSettings,
+    getStoredUserBalance,
+    saveStoredUserBalance,
+    getStoredUserTransactions,
+    saveStoredUserTransactions,
+    addStoredNotification,
+    filterUserSetoran,
+    subscribeToSync,
+    SYNC_EVENTS,
+} from '@/lib/shared-store';
 
 export default function Welcome() {
     const { auth } = usePage<{ auth: Auth }>().props;
@@ -42,10 +61,12 @@ export default function Welcome() {
     // Navigation state
     const [activeNav, setActiveNav] = useState('dashboard');
 
-    // Balance, E-Wallet & Transactions
-    const [currentBalance, setCurrentBalance] = useState(20000);
+    // Balance, E-Wallet & Transactions with localStorage
+    const [currentBalance, setCurrentBalance] = useState<number>(() => getStoredUserBalance(0));
     const [isSaldoVisible, setIsSaldoVisible] = useState(true);
     const [selectedEwallet, setSelectedEwallet] = useState<EwalletType>('DANA');
+    const [platformSettings, setPlatformSettings] = useState<PlatformSettings>(() => getStoredSettings());
+
     const [savedEwalletNumbers, setSavedEwalletNumbers] = useState<Record<string, string>>(() => {
         try {
             const saved = localStorage.getItem('triple9_saved_ewallets');
@@ -60,10 +81,57 @@ export default function Welcome() {
             ShopeePay: '',
         };
     });
+
+    const [savedEwalletNames, setSavedEwalletNames] = useState<Record<string, string>>(() => {
+        try {
+            const saved = localStorage.getItem('triple9_saved_ewallet_names');
+            if (saved) return JSON.parse(saved);
+        } catch {
+            // ignore
+        }
+        return {
+            DANA: 'Hawwin Ramadhan',
+            OVO: '',
+            GoPay: '',
+            ShopeePay: '',
+        };
+    });
+
     const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
     const [isIntroModalOpen, setIsIntroModalOpen] = useState(false);
     const [isAccountSettingsModalOpen, setIsAccountSettingsModalOpen] = useState(false);
-    const [transactionHistory, setTransactionHistory] = useState<TransactionRecord[]>([]);
+    const [transactionHistory, setTransactionHistory] = useState<TransactionRecord[]>(() =>
+        getStoredUserTransactions()
+    );
+
+    // Stor Akun History synced with admin setoran list
+    const [storHistory, setStorHistory] = useState<StorRecord[]>(() =>
+        filterUserSetoran(getStoredSetoran(), user.email, user.id)
+    );
+    const [riwayatFilter, setRiwayatFilter] = useState<RiwayatFilter>('all');
+
+    // Real-time synchronization across browser tabs and same-window events
+    useEffect(() => {
+        const syncAllData = () => {
+            setCurrentBalance(getStoredUserBalance(0));
+            setTransactionHistory(getStoredUserTransactions());
+            setStorHistory(filterUserSetoran(getStoredSetoran(), user.email, user.id));
+            setPlatformSettings(getStoredSettings());
+        };
+
+        const unsubscribe = subscribeToSync(
+            [
+                SYNC_EVENTS.SETORAN,
+                SYNC_EVENTS.PAYOUTS,
+                SYNC_EVENTS.USERS,
+                SYNC_EVENTS.SETTINGS,
+                SYNC_EVENTS.BALANCE,
+                SYNC_EVENTS.NOTIFICATIONS,
+            ],
+            syncAllData
+        );
+        return unsubscribe;
+    }, [user.email, user.id]);
 
     useEffect(() => {
         try {
@@ -76,42 +144,71 @@ export default function Welcome() {
         }
     }, []);
 
-    // Stor Akun History with 20 demo items
-    const [storHistory, setStorHistory] = useState<StorRecord[]>([
-        { id: 'stor-1', email: 'frt12@gmail.com', room: 'triple9', date: '2026-10-22', status: 'pending', reward: 5000 },
-        { id: 'stor-2', email: 'dian.lestari92@gmail.com', room: 'triple9', date: '2026-10-22', status: 'pending', reward: 5000 },
-        { id: 'stor-3', email: 'rio.firmansyah01@gmail.com', room: '9triple', date: '2026-10-22', status: 'pending', reward: 5000 },
-        { id: 'stor-4', email: 'rizky.febrian77@gmail.com', room: 'triple9', date: '2026-10-22', status: 'pending', reward: 5000 },
-        { id: 'stor-5', email: 'fauzi.store22@gmail.com', room: '9triple', date: '2026-10-22', status: 'pending', reward: 5000 },
-        { id: 'stor-6', email: 'fauzi.akun33@gmail.com', room: 'triple9', date: '2026-10-22', status: 'ditolak', reward: 5000 },
-        { id: 'stor-7', email: 'reza.gmail101@gmail.com', room: '9triple', date: '2026-10-21', status: 'pending', reward: 5000 },
-        { id: 'stor-8', email: 'reza.gmail102@gmail.com', room: 'triple9', date: '2026-10-21', status: 'diterima', reward: 5000 },
-        { id: 'stor-9', email: 'dewi.acc55@gmail.com', room: 'triple9', date: '2026-10-21', status: 'pending', reward: 5000 },
-        { id: 'stor-10', email: 'dewi.acc56@gmail.com', room: '9triple', date: '2026-10-21', status: 'diterima', reward: 5000 },
-        { id: 'stor-11', email: 'fajar.gamer99@gmail.com', room: 'triple9', date: '2026-10-21', status: 'dicek', reward: 5000 },
-        { id: 'stor-12', email: 'fajar.gamer100@gmail.com', room: 'triple9', date: '2026-10-21', status: 'ditolak', reward: 5000 },
-        { id: 'stor-13', email: 'maya.office01@gmail.com', room: '9triple', date: '2026-10-21', status: 'pending', reward: 5000 },
-        { id: 'stor-14', email: 'maya.office02@gmail.com', room: 'triple9', date: '2026-10-21', status: 'diterima', reward: 5000 },
-        { id: 'stor-15', email: 'dimas.store88@gmail.com', room: 'triple9', date: '2026-10-21', status: 'dicek', reward: 5000 },
-        { id: 'stor-16', email: 'dimas.store89@gmail.com', room: '9triple', date: '2026-10-21', status: 'diterima', reward: 5000 },
-        { id: 'stor-17', email: 'rini.mail01@gmail.com', room: 'triple9', date: '2026-10-21', status: 'pending', reward: 5000 },
-        { id: 'stor-18', email: 'rini.mail02@gmail.com', room: 'triple9', date: '2026-10-21', status: 'diterima', reward: 5000 },
-        { id: 'stor-19', email: 'hawwin.sub01@gmail.com', room: '9triple', date: '2026-10-21', status: 'pending', reward: 5000 },
-        { id: 'stor-20', email: 'hawwin.sub02@gmail.com', room: 'triple9', date: '2026-10-21', status: 'ditolak', reward: 5000 },
-    ]);
-    const [riwayatFilter, setRiwayatFilter] = useState<RiwayatFilter>('all');
-
     const activeItemLabel = allNavItems.find((n) => n.id === activeNav)?.label || 'Dashboard';
 
     const handleSelectNav = (id: string) => {
         setActiveNav(id);
     };
 
+    // Front-end deposit handler: syncs into shared admin setoran store
     const handleAddStorRecords = (newRecords: StorRecord[]) => {
-        setStorHistory((prev) => [...newRecords, ...prev]);
+        const curSettings = getStoredSettings();
+        const currentRate = curSettings.gmailRate || 5000;
+        const todayStr = new Date().toISOString().split('T')[0];
+        const timeStr = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace('.', ':');
+        const batchCode = `BATCH-${todayStr.replace(/-/g, '').slice(2)}-${Math.floor(10 + Math.random() * 90)}`;
+
+        const newAdminItems: AdminSetoranItem[] = newRecords.map((r, idx) => ({
+            id: r.id && r.id.startsWith('SET-') ? r.id : `SET-${Date.now()}-${idx}`,
+            userId: user.id || 10,
+            userName: user.name || 'Hawwin Ramadhan',
+            userEmail: user.email || 'firstxyz0@gmail.com',
+            userAvatar: user.avatar || '/images/avatar/kucing.png',
+            email: r.email,
+            password: r.room,
+            date: todayStr,
+            time: timeStr,
+            status: 'pending',
+            reward: r.reward || currentRate,
+            batchId: batchCode,
+            note: '-',
+        }));
+
+        const currentStored = getStoredSetoran();
+        const updatedStored = [...newAdminItems, ...currentStored];
+        saveStoredSetoran(updatedStored);
+        setStorHistory(filterUserSetoran(updatedStored, user.email, user.id));
+
+        // Ensure user is in stored users list
+        const currentUsers = getStoredUsers();
+        const userExists = currentUsers.some((u) => u.id === user.id || u.email === user.email);
+        if (!userExists) {
+            const nextUsers = [
+                ...currentUsers,
+                {
+                    id: user.id || 10,
+                    name: user.name || 'Hawwin Ramadhan',
+                    email: user.email || 'firstxyz0@gmail.com',
+                    avatar: user.avatar || '/images/avatar/kucing.png',
+                    role: (user.role || 'user') as 'admin' | 'user',
+                    totalSetoran: newRecords.length,
+                    currentBalance: getStoredUserBalance(0),
+                    joinedDate: todayStr,
+                    status: 'active' as const,
+                },
+            ];
+            saveStoredUsers(nextUsers);
+        }
+
+        addStoredNotification({
+            title: 'Setoran Akun Terkirim',
+            message: `Berhasil mengirim ${newRecords.length} akun Gmail (PW: ${newRecords[0]?.room || 'triple9'}). Sedang menunggu verifikasi tim audit.`,
+            type: 'system',
+            actionNav: 'riwayat',
+        });
     };
 
-    const handleSaveEwalletNumber = (wallet: EwalletType, number: string) => {
+    const handleSaveEwalletNumber = (wallet: EwalletType, number: string, name?: string) => {
         setSavedEwalletNumbers((prev) => {
             const next = {
                 ...prev,
@@ -124,21 +221,83 @@ export default function Welcome() {
             }
             return next;
         });
+        if (name !== undefined) {
+            setSavedEwalletNames((prev) => {
+                const next = {
+                    ...prev,
+                    [wallet]: name,
+                };
+                try {
+                    localStorage.setItem('triple9_saved_ewallet_names', JSON.stringify(next));
+                } catch {
+                    // ignore
+                }
+                return next;
+            });
+        }
     };
 
-    const handleWithdraw = (amount: number, account: string) => {
-        setCurrentBalance((prev) => prev - amount);
+    // Front-end withdrawal handler: deducts balance, inserts into admin payouts list & user history
+    const handleWithdraw = (amount: number, account: string, accountName?: string) => {
+        const nextBalance = currentBalance - amount;
+        setCurrentBalance(nextBalance);
+        saveStoredUserBalance(nextBalance);
+
+        // Update user balance in admin users list as well
+        const curUsers = getStoredUsers();
+        const nextUsers = curUsers.map((u) =>
+            u.id === (user.id || 10) ? { ...u, currentBalance: nextBalance } : u
+        );
+        saveStoredUsers(nextUsers);
+
         const todayStr = new Date().toISOString().split('T')[0];
-        setTransactionHistory((prev) => [
-            {
-                date: todayStr,
-                desc: `Tarik Saldo ke ${selectedEwallet} (${account})`,
-                amount: -amount,
-                balance: currentBalance - amount,
-                status: 'complete',
-            },
-            ...prev,
-        ]);
+        const timeStr = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace('.', ':');
+        const newPayoutId = `TRX-WD-${Date.now()}`;
+        const newPayoutItem: AdminPayoutItem = {
+            id: newPayoutId,
+            userId: user.id || 10,
+            userName: user.name || 'Hawwin Ramadhan',
+            userEmail: user.email || 'firstxyz0@gmail.com',
+            userAvatar: user.avatar || '/images/avatar/kucing.png',
+            method: selectedEwallet,
+            accountName: accountName || 'Hawwin Ramadhan',
+            accountNumber: account,
+            amount: amount,
+            date: todayStr,
+            time: timeStr,
+            status: 'pending',
+            note: '-',
+        };
+
+        const curPayouts = getStoredPayouts();
+        saveStoredPayouts([newPayoutItem, ...curPayouts]);
+
+        const descStr = accountName
+            ? `Tarik Saldo ke ${selectedEwallet} (${account} a.n ${accountName})`
+            : `Tarik Saldo ke ${selectedEwallet} (${account})`;
+
+        const newTx: TransactionRecord = {
+            date: todayStr,
+            desc: descStr,
+            amount: -amount,
+            balance: nextBalance,
+            status: 'pending',
+            note: '-',
+            method: selectedEwallet,
+            accountNumber: account,
+            accountName: accountName,
+        };
+
+        const nextTxList = [newTx, ...getStoredUserTransactions()];
+        setTransactionHistory(nextTxList);
+        saveStoredUserTransactions(nextTxList);
+
+        addStoredNotification({
+            title: 'Pengajuan Penarikan Saldo',
+            message: `Pengajuan penarikan ${formatRupiah(amount)} ke ${selectedEwallet} (${account}) berhasil diajukan dan sedang diproses admin.`,
+            type: 'wallet',
+            actionNav: 'saldo',
+        });
     };
 
     const handleNavigateToRiwayat = (filter: RiwayatFilter) => {
@@ -184,79 +343,82 @@ export default function Welcome() {
                     {/* DASHBOARD PAGE CONTENT CANVAS */}
                     <div className="flex-1 p-4 sm:p-6 lg:p-7 bg-[#F5F5DC]">
                         <div className="max-w-7xl w-full mx-auto space-y-6 pb-12">
-                        {/* 1. DASHBOARD VIEW */}
-                        {activeNav === 'dashboard' && (
-                            <DashboardView
-                                currentBalance={currentBalance}
-                                isSaldoVisible={isSaldoVisible}
-                                onToggleSaldo={() => setIsSaldoVisible(!isSaldoVisible)}
-                                storHistory={storHistory}
-                                onNavigate={handleSelectNav}
-                                onNavigateToRiwayat={handleNavigateToRiwayat}
-                                onOpenWithdrawModal={() => setIsWithdrawModalOpen(true)}
-                                onOpenIntroModal={() => setIsIntroModalOpen(true)}
-                            />
-                        )}
+                            {/* 1. DASHBOARD VIEW */}
+                            {activeNav === 'dashboard' && (
+                                <DashboardView
+                                    currentBalance={currentBalance}
+                                    isSaldoVisible={isSaldoVisible}
+                                    onToggleSaldo={() => setIsSaldoVisible(!isSaldoVisible)}
+                                    storHistory={storHistory}
+                                    onNavigate={handleSelectNav}
+                                    onNavigateToRiwayat={handleNavigateToRiwayat}
+                                    onOpenWithdrawModal={() => setIsWithdrawModalOpen(true)}
+                                    onOpenIntroModal={() => setIsIntroModalOpen(true)}
+                                />
+                            )}
 
-                        {/* 2. STOR VIEW */}
-                        {activeNav === 'stor' && (
-                            <StorView
-                                onNavigateToRules={() => handleSelectNav('rules')}
-                                onAddStorRecords={handleAddStorRecords}
-                            />
-                        )}
+                            {/* 2. STOR VIEW */}
+                            {activeNav === 'stor' && (
+                                <StorView
+                                    onNavigateToRules={() => handleSelectNav('rules')}
+                                    onAddStorRecords={handleAddStorRecords}
+                                    gmailRate={platformSettings?.gmailRate || 5000}
+                                />
+                            )}
 
-                        {/* 3. SALDO VIEW */}
-                        {activeNav === 'saldo' && (
-                            <SaldoView
-                                currentBalance={currentBalance}
-                                isSaldoVisible={isSaldoVisible}
-                                onToggleSaldo={() => setIsSaldoVisible(!isSaldoVisible)}
-                                selectedEwallet={selectedEwallet}
-                                onChangeEwallet={setSelectedEwallet}
-                                savedEwalletNumbers={savedEwalletNumbers}
-                                onSaveEwalletNumber={handleSaveEwalletNumber}
-                                transactionHistory={transactionHistory}
-                                onWithdraw={handleWithdraw}
-                                isWithdrawModalOpen={isWithdrawModalOpen}
-                                onSetWithdrawModalOpen={setIsWithdrawModalOpen}
-                            />
-                        )}
+                            {/* 3. SALDO VIEW */}
+                            {activeNav === 'saldo' && (
+                                <SaldoView
+                                    currentBalance={currentBalance}
+                                    isSaldoVisible={isSaldoVisible}
+                                    onToggleSaldo={() => setIsSaldoVisible(!isSaldoVisible)}
+                                    selectedEwallet={selectedEwallet}
+                                    onChangeEwallet={setSelectedEwallet}
+                                    savedEwalletNumbers={savedEwalletNumbers}
+                                    savedEwalletNames={savedEwalletNames}
+                                    onSaveEwalletNumber={handleSaveEwalletNumber}
+                                    transactionHistory={transactionHistory}
+                                    onWithdraw={handleWithdraw}
+                                    isWithdrawModalOpen={isWithdrawModalOpen}
+                                    onSetWithdrawModalOpen={setIsWithdrawModalOpen}
+                                    minWithdraw={platformSettings?.minWithdraw || 10000}
+                                />
+                            )}
 
-                        {/* 4. CHECKER VIEW */}
-                        {activeNav === 'checker' && <CheckerView />}
+                            {/* 4. CHECKER VIEW */}
+                            {activeNav === 'checker' && <CheckerView />}
 
-                        {/* 5. RIWAYAT VIEW */}
-                        {activeNav === 'riwayat' && (
-                            <RiwayatView
-                                storHistory={storHistory}
-                                riwayatFilter={riwayatFilter}
-                                onChangeRiwayatFilter={setRiwayatFilter}
-                            />
-                        )}
+                            {/* 5. RIWAYAT VIEW */}
+                            {activeNav === 'riwayat' && (
+                                <RiwayatView
+                                    storHistory={storHistory}
+                                    riwayatFilter={riwayatFilter}
+                                    onChangeRiwayatFilter={setRiwayatFilter}
+                                />
+                            )}
 
-                        {/* 6. RULES VIEW */}
-                        {activeNav === 'rules' && (
-                            <RulesView onNavigateToStor={() => handleSelectNav('stor')} />
-                        )}
+                            {/* 6. RULES VIEW */}
+                            {activeNav === 'rules' && (
+                                <RulesView onNavigateToStor={() => handleSelectNav('stor')} />
+                            )}
 
-                        {/* 7. LEADERBOARD VIEW */}
-                        {activeNav === 'leaderboard' && <LeaderboardView user={user} />}
+                            {/* 7. LEADERBOARD VIEW */}
+                            {activeNav === 'leaderboard' && <LeaderboardView user={user} />}
 
-                        {/* 9. KOMUNITAS VIEW */}
-                        {activeNav === 'komunitas' && <KomunitasView />}
+                            {/* 9. KOMUNITAS VIEW */}
+                            {activeNav === 'komunitas' && <KomunitasView />}
 
-                        {/* 10. REFERRAL VIEW */}
-                        {activeNav === 'referral' && <ReferralView />}
+                            {/* 10. REFERRAL VIEW */}
+                            {activeNav === 'referral' && <ReferralView />}
 
-                        {/* 11. SUPPORT VIEW */}
-                        {activeNav === 'support' && (
-                            <SupportView
-                                userName={user?.name}
-                                userEmail={user?.email}
-                                onNavigate={handleSelectNav}
-                            />
-                        )}
+                            {/* 11. SUPPORT VIEW */}
+                            {activeNav === 'support' && (
+                                <SupportView
+                                    userName={user?.name}
+                                    userEmail={user?.email}
+                                    onNavigate={handleSelectNav}
+                                />
+                            )}
                         </div>
                     </div>
                 </SidebarInset>

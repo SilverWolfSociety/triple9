@@ -21,6 +21,7 @@ export interface StorRecord {
     status: 'pending' | 'dicek' | 'diterima' | 'ditolak';
     date: string;
     reward: number;
+    note?: string;
 }
 
 export type RiwayatFilter = 'all' | 'diterima' | 'pending' | 'ditolak' | 'dicek';
@@ -56,6 +57,10 @@ export interface TransactionRecord {
     amount: number;
     balance: number;
     status?: 'pending' | 'complete' | 'sukses' | 'selesai' | 'ditolak' | string;
+    note?: string;
+    method?: string;
+    accountNumber?: string;
+    accountName?: string;
 }
 
 export interface WithdrawRecord {

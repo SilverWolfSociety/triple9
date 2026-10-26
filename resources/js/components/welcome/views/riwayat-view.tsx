@@ -204,10 +204,11 @@ export function RiwayatView({
                             <thead>
                                 <tr className="bg-[#FFD700] border-b-2 border-black text-black uppercase font-black tracking-wider text-[11px]">
                                     <th className="p-3 border-r-2 border-black">Gmail</th>
-                                    <th className="p-3 border-r-2 border-black">Jalur</th>
-                                    <th className="p-3 border-r-2 border-black">Tanggal</th>
-                                    <th className="p-3 border-r-2 border-black text-center">Status</th>
-                                    <th className="p-3 text-right">Reward</th>
+                                    <th className="p-3 border-r-2 border-black whitespace-nowrap w-28">Jalur</th>
+                                    <th className="p-3 border-r-2 border-black whitespace-nowrap w-28">Tanggal</th>
+                                    <th className="p-3 border-r-2 border-black whitespace-nowrap w-32">Status</th>
+                                    <th className="p-3 border-r-2 border-black whitespace-nowrap min-w-[130px]">Catatan</th>
+                                    <th className="p-3 text-right whitespace-nowrap w-28">Reward</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y-2 divide-black bg-white font-medium text-black">
@@ -218,24 +219,31 @@ export function RiwayatView({
                                             PW: {item.room}
                                         </td>
                                         <td className="p-3 border-r-2 border-black font-mono font-bold text-xs text-neutral-800">{item.date}</td>
-                                        <td className="p-3 border-r-2 border-black text-center align-middle">
+                                        <td className="p-3 border-r-2 border-black align-middle whitespace-nowrap">
                                             {item.status === 'ditolak' ? (
-                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#FF00FF] shadow-[2px_2px_0px_0px_#000000]" title="Ditolak">
-                                                    <img src="/images/icon/reject.png" alt="Ditolak" className="size-5 object-contain shrink-0" />
+                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs border-2 border-black bg-[#FF00FF] font-black text-[10px] uppercase shadow-[2px_2px_0px_0px_#000000]">
+                                                    <img src="/images/icon/reject.png" alt="Ditolak" className="size-3.5 object-contain shrink-0" />
+                                                    <span>Ditolak</span>
                                                 </span>
                                             ) : item.status === 'pending' ? (
-                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#FFD700] shadow-[2px_2px_0px_0px_#000000]" title="Menunggu">
-                                                    <img src="/images/icon/pending.png" alt="Menunggu" className="size-5 object-contain shrink-0" />
+                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs border-2 border-black bg-[#FFD700] font-black text-[10px] uppercase shadow-[2px_2px_0px_0px_#000000]">
+                                                    <img src="/images/icon/pending.png" alt="Menunggu" className="size-3.5 object-contain shrink-0" />
+                                                    <span>Menunggu</span>
                                                 </span>
                                             ) : item.status === 'dicek' ? (
-                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#F5F5DC] shadow-[2px_2px_0px_0px_#000000]" title="Di Cek">
-                                                    <img src="/images/icon/find.png" alt="Di Cek" className="size-5 object-contain shrink-0" />
+                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs border-2 border-black bg-[#F5F5DC] font-black text-[10px] uppercase shadow-[2px_2px_0px_0px_#000000]">
+                                                    <img src="/images/icon/find.png" alt="Di Cek" className="size-3.5 object-contain shrink-0" />
+                                                    <span>Di Cek</span>
                                                 </span>
                                             ) : (
-                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border-2 border-black bg-[#00C2CB] shadow-[2px_2px_0px_0px_#000000]" title="Diterima">
-                                                    <img src="/images/icon/checklist.png" alt="Diterima" className="size-5 object-contain shrink-0" />
+                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs border-2 border-black bg-[#00C2CB] font-black text-[10px] uppercase shadow-[2px_2px_0px_0px_#000000]">
+                                                    <img src="/images/icon/checklist.png" alt="Diterima" className="size-3.5 object-contain shrink-0" />
+                                                    <span>Diterima</span>
                                                 </span>
                                             )}
+                                        </td>
+                                        <td className="p-3 border-r-2 border-black text-xs text-neutral-600 whitespace-nowrap min-w-[130px]">
+                                            {item.note || '-'}
                                         </td>
                                         <td className="p-3 text-right font-mono font-black text-xs text-black">
                                             Rp{item.reward.toLocaleString('id-ID')}

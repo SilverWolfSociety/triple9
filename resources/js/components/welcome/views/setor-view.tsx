@@ -6,9 +6,10 @@ import { GenerateGmailModal } from '../modals/generate-gmail-modal';
 interface StorViewProps {
     onNavigateToRules: () => void;
     onAddStorRecords: (records: StorRecord[]) => void;
+    gmailRate?: number;
 }
 
-export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps) {
+export function StorView({ onNavigateToRules, onAddStorRecords, gmailRate = 5000 }: StorViewProps) {
     const [selectedRoom, setSelectedRoom] = useState<StorRoom>('triple9');
     const [storInput, setStorInput] = useState('');
     const [isGenerateModalOpen, setIsGenerateModalOpen] = useState(false);
@@ -48,18 +49,18 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
         .filter((l) => l.length > 0);
     const uniqueLines = Array.from(new Set(rawLines));
     const uniqueLinesCount = uniqueLines.length;
-    const estimatedReward = uniqueLinesCount * 5000;
+    const estimatedReward = uniqueLinesCount * gmailRate;
 
     const handleSubmitSetoran = () => {
         if (uniqueLinesCount > 0) {
             const todayStr = new Date().toISOString().split('T')[0];
             const newRecords: StorRecord[] = uniqueLines.map((email, idx) => ({
-                id: `stor-${Date.now()}-${idx}`,
+                id: `SET-${Date.now()}-${idx}`,
                 email,
                 room: selectedRoom,
                 status: 'pending',
                 date: todayStr,
-                reward: 5000,
+                reward: gmailRate,
             }));
             onAddStorRecords(newRecords);
             setStorInput('');
@@ -111,7 +112,7 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                                     </span>
                                 </label>
                                 <span className="text-xs font-bold font-mono text-black">
-                                    Harga: <strong className="font-black bg-[#FFD700] px-1.5 py-0.5 rounded-xs border border-black">Rp5.000 / akun</strong>
+                                    Harga: <strong className="font-black bg-[#FFD700] px-1.5 py-0.5 rounded-xs border border-black">Rp{gmailRate.toLocaleString('id-ID')} / akun</strong>
                                 </span>
                             </div>
 
@@ -143,7 +144,7 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                                             Untuk Gmail dengan password triple9
                                         </p>
                                         <div className="text-xs font-black font-mono text-black mt-2">
-                                            Reward: Rp5.000
+                                            Reward: Rp{gmailRate.toLocaleString('id-ID')}
                                         </div>
                                     </div>
                                 </div>
@@ -175,7 +176,7 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                                             Untuk Gmail dengan password 9triple
                                         </p>
                                         <div className="text-xs font-black font-mono text-black mt-2">
-                                            Reward: Rp5.000
+                                            Reward: Rp{gmailRate.toLocaleString('id-ID')}
                                         </div>
                                     </div>
                                 </div>
@@ -228,7 +229,7 @@ export function StorView({ onNavigateToRules, onAddStorRecords }: StorViewProps)
                                 <div className="text-xl sm:text-2xl font-black font-mono text-black">
                                     Rp{estimatedReward.toLocaleString('id-ID')}
                                     <span className="text-xs font-bold text-neutral-700 ml-2 font-sans">
-                                        ({uniqueLinesCount} akun x Rp5.000)
+                                        ({uniqueLinesCount} akun x Rp{gmailRate.toLocaleString('id-ID')})
                                     </span>
                                 </div>
                             </div>

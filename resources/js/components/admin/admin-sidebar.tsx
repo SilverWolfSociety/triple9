@@ -5,6 +5,7 @@ import {
     ChevronsUpDown,
     LogOut,
     Settings,
+    Trophy,
     Users,
     Wallet,
 } from 'lucide-react';
@@ -92,6 +93,11 @@ export function AdminSidebar({
                     icon: Wallet,
                     badge: pendingPayoutCount > 0 ? pendingPayoutCount : undefined,
                     badgeColor: 'bg-[#FF00FF]',
+                },
+                {
+                    id: 'leaderboard',
+                    label: 'Leaderboard',
+                    icon: Trophy,
                 },
             ],
         },

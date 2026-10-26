@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { AdminPayoutItem, PayoutStatus } from '../types';
+import { AdminRejectPayoutModal } from '../modals/admin-reject-payout-modal';
 
 interface AdminPayoutsViewProps {
     payoutList: AdminPayoutItem[];
@@ -21,6 +22,7 @@ export function AdminPayoutsView({
     const [selectedStatus, setSelectedStatus] = useState<'all' | PayoutStatus>('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [confirmPayoutItem, setConfirmPayoutItem] = useState<AdminPayoutItem | null>(null);
+    const [rejectPayoutItem, setRejectPayoutItem] = useState<AdminPayoutItem | null>(null);
 
     const formatRupiah = (val: number) =>
         'Rp ' + new Intl.NumberFormat('id-ID').format(val);
@@ -180,20 +182,20 @@ export function AdminPayoutsView({
                                                 {item.date} {item.time}
                                             </div>
                                         </td>
-                                        <td className="p-3 border-r-2 border-black">
+                                        <td className="p-3 border-r-2 border-black whitespace-nowrap">
                                             <div className="flex items-center gap-2">
                                                 <img
                                                     src={item.userAvatar}
                                                     alt={item.userName}
                                                     className="size-6 rounded-full border border-black bg-[#FFD700] object-contain shrink-0"
                                                 />
-                                                <div className="truncate max-w-[120px]">
-                                                    <div className="font-bold text-black truncate">{item.userName}</div>
-                                                    <div className="text-[10px] text-neutral-500 truncate">{item.userEmail}</div>
+                                                <div className="min-w-0">
+                                                    <div className="font-bold text-black leading-snug">{item.userName}</div>
+                                                    <div className="text-[10px] text-neutral-500 font-mono leading-tight">{item.userEmail}</div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="p-3 border-r-2 border-black">
+                                        <td className="p-3 border-r-2 border-black whitespace-nowrap">
                                             <span
                                                 className={`inline-flex px-2 py-0.5 rounded-xs border border-black font-black text-[10px] uppercase shadow-[1px_1px_0px_0px_#000000] ${getMethodBadgeColor(
                                                     item.method,
@@ -202,31 +204,34 @@ export function AdminPayoutsView({
                                                 {item.method}
                                             </span>
                                         </td>
-                                        <td className="p-3 border-r-2 border-black font-mono font-bold text-black select-all">
+                                        <td className="p-3 border-r-2 border-black font-mono font-bold text-black select-all whitespace-nowrap">
                                             {item.accountNumber}
                                         </td>
-                                        <td className="p-3 border-r-2 border-black font-bold text-black truncate max-w-[130px]">
+                                        <td className="p-3 border-r-2 border-black font-bold text-black whitespace-nowrap">
                                             {item.accountName}
                                         </td>
-                                        <td className="p-3 border-r-2 border-black font-mono font-black text-black">
+                                        <td className="p-3 border-r-2 border-black font-mono font-black text-black whitespace-nowrap">
                                             {formatRupiah(item.amount)}
                                         </td>
-                                        <td className="p-3 border-r-2 border-black">
+                                        <td className="p-3 border-r-2 border-black whitespace-nowrap">
                                             {item.status === 'success' ? (
-                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#00C2CB] shadow-[1px_1px_0px_0px_#000000]" title="Selesai">
-                                                    <img src="/images/icon/checklist.png" alt="Selesai" className="size-5 object-contain shrink-0" />
+                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs border-2 border-black bg-[#00C2CB] font-black text-[10px] uppercase shadow-[2px_2px_0px_0px_#000000]">
+                                                    <img src="/images/icon/checklist.png" alt="Berhasil" className="size-3.5 object-contain shrink-0" />
+                                                    <span>Berhasil</span>
                                                 </span>
                                             ) : item.status === 'rejected' ? (
-                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#FF00FF] shadow-[1px_1px_0px_0px_#000000]" title="Ditolak">
-                                                    <img src="/images/icon/reject.png" alt="Ditolak" className="size-5 object-contain shrink-0" />
+                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs border-2 border-black bg-[#FF00FF] font-black text-[10px] uppercase shadow-[2px_2px_0px_0px_#000000]">
+                                                    <img src="/images/icon/reject.png" alt="Ditolak" className="size-3.5 object-contain shrink-0" />
+                                                    <span>Ditolak</span>
                                                 </span>
                                             ) : (
-                                                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#FFD700] shadow-[1px_1px_0px_0px_#000000]" title="Pending">
-                                                    <img src="/images/icon/pending.png" alt="Pending" className="size-5 object-contain shrink-0" />
+                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs border-2 border-black bg-[#FFD700] font-black text-[10px] uppercase shadow-[2px_2px_0px_0px_#000000]">
+                                                    <img src="/images/icon/pending.png" alt="Pending" className="size-3.5 object-contain shrink-0" />
+                                                    <span>Pending</span>
                                                 </span>
                                             )}
                                         </td>
-                                        <td className="p-3 border-r-2 border-black text-xs text-neutral-600 truncate max-w-[130px]">
+                                        <td className="p-3 border-r-2 border-black text-xs text-neutral-600 whitespace-nowrap">
                                             {item.note || '-'}
                                         </td>
                                         <td className="p-3 text-right">
@@ -242,12 +247,7 @@ export function AdminPayoutsView({
                                                     </button>
                                                     <button
                                                         type="button"
-                                                        onClick={() => {
-                                                            if (confirm(`Apakah Anda yakin ingin menolak penarikan ${item.id} (${formatRupiah(item.amount)})? Saldo akan dikembalikan ke user.`)) {
-                                                                onRejectPayout(item.id, 'Nomor e-wallet tidak valid');
-                                                                toast.error(`Penarikan ${item.id} ditolak dan saldo dikembalikan.`);
-                                                            }
-                                                        }}
+                                                        onClick={() => setRejectPayoutItem(item)}
                                                         className="size-7 inline-flex items-center justify-center rounded-xs border border-black bg-[#FF00FF] hover:bg-[#e000e0] text-black shadow-[1px_1px_0px_0px_#000000] cursor-pointer transition"
                                                         title="Tolak Penarikan"
                                                     >
@@ -356,9 +356,11 @@ export function AdminPayoutsView({
                             <button
                                 type="button"
                                 onClick={() => {
-                                    onApprovePayout(confirmPayoutItem.id, `Transfer ${confirmPayoutItem.method} berhasil diproses.`);
-                                    toast.success(`Penarikan ${formatRupiah(confirmPayoutItem.amount)} untuk ${confirmPayoutItem.userName} telah disetujui!`);
+                                    const target = confirmPayoutItem;
                                     setConfirmPayoutItem(null);
+                                    if (!target) return;
+                                    onApprovePayout(target.id, `Transfer ${target.method} berhasil diproses.`);
+                                    toast.success(`Penarikan ${formatRupiah(target.amount)} untuk ${target.userName} telah disetujui!`);
                                 }}
                                 className="px-4 py-2 rounded-xs text-xs font-black uppercase tracking-wider border-2 border-black bg-[#00C2CB] hover:bg-[#00a8b0] text-black shadow-[2px_2px_0px_0px_#000000] cursor-pointer transition flex items-center gap-1.5"
                             >
@@ -368,6 +370,20 @@ export function AdminPayoutsView({
                     </div>
                 </div>
             )}
+
+            {/* Modal Alasan Penolakan Payout (Opsional) */}
+            <AdminRejectPayoutModal
+                isOpen={!!rejectPayoutItem}
+                onClose={() => setRejectPayoutItem(null)}
+                payout={rejectPayoutItem}
+                onConfirm={(reason) => {
+                    const target = rejectPayoutItem;
+                    setRejectPayoutItem(null);
+                    if (!target) return;
+                    onRejectPayout(target.id, reason);
+                    toast.error(`Penarikan ${target.id} ditolak dan saldo dikembalikan.`);
+                }}
+            />
         </div>
     );
 }

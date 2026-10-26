@@ -11,8 +11,10 @@ interface WithdrawModalProps {
     selectedEwallet: EwalletType;
     onChangeEwallet?: (wallet: EwalletType) => void;
     savedEwalletNumbers?: Record<string, string>;
-    onSaveEwalletNumber?: (wallet: EwalletType, number: string) => void;
-    onConfirmWithdraw: (amount: number, account: string) => void;
+    savedEwalletNames?: Record<string, string>;
+    onSaveEwalletNumber?: (wallet: EwalletType, number: string, name?: string) => void;
+    onConfirmWithdraw: (amount: number, account: string, accountName?: string) => void;
+    minWithdraw?: number;
 }
 
 const WITHDRAW_PRESETS = [10000, 20000, 50000, 100000, 500000, 1000000];
@@ -24,11 +26,14 @@ export function WithdrawModal({
     selectedEwallet,
     onChangeEwallet,
     savedEwalletNumbers,
+    savedEwalletNames,
     onSaveEwalletNumber,
     onConfirmWithdraw,
+    minWithdraw = 10000,
 }: WithdrawModalProps) {
     const [currentWallet, setCurrentWallet] = useState<EwalletType>(selectedEwallet);
     const [accountInput, setAccountInput] = useState('');
+    const [accountNameInput, setAccountNameInput] = useState('');
     const [withdrawAmount, setWithdrawAmount] = useState('');
     const [isSaved, setIsSaved] = useState(false);
 
@@ -36,6 +41,7 @@ export function WithdrawModal({
         if (isOpen) {
             setCurrentWallet(selectedEwallet);
             setAccountInput(savedEwalletNumbers?.[selectedEwallet] || '');
+            setAccountNameInput(savedEwalletNames?.[selectedEwallet] || '');
             setWithdrawAmount('');
             setIsSaved(false);
         }
@@ -47,14 +53,15 @@ export function WithdrawModal({
         setCurrentWallet(wallet);
         onChangeEwallet?.(wallet);
         setAccountInput(savedEwalletNumbers?.[wallet] || '');
+        setAccountNameInput(savedEwalletNames?.[wallet] || '');
         setIsSaved(false);
     };
 
     const handleSaveEwallet = () => {
         if (accountInput.length >= 10) {
-            onSaveEwalletNumber?.(currentWallet, accountInput);
+            onSaveEwalletNumber?.(currentWallet, accountInput, accountNameInput.trim());
             setIsSaved(true);
-            toast.info('Nomor telah tersimpan.');
+            toast.info('Data e-wallet telah tersimpan.');
             setTimeout(() => setIsSaved(false), 2000);
         } else {
             toast.error('Nomor e-wallet harus terdiri dari 10-15 digit angka.');
@@ -64,13 +71,18 @@ export function WithdrawModal({
     const handleConfirm = () => {
         const numAmount = Number(withdrawAmount);
         const targetAccount = accountInput.trim();
+        const targetName = accountNameInput.trim();
 
         if (!targetAccount || targetAccount.length < 10) {
             toast.error('Silakan masukkan nomor e-wallet yang valid (10-15 digit).');
             return;
         }
-        if (!numAmount || numAmount < 10000) {
-            toast.error('Minimal penarikan adalah Rp10.000.');
+        if (!targetName) {
+            toast.error('Silakan masukkan nama pemilik rekening / atas nama.');
+            return;
+        }
+        if (!numAmount || numAmount < minWithdraw) {
+            toast.error(`Minimal penarikan adalah Rp${minWithdraw.toLocaleString('id-ID')}.`);
             return;
         }
         if (numAmount > currentBalance) {
@@ -78,7 +90,7 @@ export function WithdrawModal({
             return;
         }
 
-        onConfirmWithdraw(numAmount, targetAccount);
+        onConfirmWithdraw(numAmount, targetAccount, targetName);
         onClose();
         toast.success('Pengajuan penarikan berhasil dikirim!');
     };
@@ -162,33 +174,53 @@ export function WithdrawModal({
                         </div>
 
                         <p className="text-[11px] font-bold text-neutral-700 leading-tight">
-                            Simpan nomor {currentWallet} Anda agar tidak perlu mengetik ulang setiap penarikan. Hanya angka, 10-15 digit.
+                            Simpan nomor & nama {currentWallet} Anda agar tidak perlu mengetik ulang setiap penarikan.
                         </p>
 
-                        <div className="flex items-center gap-2">
-                            <input
-                                type="text"
-                                value={accountInput}
-                                onChange={(e) => setAccountInput(e.target.value.replace(/\D/g, ''))}
-                                placeholder="081234567890"
-                                maxLength={15}
-                                className="flex-1 rounded-sm border-2 border-black bg-white px-3.5 py-2.5 text-xs font-mono font-bold text-black placeholder:text-neutral-400 focus:outline-none shadow-[2px_2px_0px_0px_#000000]"
-                            />
-                            <button
-                                type="button"
-                                onClick={handleSaveEwallet}
-                                title={isSaved ? 'Nomor Tersimpan' : 'Simpan nomor'}
-                                aria-label="Simpan nomor"
-                                className="inline-flex items-center justify-center p-2 rounded-sm border-2 border-black bg-white hover:bg-[#00C2CB] shadow-[2px_2px_0px_0px_#000000] transition cursor-pointer shrink-0"
-                            >
-                                {isSaved ? (
-                                    <Check
-                                        className="h-5 w-5 text-black stroke-[3]"
+                        <div className="space-y-2.5">
+                            <div>
+                                <label className="block text-[11px] font-black uppercase tracking-wider text-black mb-1">
+                                    Nomor {currentWallet}
+                                </label>
+                                <div className="flex items-center gap-2">
+                                    <input
+                                        type="text"
+                                        value={accountInput}
+                                        onChange={(e) => setAccountInput(e.target.value.replace(/\D/g, ''))}
+                                        placeholder="081234567890"
+                                        maxLength={15}
+                                        className="flex-1 rounded-sm border-2 border-black bg-white px-3.5 py-2.5 text-xs font-mono font-bold text-black placeholder:text-neutral-400 focus:outline-none shadow-[2px_2px_0px_0px_#000000]"
                                     />
-                                ) : (
-                                    <img src="/images/icon/save.png" alt="Simpan" className="h-5 w-5 object-contain shrink-0" />
-                                )}
-                            </button>
+                                    <button
+                                        type="button"
+                                        onClick={handleSaveEwallet}
+                                        title={isSaved ? 'Data Tersimpan' : 'Simpan data'}
+                                        aria-label="Simpan data"
+                                        className="inline-flex items-center justify-center p-2 rounded-sm border-2 border-black bg-white hover:bg-[#00C2CB] shadow-[2px_2px_0px_0px_#000000] transition cursor-pointer shrink-0"
+                                    >
+                                        {isSaved ? (
+                                            <Check
+                                                className="h-5 w-5 text-black stroke-[3]"
+                                            />
+                                        ) : (
+                                            <img src="/images/icon/save.png" alt="Simpan" className="h-5 w-5 object-contain shrink-0" />
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-[11px] font-black uppercase tracking-wider text-black mb-1">
+                                    Atas Nama
+                                </label>
+                                <input
+                                    type="text"
+                                    value={accountNameInput}
+                                    onChange={(e) => setAccountNameInput(e.target.value)}
+                                    placeholder="Contoh: Hawwin Ramadhan"
+                                    className="w-full rounded-sm border-2 border-black bg-white px-3.5 py-2.5 text-xs font-bold text-black placeholder:text-neutral-400 focus:outline-none shadow-[2px_2px_0px_0px_#000000]"
+                                />
+                            </div>
                         </div>
                     </div>
 
@@ -198,7 +230,7 @@ export function WithdrawModal({
                             <label className="block text-xs font-black uppercase tracking-wider text-black">
                                 Nominal Penarikan
                             </label>
-                            {currentBalance >= 10000 && (
+                            {currentBalance >= minWithdraw && (
                                 <button
                                     type="button"
                                     onClick={() => setWithdrawAmount(String(currentBalance))}
@@ -215,7 +247,7 @@ export function WithdrawModal({
                             <input
                                 type="text"
                                 inputMode="numeric"
-                                placeholder="10.000"
+                                placeholder={minWithdraw.toLocaleString('id-ID')}
                                 value={
                                     withdrawAmount !== ''
                                         ? Number(withdrawAmount).toLocaleString('id-ID')
@@ -250,7 +282,7 @@ export function WithdrawModal({
                         </div>
 
                         <p className="text-[11px] font-bold text-neutral-700 mt-2">
-                            Minimal penarikan adalah Rp10.000.
+                            Minimal penarikan adalah Rp{minWithdraw.toLocaleString('id-ID')}.
                         </p>
                     </div>
                 </div>

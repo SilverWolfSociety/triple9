@@ -14,6 +14,7 @@ import type {
     AdminUserItem,
     PlatformSettings,
 } from '../types';
+import { AdminRejectModal, type RejectModalTarget } from '../modals/admin-reject-modal';
 
 interface AdminOverviewViewProps {
     onNavigate: (id: AdminNavId) => void;
@@ -42,6 +43,8 @@ export function AdminOverviewView({
     const pendingPayouts = payoutList.filter((p) => p.status === 'pending');
 
     const [currentPage, setCurrentPage] = useState(1);
+    const [rejectTarget, setRejectTarget] = useState<RejectModalTarget | null>(null);
+    const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
     const itemsPerPage = 5;
     const totalPages = Math.ceil(pendingSetoran.length / itemsPerPage) || 1;
     const paginatedSetoran = pendingSetoran.slice(
@@ -80,7 +83,7 @@ export function AdminOverviewView({
                     </div>
                     <div className="mt-3">
                         <div className="text-3xl font-black font-mono text-black">
-                            1.482
+                            {setoranList.length.toLocaleString('id-ID')}
                         </div>
                     </div>
                 </div>
@@ -100,7 +103,7 @@ export function AdminOverviewView({
                     </div>
                     <div className="mt-3">
                         <div className="text-3xl font-black font-mono text-black">
-                            {pendingSetoran.length}
+                            {pendingSetoran.length.toLocaleString('id-ID')}
                         </div>
                     </div>
                 </div>
@@ -120,7 +123,7 @@ export function AdminOverviewView({
                     </div>
                     <div className="mt-3">
                         <div className="text-2xl sm:text-3xl font-black font-mono text-black">
-                            {formatRupiah(totalPayoutAmount + 3250000)}
+                            {formatRupiah(totalPayoutAmount)}
                         </div>
                     </div>
                 </div>
@@ -140,7 +143,7 @@ export function AdminOverviewView({
                     </div>
                     <div className="mt-3">
                         <div className="text-3xl font-black font-mono text-black">
-                            {usersList.length + 248}
+                            {usersList.length.toLocaleString('id-ID')}
                         </div>
                     </div>
                 </div>
@@ -180,86 +183,111 @@ export function AdminOverviewView({
                             </tr>
                         </thead>
                         <tbody className="divide-y-2 divide-black bg-white font-medium">
-                            {paginatedSetoran.map((item) => (
-                                <tr key={item.id} className="hover:bg-[#F5F5DC] transition">
-                                    <td className="p-3 border-r-2 border-black font-mono font-bold">
-                                        <div className="text-black font-black">{item.id}</div>
-                                        <div className="text-[10px] text-neutral-500">{item.time} WIB</div>
-                                    </td>
-                                    <td className="p-3 border-r-2 border-black">
-                                        <div className="flex items-center gap-2">
-                                            <img
-                                                src={item.userAvatar}
-                                                alt={item.userName}
-                                                className="size-6 rounded-full border border-black bg-[#FFD700] object-contain shrink-0"
-                                            />
-                                            <div className="truncate max-w-[130px]">
-                                                <div className="font-bold text-black truncate">{item.userName}</div>
-                                                <div className="text-[10px] text-neutral-500 truncate">{item.userEmail}</div>
+                            {paginatedSetoran.length === 0 ? (
+                                <tr>
+                                    <td colSpan={7} className="p-8 text-center text-xs font-black uppercase tracking-wider text-neutral-500">
+                                        {setoranList.length > 0 ? (
+                                            <div className="space-y-2">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => onNavigate('setoran')}
+                                                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm bg-[#00C2CB] border-2 border-black text-black font-black text-xs shadow-[2px_2px_0px_0px_#000000] cursor-pointer hover:bg-[#00b0b8]"
+                                                >
+                                                    Lihat Setoran Akun
+                                                </button>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td className="p-3 border-r-2 border-black font-mono font-bold text-black select-all">
-                                        {item.email}
-                                    </td>
-                                    <td className="p-3 border-r-2 border-black font-mono text-neutral-700 select-all">
-                                        {item.password}
-                                    </td>
-                                    <td className="p-3 border-r-2 border-black font-mono font-black text-black">
-                                        {formatRupiah(item.reward)}
-                                    </td>
-                                    <td className="p-3 border-r-2 border-black">
-                                        {item.status === 'dicek' ? (
-                                            <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#F5F5DC] shadow-[1px_1px_0px_0px_#000000]" title="Di Cek">
-                                                <img src="/images/icon/find.png" alt="Di Cek" className="size-5 object-contain shrink-0" />
-                                            </span>
                                         ) : (
-                                            <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-xs border border-black bg-[#FFD700] shadow-[1px_1px_0px_0px_#000000]" title="Menunggu">
-                                                <img src="/images/icon/pending.png" alt="Menunggu" className="size-5 object-contain shrink-0" />
-                                            </span>
+                                            'Tidak ada antrean setoran akun saat ini.'
                                         )}
                                     </td>
-                                    <td className="p-3 text-right">
-                                        <div className="inline-flex items-center gap-1.5">
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    onApproveSetoran(item.id);
-                                                    toast.success(`Akun ${item.email} diterima & saldo Rp ${item.reward} ditambahkan.`);
-                                                }}
-                                                title="Terima Setoran & Bayar Saldo"
-                                                className="size-7 inline-flex items-center justify-center rounded-xs border border-black bg-[#00C2CB] hover:bg-[#00a8b0] text-black shadow-[1px_1px_0px_0px_#000000] cursor-pointer transition"
-                                            >
-                                                <Check className="size-4 stroke-[3]" />
-                                            </button>
-                                            {item.status === 'pending' && onCheckSetoran && (
+                                </tr>
+                            ) : (
+                                paginatedSetoran.map((item) => (
+                                    <tr key={item.id} className="hover:bg-[#F5F5DC] transition">
+                                        <td className="p-3 border-r-2 border-black font-mono font-bold whitespace-nowrap">
+                                            <div className="text-black font-black leading-snug">{item.id}</div>
+                                            <div className="text-[10px] text-neutral-500 font-sans leading-normal">{item.time} WIB</div>
+                                        </td>
+                                        <td className="p-3 border-r-2 border-black whitespace-nowrap">
+                                            <div className="flex items-center gap-2">
+                                                <img
+                                                    src={item.userAvatar}
+                                                    alt={item.userName}
+                                                    className="size-6 rounded-full border border-black bg-[#FFD700] object-contain shrink-0"
+                                                />
+                                                <div className="min-w-0">
+                                                    <div className="font-bold text-black leading-snug">{item.userName}</div>
+                                                    <div className="text-[10px] text-neutral-500 font-mono leading-tight">{item.userEmail}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="p-3 border-r-2 border-black font-mono font-bold text-black select-all whitespace-nowrap">
+                                            {item.email}
+                                        </td>
+                                        <td className="p-3 border-r-2 border-black font-mono text-neutral-700 select-all whitespace-nowrap">
+                                            {item.password}
+                                        </td>
+                                        <td className="p-3 border-r-2 border-black font-mono font-black text-black whitespace-nowrap">
+                                            {formatRupiah(item.reward)}
+                                        </td>
+                                        <td className="p-3 border-r-2 border-black whitespace-nowrap">
+                                            {item.status === 'dicek' ? (
+                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs border-2 border-black bg-[#F5F5DC] font-black text-[10px] uppercase shadow-[2px_2px_0px_0px_#000000]">
+                                                    <img src="/images/icon/find.png" alt="Di Cek" className="size-3.5 object-contain shrink-0" />
+                                                    <span>Di Cek</span>
+                                                </span>
+                                            ) : (
+                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-xs border-2 border-black bg-[#FFD700] font-black text-[10px] uppercase shadow-[2px_2px_0px_0px_#000000]">
+                                                    <img src="/images/icon/pending.png" alt="Menunggu" className="size-3.5 object-contain shrink-0" />
+                                                    <span>Menunggu</span>
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td className="p-3 text-right">
+                                            <div className="inline-flex items-center gap-1.5">
                                                 <button
                                                     type="button"
                                                     onClick={() => {
-                                                        onCheckSetoran(item.id);
-                                                        toast.info(`Akun ${item.email} ditandai sedang dicek.`);
+                                                        onApproveSetoran(item.id);
+                                                        toast.success(`Akun ${item.email} diterima & saldo Rp ${item.reward} ditambahkan.`);
                                                     }}
-                                                    title="Tandai Sedang Di Cek"
-                                                    className="size-7 inline-flex items-center justify-center rounded-xs border border-black bg-[#F5F5DC] hover:bg-[#e6e6cc] text-black shadow-[1px_1px_0px_0px_#000000] cursor-pointer transition"
+                                                    title="Terima Setoran & Bayar Saldo"
+                                                    className="size-7 inline-flex items-center justify-center rounded-xs border border-black bg-[#00C2CB] hover:bg-[#00a8b0] text-black shadow-[1px_1px_0px_0px_#000000] cursor-pointer transition"
                                                 >
-                                                    <Search className="size-4 stroke-[3]" />
+                                                    <Check className="size-4 stroke-[3]" />
                                                 </button>
-                                            )}
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    onRejectSetoran(item.id, 'Password salah / tidak valid');
-                                                    toast.error(`Setoran ${item.email} ditolak.`);
-                                                }}
-                                                title="Tolak Setoran"
-                                                className="size-7 inline-flex items-center justify-center rounded-xs border border-black bg-[#FF00FF] hover:bg-[#e000e0] text-black shadow-[1px_1px_0px_0px_#000000] cursor-pointer transition"
-                                            >
-                                                <X className="size-4 stroke-[3]" />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
+                                                {item.status === 'pending' && onCheckSetoran && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            onCheckSetoran(item.id);
+                                                            toast.info(`Akun ${item.email} ditandai sedang dicek.`);
+                                                        }}
+                                                        title="Tandai Sedang Di Cek"
+                                                        className="size-7 inline-flex items-center justify-center rounded-xs border border-black bg-[#F5F5DC] hover:bg-[#e6e6cc] text-black shadow-[1px_1px_0px_0px_#000000] cursor-pointer transition"
+                                                    >
+                                                        <Search className="size-4 stroke-[3]" />
+                                                    </button>
+                                                )}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setRejectTarget({
+                                                            type: 'single',
+                                                            item,
+                                                        });
+                                                        setIsRejectModalOpen(true);
+                                                    }}
+                                                    title="Tolak Setoran"
+                                                    className="size-7 inline-flex items-center justify-center rounded-xs border border-black bg-[#FF00FF] hover:bg-[#e000e0] text-black shadow-[1px_1px_0px_0px_#000000] cursor-pointer transition"
+                                                >
+                                                    <X className="size-4 stroke-[3]" />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </div>
@@ -293,6 +321,22 @@ export function AdminOverviewView({
                     </div>
                 )}
             </div>
+
+            {/* Modal Alasan Penolakan Akun (Opsional) */}
+            <AdminRejectModal
+                isOpen={isRejectModalOpen}
+                onClose={() => {
+                    setIsRejectModalOpen(false);
+                    setRejectTarget(null);
+                }}
+                target={rejectTarget}
+                onConfirm={(reason) => {
+                    if (!rejectTarget) return;
+                    if (rejectTarget.type === 'single') {
+                        onRejectSetoran(rejectTarget.item.id, reason);
+                    }
+                }}
+            />
         </div>
     );
 }
